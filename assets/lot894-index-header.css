@@ -462,6 +462,15 @@ html[data-theme="dark"] .moon-icon {
   }
 }
 
+@media (min-width: 1041px) {
+  .topbar.kalq-site-header .topnav.nav-collections {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+}
+
 @media (max-width: 720px) {
   .topbar > .topbar-inner {
     min-height: 58px;
