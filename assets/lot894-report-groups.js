@@ -113,11 +113,19 @@
     }
     saveBtn.textContent = 'Save';
 
-    let closeBtn = toolbar.querySelector('#closePreviewBtn, [data-kalq-close]');
+    let closeBtn = toolbar.querySelector('#closePreviewBtn, #closeReportBtn, #previewCloseBtn, [data-kalq-close]');
+    if (!closeBtn) {
+      closeBtn = [...toolbar.querySelectorAll('button')].find((button) => /\bclose\b/i.test(clean(button.textContent)));
+    }
+    if (closeBtn) closeBtn.dataset.kalqClose = 'true';
     const legacyClose = root.querySelector(':scope > .preview-close');
     if (!closeBtn && legacyClose) {
       closeBtn = legacyClose;
       toolbar.append(closeBtn);
+    } else if (closeBtn && legacyClose && legacyClose !== closeBtn) {
+      /* The professional toolbar already has its own Close control. Remove the
+         older standalone preview-close button so users never see two Close pills. */
+      legacyClose.remove();
     }
     if (!closeBtn) {
       closeBtn = document.createElement('button');

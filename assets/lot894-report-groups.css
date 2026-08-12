@@ -33,6 +33,13 @@
   display: none !important;
 }
 
+/* Older calculators may still ship a standalone preview Close button.
+   The shared toolbar owns the one visible Close control. */
+#reportRoot > .preview-close,
+#reportRoot.is-preview > .preview-close {
+  display: none !important;
+}
+
 #reportRoot.is-preview .preview-toolbar,
 #reportRoot.is-preview .kalq-report-toolbar {
   position: fixed !important;
@@ -143,20 +150,31 @@
 #reportRoot .report-masthead,
 #reportRoot .report-header {
   box-sizing: border-box !important;
+  width: 100% !important;
+  height: auto !important;
   min-height: 0 !important;
-  margin: 0 0 6.5mm !important;
-  padding: 0 0 4.5mm !important;
+  max-height: none !important;
+  margin: 0 0 5.5mm !important;
+  padding: 0 0 4mm !important;
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-rows: auto !important;
   align-items: start !important;
-  gap: 10mm !important;
+  gap: 8mm !important;
   border: 0 !important;
   border-bottom: 1px solid var(--kalq-report-line) !important;
   background: transparent !important;
 }
 
 #reportRoot .report-brand {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  align-self: start !important;
+  justify-self: start !important;
+  width: auto !important;
   min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
@@ -166,6 +184,9 @@
 }
 
 #reportRoot .report-brand > .brand-mark {
+  grid-column: auto !important;
+  grid-row: auto !important;
+  align-self: auto !important;
   width: 48mm !important;
   height: 10.6mm !important;
   min-width: 48mm !important;
@@ -181,7 +202,14 @@
 
 #reportRoot .report-page-no,
 #reportRoot .report-meta {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  align-self: start !important;
+  justify-self: end !important;
+  width: auto !important;
   min-width: 38mm !important;
+  height: auto !important;
+  min-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
   color: var(--kalq-report-muted) !important;
@@ -212,7 +240,7 @@
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
-  margin: 0 0 7mm !important;
+  margin: 0 0 6.5mm !important;
   padding: 0 !important;
   border: 0 !important;
   background: transparent !important;
@@ -879,4 +907,122 @@
     break-inside: avoid !important;
     page-break-inside: avoid !important;
   }
+}
+
+
+/* ---------- v3 cross-report consistency pass ----------
+   The individual calculators were authored with different report component systems.
+   This layer normalizes the remaining bespoke pieces so every report reads as one
+   LOT 894 family instead of preserving old card-heavy layouts. ---------- */
+#reportRoot .report-page :is(p, li, td, th, label, legend, dd, dt),
+#reportRoot .report-page :is(span, small, strong):not(.brand-mark):not(.report-brand-copy):not(.report-page-no):not(.report-meta) {
+  font-size: var(--kalq-report-body) !important;
+  line-height: 1.45 !important;
+}
+
+/* Header/footer metadata deliberately stay smaller than report content. */
+#reportRoot :is(.report-masthead, .report-header, .report-footer, .kalq-report-footer) *,
+#reportRoot :is(.report-page-no, .report-meta) * {
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+/* Reassert intentional hierarchy after the universal body-size rule. */
+#reportRoot .report-title .eyebrow,
+#reportRoot .report-title .report-kicker { font-size: 7.5pt !important; }
+#reportRoot .report-title h1 { font-size: 21pt !important; }
+#reportRoot .report-page h2 { font-size: 12pt !important; }
+#reportRoot .report-page h3 { font-size: 10pt !important; }
+#reportRoot .report-hero :is(
+  .report-bmi, .report-score, .report-value, .report-apr, .report-money,
+  .report-total, .report-duration, .report-change, .report-conversion,
+  .report-main-value, .report-result-value, .report-hero-value,
+  .report-payroll-number, .report-gpa, .report-due-date,
+  .hero-number, .big-number
+) { font-size: 30pt !important; line-height: 1.02 !important; }
+
+/* Remove old card treatments from bespoke blocks while keeping their semantics. */
+#reportRoot .report-page :is(
+  .report-profile-item, .report-mini, .report-mini-stat, .report-limitation,
+  .report-process-item, .report-milestone, .report-offer, .report-plan-row,
+  .planner-card, .clinical-field, .report-kpi, .report-metric,
+  .report-stat-compact, .report-visual-panel, .report-atom-card,
+  .report-impact-row, .report-compare-row, .payroll-record-line,
+  .review-line, .report-note-line, .report-action-row, .report-performance-chart,
+  .report-heatmap, .comment-area, .signature-lines, .signature-field,
+  .schedule-meta > div, .report-stats-4 > div, .report-mini-grid > div,
+  .report-line-grid > div, .report-grid-4 > div
+) {
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#reportRoot .report-page :is(
+  .report-profile-item, .report-mini, .report-limitation, .report-process-item,
+  .report-milestone, .report-offer, .report-plan-row, .planner-card,
+  .clinical-field, .report-stat-compact, .report-impact-row, .report-compare-row,
+  .payroll-record-line, .review-line, .report-action-row, .schedule-meta > div
+) {
+  padding: 3.4mm 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--kalq-report-line) !important;
+}
+
+/* Full-width section rhythm. No report-specific block may collapse the visible gap. */
+#reportRoot .report-page > :is(
+  .report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid,
+  .report-findings, .report-callout, .report-note-band,
+  .scenario-chart, .report-chart-box, .chart-box, .report-gauge,
+  .report-composition, .report-table, .data-table, .report-record-table,
+  .report-process, .report-plan, .report-timeline, .report-progress-layout,
+  .report-periodic-table, .report-atom-comparison, .report-visual-grid,
+  .report-guide-columns, .report-compare, .report-line-grid,
+  .payment-composition-section, .schedule-meta
+) {
+  margin-top: 7mm !important;
+}
+
+/* Make bespoke two-column systems use the full page like the shared grids. */
+#reportRoot .report-page :is(
+  .report-guide-columns, .report-visual-grid, .report-progress-layout,
+  .report-compare, .report-line-grid, .schedule-meta
+) {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+}
+
+#reportRoot .report-page :is(.report-guide-columns, .report-visual-grid, .report-progress-layout) {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10mm !important;
+  align-items: start !important;
+}
+
+/* Keep large authored visuals useful but prevent them from dominating a page. */
+#reportRoot .report-page :is(
+  .scenario-chart, .report-chart-box, .chart-box, .report-performance-chart,
+  .report-heatmap, .calendar-chart, .weekday-chart, .report-periodic-table,
+  .report-atom-comparison, .report-graph-frame
+) {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: 62mm !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Protect the printable body from the footer even when legacy components had fixed heights. */
+#reportRoot .report-page > :not(.report-footer):not(.kalq-report-footer) {
+  box-sizing: border-box !important;
+}
+#reportRoot .report-page > :is(.report-footer, .kalq-report-footer) {
+  max-height: 9mm !important;
 }
