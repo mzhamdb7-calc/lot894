@@ -462,15 +462,6 @@ html[data-theme="dark"] .moon-icon {
   }
 }
 
-@media (min-width: 1041px) {
-  .topbar.kalq-site-header .topnav.nav-collections {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-  }
-}
-
 @media (max-width: 720px) {
   .topbar > .topbar-inner {
     min-height: 58px;
@@ -578,10 +569,10 @@ html[data-theme="dark"] .moon-icon {
   }
 
   .topbar.kalq-site-header .brand-mark {
-    width: 250px !important;
-    height: 55px !important;
-    min-width: 250px !important;
-    flex: 0 0 250px !important;
+    width: 150px !important;
+    height: 33px !important;
+    min-width: 150px !important;
+    flex: 0 0 150px !important;
   }
 
   .topbar.kalq-site-header .topnav.nav-collections {
@@ -717,4 +708,14 @@ html[data-theme="dark"] .moon-icon {
 .calculator-panel .close-button:hover,
 .calculator-panel .close-button:focus-visible {
   background: rgba(255, 255, 255, .10) !important;
+}
+
+/* Center the desktop collection tabs without changing the rest of the header. */
+@media screen and (min-width: 1180px) {
+  .topbar.kalq-site-header .topnav.nav-collections {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
 }
