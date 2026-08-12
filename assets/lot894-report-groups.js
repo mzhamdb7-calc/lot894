@@ -3,7 +3,7 @@
 
   const GROUP_CLASS = 'kalq-report-group-page';
   const STRUCTURAL = '.report-masthead, .report-header, .report-title, .report-footer, .kalq-report-footer, .preview-toolbar, .preview-close, .kalq-report-toolbar';
-  const GUIDE_PAGE = /\bcalculation method\b|\bformula and worked calculation\b|\bcalculation guide\b|\bconverter guide\b|\bchemistry guide\b|\breference guide\b|\blearning notes\b|\bpractical review\b|\bmethod(?:ology)?\s*(?:&|and|,)\s*(?:guidance|notes|validation|practical)\b|\bhow the roots were found\b|\bformulas?,?\s*use\s*&\s*limits\b|\bformula,?\s*tips\b|\bdata and use notes\b|\buse,?\s*tips\b|\buser guide\b|\bfaq(?:s)?\b|frequently asked|\breferences\b|\bsources?\b|\bdisclaimer\b|\blimitations?\b|\brelated (?:tools|calculators)\b|\bnext steps\b/i;
+  const GUIDE_PAGE = /\bcalculation method\b|\bformula and worked calculation\b|\bcalculation guide\b|\bconverter guide\b|\bchemistry guide\b|\breference guide\b|\blearning notes\b|\bpractical review\b|\bmethod(?:ology)?\s*(?:&|and|,)\s*(?:guidance|notes|validation|practical)\b|\bhow the roots were found\b|\bformulas?,?\s*use\s*&\s*limits\b|\bformula,?\s*tips\b|\bdata and use notes\b|\buse,?\s*tips\b|\buser guide\b|\bappointments? and preparation\b|\bpersonal action plan\b|\bfaq(?:s)?\b|frequently asked|\breferences\b|\bsources?\b|\bdisclaimer\b|\blimitations?\b|\brelated (?:tools|calculators)\b|\bnext steps\b/i;
   const FAQ_RE = /\bfaq(?:s)?\b|frequently asked|\bquestions?\b/i;
   const REF_RE = /\breferences\b|\bsource(?:s)?\b|\bcitation(?:s)?\b|\bdata source(?:s)?\b/i;
   const RELATED_RE = /\brelated (?:tools|calculators)\b|\bnext tools?\b/i;
@@ -19,12 +19,18 @@
   const clean = (value) => (value || '').replace(/\s+/g, ' ').trim();
 
   function pageHost(root) {
-    const explicit = root.querySelector(':scope > #reportPages, :scope > .report-pages, :scope > [data-report-pages]');
-    return explicit || root;
+    /* Generated continuation/guidance pages are appended to the report root.
+       Some legacy calculators keep output pages in more than one child wrapper
+       (for example #schedulePages beside the main report pages), so choosing a
+       single authored wrapper would put guidance before later output. */
+    return root;
   }
 
   function pages(root) {
-    return [...pageHost(root).querySelectorAll(':scope > .report-page')];
+    /* Treat every top-level report-page descendant as part of one printable
+       sequence, even when legacy builders place schedule pages in a nested
+       wrapper. Nested report pages (if any) are ignored to avoid double count. */
+    return [...root.querySelectorAll('.report-page')].filter((page) => !page.parentElement?.closest('.report-page'));
   }
 
   function titleText(page) {
@@ -36,7 +42,14 @@
   }
 
   function isVisiblePage(page) {
-    return !page.hidden && page.getAttribute('aria-hidden') !== 'true';
+    if (page.hidden || page.getAttribute('aria-hidden') === 'true') return false;
+    const style = getComputedStyle(page);
+    if (style.display === 'none') return false;
+    const root = page.closest('#reportRoot');
+    /* The paginator intentionally hides the entire report while measuring it.
+       Do not mistake that inherited visibility for an authored hidden page. */
+    if (!root?.classList.contains('kalq-report-measuring') && style.visibility === 'hidden') return false;
+    return true;
   }
 
   function isGuidancePage(page) {
@@ -243,11 +256,31 @@
 
   function availableBottom(page) {
     const footer = page.querySelector(':scope > .report-footer, :scope > .kalq-report-footer');
-    return footer ? footer.offsetTop - 14 : page.clientHeight - 30;
+    /* Keep a real visual buffer above the footer. 16 px is deliberately more
+       conservative than the old rule so descenders, rules and SVG labels never
+       touch the footer when the page is printed. */
+    return footer ? footer.offsetTop - 16 : page.clientHeight - 34;
+  }
+
+  function visualBottom(page, scope = page) {
+    const pageRect = page.getBoundingClientRect();
+    let bottom = 0;
+    const nodes = scope === page ? [...scope.querySelectorAll('*')] : [scope, ...scope.querySelectorAll('*')];
+    nodes.forEach((node) => {
+      if (!(node instanceof HTMLElement || node instanceof SVGElement)) return;
+      if (node.closest('.report-footer, .kalq-report-footer, .report-masthead, .report-header, .report-title, .preview-toolbar, .kalq-report-toolbar')) return;
+      const style = getComputedStyle(node);
+      const measuring = page.closest('#reportRoot')?.classList.contains('kalq-report-measuring');
+      if (style.display === 'none' || (!measuring && style.visibility === 'hidden')) return;
+      const rect = node.getBoundingClientRect();
+      if (!rect.width && !rect.height) return;
+      bottom = Math.max(bottom, rect.bottom - pageRect.top);
+    });
+    return bottom;
   }
 
   function fits(page, content) {
-    return content.offsetTop + content.scrollHeight <= availableBottom(page);
+    return visualBottom(page, content) <= availableBottom(page) + 1;
   }
 
   function paginateUnits(root, units, template, reportName, spec) {
@@ -310,6 +343,339 @@
   }
 
 
+  function guidanceChapter(section) {
+    const node = document.createElement('div');
+    node.className = 'kalq-guidance-chapter';
+    node.dataset.kalqChapterKey = section.key;
+    node.innerHTML = `<div class="kalq-output-chapter-kicker">${section.eyebrow}</div><h2>${section.title}</h2><p>${section.description}</p>`;
+    return node;
+  }
+
+  function paginateGuidanceSections(root, template, reportName, sections) {
+    const made = [];
+    let shell = null;
+    let activeKey = null;
+    let inlineHost = false;
+
+    /* If the final analytical page would otherwise be mostly empty, begin the
+       first guidance chapter in its unused lower area. Output still comes first
+       and a strong divider/gap keeps the two parts visually separate. This is
+       used only when there is enough room to avoid crowding. */
+    const outputPages = pages(root).filter((page) => isVisiblePage(page) && !page.classList.contains(GROUP_CLASS));
+    const lastOutput = outputPages.at(-1);
+    if (lastOutput) {
+      const inlineThreshold = orientationKey(lastOutput) === 'landscape' ? 150 : 245;
+      if (outputFreeSpace(lastOutput) >= inlineThreshold) {
+      const content = document.createElement('div');
+      content.className = 'kalq-inline-guidance-content';
+      lastOutput.insertBefore(content, lastOutput.querySelector(':scope > .report-footer, :scope > .kalq-report-footer'));
+        shell = { page: lastOutput, content };
+        inlineHost = true;
+      }
+    }
+
+    const make = (section, continued = false) => {
+      const title = continued ? `${section.title} — Continued` : section.title;
+      shell = shellFrom(template, reportName, title, section.eyebrow, section.description);
+      shell.page.dataset.kalqReportGroup = section.key;
+      pageHost(root).append(shell.page);
+      made.push(shell.page);
+      activeKey = section.key;
+      inlineHost = false;
+    };
+
+    const removeEmptyInline = () => {
+      if (inlineHost && shell?.content && !shell.content.children.length) {
+        shell.content.remove();
+        shell = null;
+        inlineHost = false;
+      }
+    };
+
+    sections.filter((section) => section.units.length).forEach((section) => {
+      if (!shell) make(section, false);
+
+      /* Avoid orphaning the beginning of a new guidance section at the bottom
+         of a page. If the whole incoming section does not fit in the remaining
+         space, begin it on a fresh page instead. The inline first guidance
+         section is exempt so useful leftover space after output can be used. */
+      if (!inlineHost && activeKey && activeKey !== section.key && shell.content.children.length) {
+        const probe = guidanceChapter(section);
+        shell.content.append(probe);
+        section.units.forEach((unit) => shell.content.append(unit));
+        const wholeFits = fits(shell.page, shell.content);
+        section.units.forEach((unit) => unit.remove());
+        probe.remove();
+        const freeNow = outputFreeSpace(shell.page);
+        if (!wholeFits && freeNow < 55 * 3.78) make(section, false);
+      }
+
+      let chapter = null;
+      if (activeKey !== section.key || inlineHost) {
+        chapter = guidanceChapter(section);
+        shell.content.append(chapter);
+      }
+
+      section.units.forEach((unit, unitIndex) => {
+        unit.dataset.kalqGuidanceKey = section.key;
+        shell.content.append(unit);
+        if (fits(shell.page, shell.content)) {
+          activeKey = section.key;
+          return;
+        }
+
+        unit.remove();
+        if (chapter && chapter.isConnected && chapter === shell.content.lastElementChild) chapter.remove();
+        removeEmptyInline();
+        const continued = activeKey === section.key || unitIndex > 0;
+        make(section, continued);
+        shell.content.append(unit);
+        chapter = null;
+
+        if (!fits(shell.page, shell.content)) shell.page.dataset.kalqOversized = 'true';
+        activeKey = section.key;
+      });
+      activeKey = section.key;
+    });
+    removeEmptyInline();
+    return made;
+  }
+
+  function mergeSparseFinalGuidance(root, sections) {
+    const spec = Object.fromEntries(sections.map((section) => [section.key, section]));
+    const groupPages = pages(root).filter((page) => page.classList.contains(GROUP_CLASS) && isVisiblePage(page));
+    if (groupPages.length < 2) return;
+    const last = groupPages.at(-1);
+    const prev = groupPages.at(-2);
+    if (orientationKey(last) !== orientationKey(prev)) return;
+    if (last.dataset.kalqReportGroup !== 'resources') return;
+    if (outputFreeSpace(last) < 330) return;
+
+    const prevKey = prev.dataset.kalqReportGroup;
+    const prevSpec = spec[prevKey];
+    const resourceSpec = spec.resources;
+    if (!prevSpec || !resourceSpec) return;
+    const from = prev.querySelector(':scope > .kalq-report-group-content');
+    const to = last.querySelector(':scope > .kalq-report-group-content');
+    if (!from || !to || from.children.length < 2) return;
+
+    const resourceChapter = guidanceChapter(resourceSpec);
+    resourceChapter.classList.add('kalq-resource-chapter');
+    to.prepend(resourceChapter);
+    let insertionPoint = resourceChapter;
+    let moved = 0;
+
+    while (from.children.length > 1 && outputFreeSpace(last) > 230) {
+      const candidate = from.lastElementChild;
+      if (!candidate || candidate.classList.contains('kalq-guidance-chapter')) break;
+      to.insertBefore(candidate, insertionPoint);
+      insertionPoint = candidate;
+      if (!fits(last, to)) {
+        candidate.remove();
+        from.append(candidate);
+        break;
+      }
+      moved += 1;
+    }
+
+    if (!moved) {
+      resourceChapter.remove();
+      return;
+    }
+    updateGuidancePageTitle(last, prevSpec, true);
+    last.dataset.kalqReportGroup = 'combined-final';
+  }
+
+  function updateGuidancePageTitle(page, section, continued = true) {
+    if (!page || !section) return;
+    const title = page.querySelector(':scope > .report-title h1');
+    const eyebrow = page.querySelector(':scope > .report-title .eyebrow');
+    const desc = page.querySelector(':scope > .report-title p');
+    if (title) title.textContent = `${section.title}${continued ? ' — Continued' : ''}`;
+    if (eyebrow) eyebrow.textContent = section.eyebrow;
+    if (desc) desc.textContent = section.description;
+    page.dataset.kalqReportGroup = section.key;
+  }
+
+  function balanceGuidancePages(root, sections) {
+    const spec = Object.fromEntries(sections.map((section) => [section.key, section]));
+    let changed = true;
+    let guard = 0;
+    while (changed && guard++ < 80) {
+      changed = false;
+      const groupPages = pages(root).filter((page) => page.classList.contains(GROUP_CLASS) && isVisiblePage(page));
+      for (let i = 0; i < groupPages.length - 1; i += 1) {
+        const current = groupPages[i];
+        const next = groupPages[i + 1];
+        if (orientationKey(current) !== orientationKey(next)) continue;
+        if (current.dataset.kalqReportGroup !== next.dataset.kalqReportGroup) continue;
+        const currentFree = outputFreeSpace(current);
+        const nextFree = outputFreeSpace(next);
+        if (nextFree - currentFree < 180) continue;
+
+        const from = current.querySelector(':scope > .kalq-report-group-content');
+        const to = next.querySelector(':scope > .kalq-report-group-content');
+        if (!from || !to || from.children.length < 2) continue;
+        const movable = from.lastElementChild;
+        if (!movable || movable.classList.contains('kalq-guidance-chapter')) continue;
+        const key = movable.dataset.kalqGuidanceKey || current.dataset.kalqReportGroup;
+        const incoming = spec[key];
+        if (!incoming) continue;
+
+        const nextKey = next.dataset.kalqReportGroup;
+        if (key !== nextKey) {
+          const existing = spec[nextKey];
+          if (existing && !to.querySelector(`:scope > .kalq-guidance-chapter[data-kalq-chapter-key="${nextKey}"]`)) {
+            const chapter = guidanceChapter(existing);
+            chapter.dataset.kalqChapterKey = nextKey;
+            to.prepend(chapter);
+          }
+          updateGuidancePageTitle(next, incoming, true);
+        }
+
+        to.prepend(movable);
+        if (!fits(next, to)) {
+          movable.remove();
+          from.append(movable);
+          continue;
+        }
+        changed = true;
+        break;
+      }
+    }
+  }
+
+
+  function absorbSparseFirstGuidance(root) {
+    const output = pages(root).filter((page) => isVisiblePage(page) && !page.classList.contains(GROUP_CLASS));
+    const groups = pages(root).filter((page) => isVisiblePage(page) && page.classList.contains(GROUP_CLASS));
+    const lastOutput = output.at(-1);
+    const firstGuide = groups[0];
+    if (!lastOutput || !firstGuide) return false;
+    if (orientationKey(lastOutput) !== orientationKey(firstGuide)) return false;
+    if (outputFreeSpace(lastOutput) < (orientationKey(lastOutput) === 'landscape' ? 130 : 190)) return false;
+    if (outputFreeSpace(firstGuide) < 420) return false;
+
+    const source = firstGuide.querySelector(':scope > .kalq-report-group-content');
+    if (!source) return false;
+    const units = [...source.children].filter((child) => !child.classList.contains('kalq-guidance-chapter') && meaningful(child));
+    if (!units.length) return false;
+
+    let inline = lastOutput.querySelector(':scope > .kalq-inline-guidance-content');
+    let created = false;
+    if (!inline) {
+      inline = document.createElement('div');
+      inline.className = 'kalq-inline-guidance-content';
+      lastOutput.insertBefore(inline, lastOutput.querySelector(':scope > .report-footer, :scope > .kalq-report-footer'));
+      created = true;
+    }
+
+    const title = clean(firstGuide.querySelector(':scope > .report-title h1')?.textContent).replace(/\s*[—-]\s*Continued\s*$/i, '');
+    const eyebrow = clean(firstGuide.querySelector(':scope > .report-title .eyebrow')?.textContent);
+    const desc = clean(firstGuide.querySelector(':scope > .report-title p')?.textContent);
+    const chapter = document.createElement('div');
+    chapter.className = 'kalq-guidance-chapter kalq-inline-guidance-chapter';
+    chapter.innerHTML = `${eyebrow ? `<div class="kalq-output-chapter-kicker">${eyebrow}</div>` : ''}${title ? `<h2>${title}</h2>` : ''}${desc ? `<p>${desc}</p>` : ''}`;
+    inline.append(chapter);
+
+    let moved = 0;
+    for (const unit of units) {
+      inline.append(unit);
+      if (visualBottom(lastOutput, inline) > availableBottom(lastOutput) + 1) {
+        unit.remove();
+        source.insertBefore(unit, source.children[moved] || null);
+        break;
+      }
+      moved += 1;
+    }
+
+    if (!moved) {
+      chapter.remove();
+      if (created && !inline.children.length) inline.remove();
+      return false;
+    }
+    if (![...source.children].some((child) => !child.classList.contains('kalq-guidance-chapter') && meaningful(child))) firstGuide.remove();
+    else markContinuationTitle(firstGuide);
+    return true;
+  }
+
+  function fillSparseGuidancePages(root, sections = []) {
+    const spec = Object.fromEntries(sections.map((section) => [section.key, section]));
+    let changed = true;
+    let guard = 0;
+    while (changed && guard++ < 100) {
+      changed = false;
+      const groupPages = pages(root).filter((page) => page.classList.contains(GROUP_CLASS) && isVisiblePage(page));
+      for (let i = 0; i < groupPages.length - 1; i += 1) {
+        const current = groupPages[i];
+        const next = groupPages[i + 1];
+        if (orientationKey(current) !== orientationKey(next)) continue;
+        if (!sections.length && current.dataset.kalqReportGroup !== next.dataset.kalqReportGroup) continue;
+        const currentFree = outputFreeSpace(current);
+        const nextFree = outputFreeSpace(next);
+        if (currentFree < 260 || currentFree - nextFree < 135) continue;
+
+        const to = current.querySelector(':scope > .kalq-report-group-content');
+        const from = next.querySelector(':scope > .kalq-report-group-content');
+        if (!to || !from) continue;
+        const candidate = [...from.children].find((child) => !child.classList.contains('kalq-guidance-chapter'));
+        if (!candidate) continue;
+        const key = candidate.dataset.kalqGuidanceKey || next.dataset.kalqReportGroup;
+        const currentLast = [...to.children].reverse().find((child) => !child.classList.contains('kalq-guidance-chapter'));
+        const lastKey = currentLast?.dataset?.kalqGuidanceKey || current.dataset.kalqReportGroup;
+        let chapter = null;
+        if (key && key !== lastKey && spec[key]) {
+          chapter = guidanceChapter(spec[key]);
+          to.append(chapter);
+        }
+        to.append(candidate);
+        if (!fits(current, to)) {
+          candidate.remove();
+          from.insertBefore(candidate, [...from.children].find((child) => !child.classList.contains('kalq-guidance-chapter')) || null);
+
+          /* A legacy guidance unit can itself be a large multi-column wrapper.
+             Use the free lower area by moving whole children from the start of
+             that wrapper instead of squeezing the complete wrapper onto one page. */
+          const children = [...candidate.children].filter((child) => meaningful(child));
+          let partial = null;
+          let moved = 0;
+          if (children.length >= 2) {
+            partial = stripIds(candidate.cloneNode(false));
+            partial.dataset.kalqGuidanceKey = key || '';
+            partial.classList.add('kalq-guidance-partial');
+            to.append(partial);
+            for (const child of children) {
+              partial.append(child);
+              if (!fits(current, to)) {
+                child.remove();
+                candidate.insertBefore(child, candidate.children[moved] || null);
+                break;
+              }
+              moved += 1;
+            }
+          }
+          if (!moved) {
+            partial?.remove();
+            chapter?.remove();
+            continue;
+          }
+          if ([...partial.children].filter((child) => meaningful(child)).length === 1) partial.classList.add('kalq-single-grid');
+          if ([...candidate.children].filter((child) => meaningful(child)).length === 1) candidate.classList.add('kalq-single-grid');
+        }
+
+        /* Remove a now-orphaned chapter at the top of the source page. */
+        const first = from.firstElementChild;
+        if (first?.classList.contains('kalq-guidance-chapter')) {
+          const firstUnit = [...from.children].find((child) => !child.classList.contains('kalq-guidance-chapter'));
+          if (!firstUnit || first.dataset.kalqChapterKey !== firstUnit.dataset.kalqGuidanceKey) first.remove();
+        }
+        if (![...from.children].some((child) => !child.classList.contains('kalq-guidance-chapter') && meaningful(child))) next.remove();
+        changed = true;
+        break;
+      }
+    }
+  }
+
   function stripIds(node) {
     if (!(node instanceof Element)) return node;
     node.removeAttribute('id');
@@ -325,9 +691,8 @@
 
   function outputOverflow(page) {
     const blocks = outputBlocks(page);
-    const last = blocks.at(-1);
-    if (!last) return 0;
-    return Math.max(0, last.offsetTop + last.offsetHeight - availableBottom(page));
+    if (!blocks.length) return 0;
+    return Math.max(0, visualBottom(page) - availableBottom(page));
   }
 
   function cloneOutputShell(source, reportName) {
@@ -481,6 +846,433 @@
     return true;
   }
 
+
+  function splitGridBlock(page, reportName) {
+    const blocks = outputBlocks(page);
+    const candidates = blocks.filter((block) =>
+      block.matches?.('.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid, .report-visual-grid, .report-guide-columns') &&
+      [...block.children].filter((child) => meaningful(child)).length >= 2
+    );
+    if (!candidates.length) return false;
+
+    const block = candidates.at(-1);
+    const children = [...block.children].filter((child) => meaningful(child));
+    const continuation = cloneOutputShell(page, reportName);
+    const clone = stripIds(block.cloneNode(false));
+    clone.classList.add('kalq-split-grid');
+    block.classList.add('kalq-split-grid');
+    continuation.insertBefore(clone, continuation.querySelector(':scope > .report-footer, :scope > .kalq-report-footer'));
+
+    let moved = 0;
+    while (outputOverflow(page) > 4 && children.length - moved > 1) {
+      const child = block.lastElementChild;
+      if (!child) break;
+      clone.insertBefore(child, clone.firstChild);
+      moved += 1;
+    }
+
+    if (!moved) {
+      continuation.remove();
+      block.classList.remove('kalq-split-grid');
+      return false;
+    }
+    return true;
+  }
+
+  function outputFreeSpace(page) {
+    const blocks = outputBlocks(page);
+    const title = page.querySelector(':scope > .report-title');
+    if (!blocks.length) {
+      const pageRect = page.getBoundingClientRect();
+      const titleBottom = title ? title.getBoundingClientRect().bottom - pageRect.top : 0;
+      return Math.max(0, availableBottom(page) - titleBottom);
+    }
+    return Math.max(0, availableBottom(page) - visualBottom(page));
+  }
+
+  function orientationKey(page) {
+    return page.classList.contains('report-landscape') || page.classList.contains('kalq-report-landscape') ? 'landscape' : 'portrait';
+  }
+
+  function chapterIntroFrom(page) {
+    const title = clean(page.querySelector(':scope > .report-title h1')?.textContent).replace(/\s*[—-]\s*Continued\s*$/i, '');
+    if (!title) return null;
+    const intro = document.createElement('div');
+    intro.className = 'kalq-output-chapter';
+    const eyebrow = clean(page.querySelector(':scope > .report-title .eyebrow')?.textContent);
+    const desc = clean(page.querySelector(':scope > .report-title p')?.textContent);
+    intro.innerHTML = `${eyebrow ? `<div class="kalq-output-chapter-kicker">${eyebrow}</div>` : ''}<h2>${title}</h2>${desc ? `<p>${desc}</p>` : ''}`;
+    return intro;
+  }
+
+  function markContinuationTitle(page) {
+    const heading = page.querySelector(':scope > .report-title h1');
+    if (heading && !/continued/i.test(clean(heading.textContent))) heading.textContent = `${clean(heading.textContent)} — Continued`;
+    const desc = page.querySelector(':scope > .report-title p');
+    if (desc) desc.textContent = 'Continuation of the detailed output from the previous report page.';
+  }
+
+
+  function normalizeChartCallouts(root) {
+    pages(root).forEach((page) => {
+      page.querySelectorAll(':scope > .report-grid-2, :scope > .analysis-grid').forEach((grid) => {
+        const children = [...grid.children].filter((child) => meaningful(child));
+        if (children.length !== 2) return;
+        const callout = children.find((child) => child.matches('.report-callout, .report-note-band'));
+        const other = children.find((child) => child !== callout);
+        if (!callout || !other) return;
+        const text = clean(callout.textContent);
+        const hasChartBefore = Boolean(grid.previousElementSibling?.querySelector?.('svg,canvas,.report-chart,.chart') || page.querySelector('svg,canvas,.report-chart,.chart'));
+        const pairedFindings = other.matches('.report-findings') || Boolean(other.querySelector('.report-finding'));
+        if (!hasChartBefore || !pairedFindings || !/reading|chart|visual|interpret/i.test(text)) return;
+        grid.before(callout);
+        grid.before(other);
+        grid.remove();
+        callout.classList.add('kalq-output-block');
+        other.classList.add('kalq-output-block');
+      });
+    });
+  }
+
+  function pullPartialContainer(page, next, candidate) {
+    const children = [...candidate.children].filter((child) => meaningful(child));
+    if (children.length < 2) return false;
+    if (!candidate.matches('.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid, .report-timeline, .report-process, .report-plan, .report-mini-grid, .report-line-grid, .report-stats-4, .report-findings, .growth-findings')) return false;
+
+    const clone = stripIds(candidate.cloneNode(false));
+    clone.classList.add('kalq-output-block', 'kalq-partial-pull');
+    page.insertBefore(clone, page.querySelector(':scope > .report-footer, :scope > .kalq-report-footer'));
+    let moved = 0;
+    for (const child of children) {
+      clone.append(child);
+      if (outputOverflow(page) > 4) {
+        child.remove();
+        candidate.insertBefore(child, candidate.children[moved] || null);
+        break;
+      }
+      moved += 1;
+    }
+
+    if (!moved) {
+      clone.remove();
+      return false;
+    }
+    if (![...candidate.children].some((child) => meaningful(child))) candidate.remove();
+    markContinuationTitle(next);
+    return true;
+  }
+
+  function normalizeGridUse(root) {
+    pages(root).forEach((page) => {
+      const portrait = orientationKey(page) === 'portrait';
+      page.querySelectorAll('.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid, .report-visual-grid, .report-guide-columns').forEach((grid) => {
+        grid.classList.remove('kalq-stack-grid', 'kalq-balanced-two', 'kalq-balanced-three');
+        const children = [...grid.children].filter((child) => meaningful(child));
+        if (!children.length) return;
+        const lengths = children.map((child) => clean(child.textContent).length);
+        const total = lengths.reduce((a, b) => a + b, 0);
+        const max = Math.max(...lengths, 1);
+        const min = Math.min(...lengths);
+
+        if (!portrait) return;
+
+        /* Two columns are useful only when both sides have enough content and
+           broadly comparable visual weight. Otherwise one full-width column is
+           cleaner and avoids the 'tiny island beside a blank half-page' look. */
+        if (children.length === 2) {
+          const longForm = total > 760 || max > 520;
+          const badlyUnbalanced = min / max < .52;
+          if (longForm || badlyUnbalanced) grid.classList.add('kalq-stack-grid');
+          else grid.classList.add('kalq-balanced-two');
+          return;
+        }
+
+        /* Three short metric items may remain three columns. Explanatory
+           material uses two columns so the text is not cramped. */
+        if (children.length === 3) {
+          if (total > 330 || max > 150) grid.classList.add('kalq-balanced-two');
+          else grid.classList.add('kalq-balanced-three');
+          return;
+        }
+
+        /* Four-or-more items become two-column rows on portrait pages. */
+        if (children.length >= 4) grid.classList.add('kalq-balanced-two');
+      });
+    });
+  }
+
+  function partialTableClone(candidate) {
+    const table = candidate.matches?.('table') ? candidate : candidate.querySelector?.('table');
+    if (!table) return null;
+    const rows = [...table.querySelectorAll('tbody > tr')];
+    if (rows.length < 6) return null;
+    const shell = stripIds(candidate.cloneNode(true));
+    const shellTable = shell.matches?.('table') ? shell : shell.querySelector?.('table');
+    const body = shellTable?.querySelector('tbody');
+    if (!body) return null;
+    body.innerHTML = '';
+    shell.classList?.add('kalq-partial-table');
+    return { shell, body, table, rows };
+  }
+
+  function pullPartialTable(page, next, candidate) {
+    const data = partialTableClone(candidate);
+    if (!data) return false;
+    const { shell, body, table, rows } = data;
+    const sourceBody = table.querySelector('tbody');
+    if (!sourceBody) return false;
+
+    page.insertBefore(shell, page.querySelector(':scope > .report-footer, :scope > .kalq-report-footer'));
+    let moved = 0;
+    for (const row of rows) {
+      body.append(row);
+      if (outputOverflow(page) > 4) {
+        row.remove();
+        sourceBody.insertBefore(row, sourceBody.children[moved] || null);
+        break;
+      }
+      moved += 1;
+    }
+
+    if (moved < 3) {
+      /* Put moved rows back in their original order. */
+      [...body.children].reverse().forEach((row) => sourceBody.insertBefore(row, sourceBody.firstChild));
+      shell.remove();
+      return false;
+    }
+
+    if (!sourceBody.rows.length) candidate.remove();
+    markContinuationTitle(next);
+    return true;
+  }
+
+  function balanceSparseOutputPages(root, reportName) {
+    let guard = 0;
+    let changed = true;
+    while (changed && guard++ < 100) {
+      changed = false;
+      const out = pages(root).filter((page) => isVisiblePage(page) && !page.classList.contains(GROUP_CLASS));
+      for (let i = 0; i < out.length - 1; i += 1) {
+        const page = out[i];
+        const next = out[i + 1];
+        if (orientationKey(page) !== orientationKey(next)) continue;
+        if (outputFreeSpace(page) < 34 * 3.78) continue; // about 34 mm of genuine trailing whitespace
+
+        const nextBlocks = outputBlocks(next);
+        if (!nextBlocks.length) continue;
+        const candidate = nextBlocks[0];
+        const currentBase = clean(page.querySelector(':scope > .report-title h1')?.textContent).replace(/\s*[—-]\s*Continued\s*$/i, '');
+        const nextBase = clean(next.querySelector(':scope > .report-title h1')?.textContent).replace(/\s*[—-]\s*Continued\s*$/i, '');
+        const existingChapter = [...page.querySelectorAll(':scope > .kalq-output-chapter h2')]
+          .some((heading) => clean(heading.textContent).replace(/\s*[—-]\s*Continued\s*$/i, '') === nextBase);
+        const sameChapter = next.classList.contains('kalq-output-continuation') || currentBase === nextBase || existingChapter;
+        const intro = sameChapter ? null : chapterIntroFrom(next);
+
+        if (intro) page.insertBefore(intro, page.querySelector(':scope > .report-footer, :scope > .kalq-report-footer'));
+        page.insertBefore(candidate, page.querySelector(':scope > .report-footer, :scope > .kalq-report-footer'));
+
+        if (outputOverflow(page) > 4) {
+          candidate.remove();
+          insertContentAtStart(next, candidate);
+          intro?.remove();
+          if (pullPartialContainer(page, next, candidate) || pullPartialTable(page, next, candidate)) {
+            changed = true;
+            if (!outputBlocks(next).length) next.remove();
+            break;
+          }
+          continue;
+        }
+
+        candidate.classList.add('kalq-output-block');
+        changed = true;
+        if (!sameChapter) markContinuationTitle(next);
+
+        if (!outputBlocks(next).length) next.remove();
+        break;
+      }
+    }
+  }
+
+
+  function updateTablePageRange(page, table) {
+    const rows = [...table.querySelectorAll('tbody > tr')];
+    const range = rowRange(rows);
+    if (!range) return;
+    const heading = page.querySelector(':scope > .report-title h1');
+    if (heading) {
+      heading.textContent = heading.textContent.replace(/Payments?\s+\d+\s*[–-]\s*\d+/i, `Payments ${range.first}–${range.last}`);
+      heading.textContent = heading.textContent.replace(/Rows?\s+\d+\s*[–-]\s*\d+/i, `Rows ${range.first}–${range.last}`);
+      heading.textContent = heading.textContent.replace(/Months?\s+\d+\s*[–-]\s*\d+/i, `Months ${range.first}–${range.last}`);
+    }
+    updateScheduleMeta(page, rows);
+  }
+
+  function balanceAdjacentTables(root) {
+    let guard = 0;
+    let changed = true;
+    while (changed && guard++ < 160) {
+      changed = false;
+      const out = pages(root).filter((page) => isVisiblePage(page) && !page.classList.contains(GROUP_CLASS));
+      for (let i = 0; i < out.length - 1; i += 1) {
+        const prev = out[i], next = out[i + 1];
+        if (orientationKey(prev) !== orientationKey(next)) continue;
+        const prevTable = [...prev.querySelectorAll('table')].at(-1);
+        const nextTable = [...next.querySelectorAll('table')][0];
+        if (!prevTable || !nextTable) continue;
+        const a = [...prevTable.querySelectorAll('tbody > tr')];
+        const b = [...nextTable.querySelectorAll('tbody > tr')];
+        if (a.length < 8 || b.length < 1) continue;
+        const colsA = prevTable.querySelectorAll('thead th').length || a[0]?.children.length || 0;
+        const colsB = nextTable.querySelectorAll('thead th').length || b[0]?.children.length || 0;
+        if (!colsA || colsA !== colsB) continue;
+        const headerA = clean(prevTable.querySelector('thead')?.textContent);
+        const headerB = clean(nextTable.querySelector('thead')?.textContent);
+        if (headerA && headerB && headerA !== headerB) continue;
+
+        const prevFree = outputFreeSpace(prev), nextFree = outputFreeSpace(next);
+        if (nextFree - prevFree < 115) continue;
+        const row = prevTable.querySelector('tbody > tr:last-child');
+        if (!row) continue;
+        const nextBody = nextTable.querySelector('tbody');
+        nextBody.insertBefore(row, nextBody.firstChild);
+        if (outputOverflow(next) > 4 || prevTable.querySelectorAll('tbody > tr').length < 6) {
+          row.remove();
+          prevTable.querySelector('tbody').append(row);
+          continue;
+        }
+        updateTablePageRange(prev, prevTable);
+        updateTablePageRange(next, nextTable);
+        changed = true;
+        break;
+      }
+    }
+  }
+
+  function pushPartialContainer(prev, next, candidate) {
+    if (!candidate?.matches?.('.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid, .report-timeline, .report-process, .report-plan, .report-mini-grid, .report-line-grid, .report-stats-4, .report-findings, .growth-findings, .report-visual-grid, .report-guide-columns')) return false;
+    const children = [...candidate.children].filter((child) => meaningful(child));
+    if (children.length < 2) return false;
+
+    const beforePrev = outputFreeSpace(prev);
+    const beforeNext = outputFreeSpace(next);
+    const beforeDiff = Math.abs(beforePrev - beforeNext);
+    const clone = stripIds(candidate.cloneNode(false));
+    clone.classList.add('kalq-output-block', 'kalq-partial-push');
+    insertContentAtStart(next, clone);
+
+    let moved = 0;
+    for (let i = children.length - 1; i >= 1; i -= 1) {
+      const child = children[i];
+      clone.insertBefore(child, clone.firstChild);
+      if (outputOverflow(next) > 4) {
+        child.remove();
+        candidate.append(child);
+        break;
+      }
+      moved += 1;
+      const afterDiff = Math.abs(outputFreeSpace(prev) - outputFreeSpace(next));
+      /* One well-balanced move is preferable to moving an entire grid and
+         creating another sparse continuation page. */
+      if (afterDiff + 24 < beforeDiff) break;
+    }
+
+    if (!moved) {
+      clone.remove();
+      return false;
+    }
+
+    const remain = [...candidate.children].filter((child) => meaningful(child));
+    const pushed = [...clone.children].filter((child) => meaningful(child));
+    if (remain.length === 1) candidate.classList.add('kalq-single-grid');
+    if (pushed.length === 1) clone.classList.add('kalq-single-grid');
+    markContinuationTitle(next);
+    return true;
+  }
+
+  function balanceTrailingOutputPages(root) {
+    let guard = 0;
+    let changed = true;
+    while (changed && guard++ < 80) {
+      changed = false;
+      const out = pages(root).filter((page) => isVisiblePage(page) && !page.classList.contains(GROUP_CLASS));
+      for (let i = out.length - 1; i > 0; i -= 1) {
+        const next = out[i];
+        const prev = out[i - 1];
+        if (orientationKey(prev) !== orientationKey(next)) continue;
+        const beforePrev = outputFreeSpace(prev);
+        const beforeNext = outputFreeSpace(next);
+        if (beforeNext < 230 || beforeNext - beforePrev < 150) continue;
+
+        const prevBlocks = outputBlocks(prev);
+        if (prevBlocks.length < 2) continue;
+        let candidate = prevBlocks.at(-1);
+        if (!candidate || candidate.classList.contains('kalq-output-chapter')) continue;
+        const previousSibling = candidate.previousElementSibling;
+        const moveChapter = previousSibling?.classList?.contains('kalq-output-chapter') ? previousSibling : null;
+        const nextFirst = contentInsertPoint(next);
+        if (moveChapter) insertContentAtStart(next, moveChapter);
+        insertContentAtStart(next, candidate);
+
+        const afterPrev = outputFreeSpace(prev);
+        const afterNext = outputFreeSpace(next);
+        const fitsNext = outputOverflow(next) <= 4;
+        const prevStillUseful = outputBlocks(prev).length > 0 && afterPrev < 430;
+        const improvement = Math.abs(afterPrev - afterNext) + 30 < Math.abs(beforePrev - beforeNext);
+
+        if (!fitsNext || !prevStillUseful || !improvement) {
+          candidate.remove();
+          prev.insertBefore(candidate, prev.querySelector(':scope > .report-footer, :scope > .kalq-report-footer'));
+          if (moveChapter) {
+            moveChapter.remove();
+            prev.insertBefore(moveChapter, candidate);
+          }
+          /* When a whole multi-item grid is too large to move, split that
+             grid instead. This keeps both continuation pages useful without
+             shrinking text or leaving a half-empty page. */
+          if (pushPartialContainer(prev, next, candidate)) {
+            changed = true;
+            break;
+          }
+          continue;
+        }
+        changed = true;
+        break;
+      }
+    }
+  }
+
+  function rowifyPortraitGrids(root) {
+    pages(root).forEach((page) => {
+      if (orientationKey(page) !== 'portrait' || page.classList.contains(GROUP_CLASS)) return;
+      [...page.querySelectorAll(':scope > .report-grid-4, :scope > .analysis-grid.report-grid-2')].forEach((grid) => {
+        if (grid.dataset.kalqRowified === 'true') return;
+        const children = [...grid.children].filter((child) => meaningful(child));
+        if (children.length < 4) return;
+        const rows = [];
+        for (let i = 0; i < children.length; i += 2) {
+          const row = document.createElement('div');
+          row.className = 'kalq-grid-row';
+          children.slice(i, i + 2).forEach((child) => row.append(child));
+          grid.before(row);
+          rows.push(row);
+        }
+        grid.remove();
+        rows.forEach((row) => row.classList.add('kalq-output-block'));
+      });
+    });
+  }
+
+  function normalizeGridDensity(root) {
+    pages(root).forEach((page) => {
+      page.querySelectorAll('.report-grid-3, .report-grid-4, .analysis-grid, .report-visual-grid, .report-guide-columns').forEach((grid) => {
+        const children = [...grid.children].filter((child) => meaningful(child));
+        if (!children.length) return;
+        const avg = children.reduce((sum, child) => sum + clean(child.textContent).length, 0) / children.length;
+        grid.classList.toggle('kalq-text-grid', avg >= 72);
+      });
+    });
+  }
+
   function reflowOverflowingOutputPages(root, reportName) {
     let guard = 0;
     while (guard++ < 80) {
@@ -490,6 +1282,7 @@
       if (!output.length) break;
       const page = output[0];
       if (splitLargeTable(page, reportName)) continue;
+      if (splitGridBlock(page, reportName)) continue;
       if (moveTailBlocks(page, reportName)) continue;
       if (splitRepeatContainer(page, reportName)) continue;
       page.dataset.kalqUnsplitOverflow = 'true';
@@ -538,6 +1331,24 @@
     root.querySelectorAll('.reportTotal').forEach((node) => { node.textContent = String(all.length); });
   }
 
+  function removeDuplicateOutputChapters(root) {
+    pages(root).forEach((page) => {
+      if (!isVisiblePage(page) || page.classList.contains(GROUP_CLASS)) return;
+      const base = clean(page.querySelector(':scope > .report-title h1')?.textContent)
+        .replace(/\s*[—-]\s*Continued\s*$/i, '');
+      const seen = new Set();
+      [...page.querySelectorAll(':scope > .kalq-output-chapter')].forEach((chapter) => {
+        const heading = clean(chapter.querySelector('h2')?.textContent)
+          .replace(/\s*[—-]\s*Continued\s*$/i, '');
+        if (!heading || heading === base || seen.has(heading)) {
+          chapter.remove();
+          return;
+        }
+        seen.add(heading);
+      });
+    });
+  }
+
   function normalizeOutputPages(root, reportName) {
     const outputPages = pages(root).filter((page) => isVisiblePage(page) && !isGuidancePage(page));
     outputPages.forEach((page) => {
@@ -550,18 +1361,146 @@
       if (blocks.length > 1) {
         const last = blocks.at(-1);
         const free = Math.max(0, availableBottom(page) - (last.offsetTop + last.offsetHeight));
-        const perGap = Math.min(15, free / Math.max(1, blocks.length - 1));
-        const mm = Math.min(9, 5 + perGap / 3.78);
+        const perGap = free / Math.max(1, blocks.length - 1);
+        const mm = Math.min(12, Math.max(6, 5 + perGap / 3.78));
         page.style.setProperty('--kalq-flow-gap', `${mm.toFixed(2)}mm`);
-        if (free > 80) {
+        if (free > 90) {
           page.classList.add('kalq-sparse-page');
-          const pad = Math.min(6.2, 4.2 + free / 220);
-          page.style.setProperty('--kalq-sparse-row-pad', `${pad.toFixed(2)}mm`);
+          page.style.setProperty('--kalq-sparse-row-pad', '4.6mm');
         } else {
           page.classList.remove('kalq-sparse-page');
         }
       }
     });
+  }
+
+
+  function strictMixedGuidanceKind(node) {
+    if (!(node instanceof HTMLElement)) return null;
+    const heading = headingText(node);
+    const cls = typeof node.className === 'string' ? node.className : '';
+    const sample = `${heading} ${clean(node.textContent).slice(0, 520)}`;
+
+    if (/\bfaq(?:s)?\b|frequently asked/i.test(heading)) return 'faq';
+    if (REF_RE.test(heading)) return 'references';
+    if (RELATED_RE.test(heading)) return 'related';
+    if (/\bdisclaimer\b|\blimitations?\b|\blimits?\b|\bnot included\b|\bexcluded\b|\bscope\b|\bboundar(?:y|ies)\b|\bwhat .* does not\b/i.test(heading)) return 'disclaimer';
+    if (/\bassumptions?\b|\bcalculation method\b|\bmethodology\b|\bformula\b|\bworked calculation\b|\binput validation\b|\bverification check\b|\bconversion assumptions?\b|\bpayroll calendar considerations?\b|\bhow (?:the|this) calculation works\b|\bhow .* is (?:calculated|produced|derived)\b/i.test(heading)) return 'method';
+    if (/\btips?\b|\bcommon mistakes?\b|\bbest practices?\b|\bpractical guidance\b|\bpractical planning\b|\baction plan\b|\breview checklist\b|\bchecks? before\b|\bquestions? for (?:a )?(?:doctor|midwife)\b|\bpersonal planning\b|\bbirth preparation\b|\bpractice plan\b|\bfollow-up\b|\bteacher or parent comments?\b/i.test(heading)) return 'tips';
+    if (/\bhow to use\b|\bunderstanding (?:your|the) result\b|\binterpretation guide\b|\bhow to interpret\b|\bhow to read\b|\breading note\b|\breading the visual\b/i.test(heading)) return 'understanding';
+
+    if (/\breport-process\b/.test(cls)) return 'method';
+    if (/\breport-timeline\b/.test(cls) && /review|recalculate|check|confirm|maintain|setup/i.test(sample)) return 'tips';
+    if (/\breport-references\b|\brefs\b/.test(cls)) return 'references';
+    return null;
+  }
+
+  function emptyBuckets() {
+    return {
+      understanding: [], method: [], tips: [], guidance: [], faq: [],
+      references: [], related: [], disclaimer: []
+    };
+  }
+
+  function pushGuidanceBucket(buckets, kind, node) {
+    if (!kind || !node) return;
+    if (kind === 'faq') {
+      const items = faqItemsFrom(node);
+      if (items.length) items.forEach((item) => buckets.faq.push(item));
+      else buckets.faq.push(node);
+      return;
+    }
+    (buckets[kind] || buckets.guidance).push(node);
+  }
+
+  function extractMixedGuidance(outputPages) {
+    const buckets = emptyBuckets();
+    outputPages.forEach((page) => {
+      /* First pull clearly instructional nested sections out of mixed output
+         pages. Many legacy reports placed How to use / assumptions / limits /
+         FAQs inside an otherwise analytical grid, so page-level detection alone
+         could never separate output from guidance consistently. */
+      const nestedCandidates = [...page.querySelectorAll('.report-section, .analysis-panel, .report-process, .report-timeline')];
+      const movedNested = new Set();
+      nestedCandidates.forEach((node) => {
+        if (!(node instanceof HTMLElement) || node.closest('.report-page') !== page) return;
+        if ([...movedNested].some((parent) => parent.contains(node))) return;
+        const kind = strictMixedGuidanceKind(node);
+        if (!kind) return;
+        movedNested.add(node);
+        node.remove();
+        pushGuidanceBucket(buckets, kind, node);
+      });
+
+      page.querySelectorAll('.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid, .report-guide-columns, .report-visual-grid').forEach((grid) => {
+        const remaining = [...grid.children].filter((child) => meaningful(child));
+        if (!remaining.length) grid.remove();
+        else if (remaining.length === 1) grid.classList.add('kalq-single-grid');
+      });
+
+      const blocks = [...page.children].filter((node) =>
+        node instanceof HTMLElement && !node.matches(STRUCTURAL) && meaningful(node)
+      );
+
+      blocks.forEach((block) => {
+        /* A few legacy reports use neutral wrappers (for example note bands)
+           whose direct children are the real semantic sections. Split those
+           children first so an analytical item can remain on the output page
+           while assumptions / limits / checklist content moves to guidance. */
+        const semanticChildren = [...block.children].filter((child) =>
+          child instanceof HTMLElement && meaningful(child) && child.querySelector(':scope > h2, :scope > h3, :scope > h4')
+        );
+        if (semanticChildren.length >= 2) {
+          let movedSemantic = 0;
+          semanticChildren.forEach((child) => {
+            const kind = strictMixedGuidanceKind(child);
+            if (!kind) return;
+            child.remove();
+            pushGuidanceBucket(buckets, kind, child);
+            movedSemantic += 1;
+          });
+          if (movedSemantic) {
+            const remainingSemantic = [...block.children].filter((child) => meaningful(child));
+            if (!remainingSemantic.length) {
+              block.remove();
+              return;
+            }
+            if (remainingSemantic.length === 1) block.classList.add('kalq-single-semantic');
+          }
+        }
+
+        const isGrid = block.matches('.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid, .report-guide-columns, .report-visual-grid');
+        if (isGrid) {
+          const children = [...block.children].filter((child) => meaningful(child));
+          let moved = 0;
+          children.forEach((child) => {
+            const kind = strictMixedGuidanceKind(child);
+            if (!kind) return;
+            child.remove();
+            pushGuidanceBucket(buckets, kind, child);
+            moved += 1;
+          });
+          const remaining = [...block.children].filter((child) => meaningful(child));
+          if (!remaining.length) {
+            block.remove();
+            return;
+          }
+          if (remaining.length === 1) block.classList.add('kalq-single-grid');
+          if (moved) return;
+        }
+
+        const kind = strictMixedGuidanceKind(block);
+        if (kind) {
+          block.remove();
+          pushGuidanceBucket(buckets, kind, block);
+        }
+      });
+    });
+    return buckets;
+  }
+
+  function bucketCount(buckets) {
+    return Object.values(buckets).reduce((sum, items) => sum + items.length, 0);
   }
 
   function organize(root) {
@@ -579,13 +1518,34 @@
       const authoredGuidePages = allPages.filter((page) =>
         !page.classList.contains(GROUP_CLASS) && isVisiblePage(page) && isGuidancePage(page)
       );
+      const authoredOutputPages = allPages.filter((page) =>
+        !page.classList.contains(GROUP_CLASS) && isVisiblePage(page) && !isGuidancePage(page)
+      );
+      const mixedBuckets = extractMixedGuidance(authoredOutputPages);
+      const hasMixedGuidance = bucketCount(mixedBuckets) > 0;
 
-      /* Re-running after our own pagination must be idempotent. If the report
-         builder has not supplied fresh authored guidance pages, keep the
-         already-generated guidance pages instead of deleting them. */
-      if (!authoredGuidePages.length) {
+      /* Re-running after our own pagination must be idempotent. Once authored
+         guidance has been converted into generated group pages, never discard
+         those groups merely because a later output-balancing pass creates a
+         block whose text happens to look instructional. Fresh authored guidance
+         pages still trigger a complete rebuild when the calculator itself
+         regenerates the report. */
+      if ((existingGroups.length && !authoredGuidePages.length) || (!existingGroups.length && !authoredGuidePages.length && !hasMixedGuidance)) {
+        rowifyPortraitGrids(root);
+        normalizeGridDensity(root);
+        normalizeGridUse(root);
+        normalizeChartCallouts(root);
         normalizeOutputPages(root, reportName);
         reflowOverflowingOutputPages(root, reportName);
+        balanceAdjacentTables(root);
+        balanceSparseOutputPages(root, reportName);
+        balanceTrailingOutputPages(root);
+        absorbSparseFirstGuidance(root);
+        fillSparseGuidancePages(root);
+        removeDuplicateOutputChapters(root);
+        normalizeGridDensity(root);
+        normalizeGridUse(root);
+        normalizeOutputPages(root, reportName);
         renumber(root, reportName);
         return;
       }
@@ -594,18 +1554,10 @@
       const guidePages = authoredGuidePages;
       normalizeOutputPages(root, reportName);
 
-      if (guidePages.length) {
-        const template = guidePages[0];
-        const buckets = {
-          understanding: [],
-          method: [],
-          tips: [],
-          guidance: [],
-          faq: [],
-          references: [],
-          related: [],
-          disclaimer: []
-        };
+      if (guidePages.length || hasMixedGuidance) {
+        const template = guidePages[0] || authoredOutputPages.at(-1) || allPages[0];
+        const buckets = emptyBuckets();
+        Object.keys(buckets).forEach((key) => buckets[key].push(...mixedBuckets[key]));
 
         guidePages.forEach((page) => {
           removeEmptyAncestors(page);
@@ -633,44 +1585,93 @@
           ...buckets.disclaimer
         ];
 
-        paginateUnits(root, understandingFlow, template, reportName, {
-          key: 'understanding',
-          eyebrow: 'Interpretation & practical use',
-          title: 'Understanding Your Result',
-          description: 'How to read the result and use the report in a clear, practical way.'
-        });
+        /* Finish and balance the analytical output before guidance starts.
+           The first guidance section may then use safe leftover space on the
+           final output page, always after the last result block and behind a
+           clear section divider. */
+        rowifyPortraitGrids(root);
+        normalizeGridDensity(root);
+        normalizeGridUse(root);
+        normalizeChartCallouts(root);
+        normalizeOutputPages(root, reportName);
+        reflowOverflowingOutputPages(root, reportName);
+        balanceAdjacentTables(root);
+        balanceSparseOutputPages(root, reportName);
+        balanceTrailingOutputPages(root);
+        normalizeOutputPages(root, reportName);
 
-        paginateUnits(root, buckets.method, template, reportName, {
-          key: 'method',
-          eyebrow: 'Method & calculation',
-          title: 'Method & Formula',
-          description: 'How the calculation works, the formulas used, assumptions, and worked-method notes.'
-        });
-
-        paginateUnits(root, buckets.tips, template, reportName, {
-          key: 'tips',
-          eyebrow: 'Practical guidance',
-          title: 'Tips & Common Mistakes',
-          description: 'Useful ways to apply the result and common interpretation or input mistakes to avoid.'
-        });
-
-        paginateFaqs(root, buckets.faq, template, reportName);
-
-        paginateUnits(root, resourceFlow, template, reportName, {
-          key: 'resources',
-          eyebrow: 'Sources & final notes',
-          title: 'References, Related Tools & Disclaimer',
-          description: 'Sources, useful next-step calculators, scope, limitations, and final report notes.'
-        });
+        const guidanceSections = [
+          {
+            key: 'understanding',
+            eyebrow: 'Interpretation & practical use',
+            title: 'Understanding Your Result',
+            description: 'How to read the result and use the report in a clear, practical way.',
+            units: understandingFlow
+          },
+          {
+            key: 'method',
+            eyebrow: 'Method & calculation',
+            title: 'Method & Formula',
+            description: 'How the calculation works, the formulas used, assumptions, and worked-method notes.',
+            units: buckets.method
+          },
+          {
+            key: 'tips',
+            eyebrow: 'Practical guidance',
+            title: 'Tips & Common Mistakes',
+            description: 'Useful ways to apply the result and common interpretation or input mistakes to avoid.',
+            units: buckets.tips
+          },
+          {
+            key: 'faq',
+            eyebrow: 'Questions',
+            title: 'Frequently Asked Questions',
+            description: 'Clear answers to the most useful questions about this result and how to interpret it.',
+            units: buckets.faq
+          },
+          {
+            key: 'resources',
+            eyebrow: 'Sources & final notes',
+            title: 'References, Related Tools & Disclaimer',
+            description: 'Sources, useful next-step calculators, scope, limitations, and final report notes.',
+            units: resourceFlow
+          }
+        ];
+        paginateGuidanceSections(root, template, reportName, guidanceSections);
+        balanceGuidancePages(root, guidanceSections);
+        fillSparseGuidancePages(root, guidanceSections);
+        balanceGuidancePages(root, guidanceSections);
+        absorbSparseFirstGuidance(root);
+        mergeSparseFinalGuidance(root, guidanceSections);
       }
 
       /* Guidance pages are always appended after authored output pages. */
+      rowifyPortraitGrids(root);
+      normalizeGridDensity(root);
+      normalizeGridUse(root);
+      normalizeChartCallouts(root);
       normalizeOutputPages(root, reportName);
       reflowOverflowingOutputPages(root, reportName);
+      balanceAdjacentTables(root);
+      balanceSparseOutputPages(root, reportName);
+      balanceTrailingOutputPages(root);
+      removeDuplicateOutputChapters(root);
+      normalizeGridDensity(root);
+      normalizeGridUse(root);
+      normalizeOutputPages(root, reportName);
       renumber(root, reportName);
       requestAnimationFrame(() => {
+        normalizeGridDensity(root);
+        normalizeChartCallouts(root);
         normalizeOutputPages(root, reportName);
         reflowOverflowingOutputPages(root, reportName);
+        balanceAdjacentTables(root);
+        balanceSparseOutputPages(root, reportName);
+        balanceTrailingOutputPages(root);
+        removeDuplicateOutputChapters(root);
+        normalizeGridDensity(root);
+        normalizeGridUse(root);
+        normalizeOutputPages(root, reportName);
         renumber(root, reportName);
       });
     } finally {
@@ -695,7 +1696,13 @@
     if (root.classList.contains('is-preview') || (!root.hidden && getComputedStyle(root).display !== 'none')) schedule(root);
 
     mutationObserver = new MutationObserver((records) => {
-      if (organizing) return;
+      if (organizing) {
+        /* Builders can append additional schedule/continuation pages while a
+           first normalization pass is already running. Never drop that change;
+           queue one more pass after the current layout settles. */
+        setTimeout(() => schedule(root), 0);
+        return;
+      }
       const hasOriginalPage = records.some((record) => [...record.addedNodes].some((node) =>
         node.nodeType === Node.ELEMENT_NODE &&
         !node.classList?.contains(GROUP_CLASS) &&
@@ -709,7 +1716,9 @@
     document.addEventListener('click', (event) => {
       if (event.target.closest('#previewReportBtn, #previewBtn, #viewReportBtn, #printReportBtn, #printBtn, #previewPrintBtn, [data-report-preview], [data-print-report]')) {
         schedule(root);
-        setTimeout(() => organize(root), 90);
+        setTimeout(() => organize(root), 120);
+        setTimeout(() => organize(root), 360);
+        setTimeout(() => organize(root), 900);
       }
     }, true);
 
