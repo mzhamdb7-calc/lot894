@@ -3243,6 +3243,12 @@
       display: none !important;
     }
 </style>
+<style id="percentage-default-hide-actions">
+/* Default/general page: hide Sample, Calculate/Convert, and Reset only. */
+#percentageForm.is-general-mode .kalq-input-action-stack {
+  display: none !important;
+}
+</style>
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
@@ -3378,7 +3384,7 @@
 </div>
 </div>
 </div>
-<form class="input-panel percentage-form" id="percentageForm" novalidate="">
+<form class="input-panel percentage-form is-general-mode" id="percentageForm" novalidate="">
 <div class="calculator-type-field">
 <label for="calculatorType">Percentage calculation</label>
 <div class="type-select-wrap"><select class="calculator-type-select" id="calculatorType">
@@ -4055,6 +4061,7 @@
 
   function renderFields(resetValues=true) {
     const generalMode = state.mode === 'general';
+    form.classList.toggle('is-general-mode', generalMode);
     $('calculatorSettings').hidden = generalMode;
     $('calculatorActions').hidden = generalMode;
     $('calculatorPrivacy').hidden = generalMode;
