@@ -2384,12 +2384,29 @@
 .game-stat + .game-stat { padding-left: 11px; border-left: 1px solid var(--line); }
 .game-stat small { display: block; color: var(--muted); font-size: .59rem; letter-spacing: .08em; text-transform: uppercase; }
 .game-stat strong { display: block; margin-top: 3px; color: var(--navy); font-size: .88rem; line-height: 1.15; overflow-wrap: anywhere; }
-.question-value-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; justify-content: center; gap: 30px; max-width: 820px; margin: 0 auto; padding: 18px 0 12px; }
-.question-zone { padding: 0; text-align: center; }
-.question-value-row .value-display { min-width: 170px; text-align: center; }
+.question-value-row {
+  display: grid;
+  grid-template-columns: minmax(280px, auto) auto;
+  grid-template-areas: "question value" "support support";
+  align-items: center;
+  justify-content: center;
+  column-gap: 36px;
+  row-gap: 8px;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 18px 0 12px;
+}
+.question-zone { grid-area: question; padding: 0; text-align: center; }
+.question-value-row .value-display {
+  grid-area: value;
+  min-width: 150px;
+  padding-left: 36px;
+  border-left: 1px solid var(--line);
+  text-align: center;
+}
 .question-zone small { color: var(--teal); font-size: .65rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
-.question-zone h2 { margin: 4px 0 2px; color: var(--navy); font-size: clamp(1.7rem, 3.6vw, 3rem); line-height: 1.02; letter-spacing: -.045em; }
-.question-zone p { margin: 0; color: var(--muted); font-size: .78rem; }
+.question-zone h2 { margin: 4px 0 0; color: var(--navy); font-size: clamp(1.7rem, 3.6vw, 3rem); line-height: 1.02; letter-spacing: -.045em; }
+.question-support { grid-area: support; margin: 0; color: var(--muted); font-size: .78rem; text-align: center; }
 .flash-number { color: var(--coral) !important; font-size: clamp(3.2rem, 8vw, 6.3rem) !important; }
 
 /* Smooth question-to-question handoff without changing the dashboard layout. */
@@ -2566,6 +2583,9 @@
 }
 .feedback-line.is-wrong { border-left-color: var(--coral); }
 .feedback-line strong { color: var(--navy); }
+/* Remove the separate expanded-value and feedback strip from the live game dashboard. */
+.abacus-value-row,
+.feedback-line { display: none !important; }
 .game-actions {
   display: flex;
   flex-wrap: wrap;
@@ -2734,8 +2754,8 @@
   .world-roadmap, .score-strip { grid-template-columns: 1fr; }
   .world-stop, .world-stop + .world-stop, .score-part, .score-part + .score-part { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
   .world-stop:first-child, .score-part:first-child { border-top: 0; }
-  .question-value-row { grid-template-columns: minmax(0, 1fr) auto; gap: 18px; }
-  .question-value-row .value-display { min-width: 132px; }
+  .question-value-row { grid-template-columns: minmax(0, 1fr) auto; column-gap: 18px; }
+  .question-value-row .value-display { min-width: 118px; padding-left: 18px; }
   .abacus-value-row { grid-template-columns: 1fr; gap: 5px; }
   .expanded-value { text-align: left; }
 }
@@ -3316,9 +3336,9 @@
         <div class="question-zone">
           <small id="questionKicker">Ready for your first mission?</small>
           <h2 id="trainerTitle">Press Start Session</h2>
-          <p id="questionSupport">Choose four simple settings. Then answer by moving the beads.</p>
         </div>
         <div class="value-display"><small>Current abacus value</small><strong id="abacusValue">0</strong></div>
+        <p class="question-support" id="questionSupport">Choose four simple settings. Then answer by moving the beads.</p>
       </div>
       <div class="calculator-tools" id="calculatorTools" aria-label="Soroban calculator activity">
         <button class="is-active" data-calc-activity="free" type="button">Free Abacus</button><button data-calc-activity="build" type="button">Build a Number</button><button data-calc-activity="demo" type="button">Demonstrate Calculation</button>
@@ -3342,11 +3362,11 @@
       <div class="feedback-line" id="feedbackLine"><strong>Ready.</strong> Start a session, read the challenge, and form the answer on the Soroban.</div>
       <div class="game-actions game-actions-main" aria-label="Session and answer actions">
         <button class="btn btn-start-session" id="startSessionBtn" type="submit" form="gameForm">Start session</button>
-        <button class="btn btn-ghost" id="resetSessionBtn" type="button">Reset session</button>
+        <button class="btn btn-ghost" id="endSessionBtn" type="button" disabled>End session</button>
         <button class="btn btn-ghost" id="resetBeadsBtn" type="button">Reset beads</button>
-        <button class="btn btn-secondary" id="hintBtn" type="button" disabled>Hint</button>
         <button class="btn btn-primary" id="checkBtn" type="button" disabled>Check answer</button>
-        <button class="btn btn-secondary" id="nextBtn" type="button" disabled>Next</button>
+        <span id="hintBtn" hidden aria-hidden="true"></span>
+        <span id="nextBtn" hidden aria-hidden="true"></span>
       </div>
       <div class="game-actions game-actions-report" aria-label="Report and certificate actions">
         <button class="btn btn-ghost" id="previewReportBtn" type="button" disabled>Preview report</button>
@@ -3611,7 +3631,7 @@
     state.active=true; state.checked=false; state.overallStart=Date.now(); state.questionIndex=0; state.score=0; state.streak=0; state.bestStreak=0; state.records=[]; state.hintsUsed=0; state.certificate=null; state.sessionSaved=false; state.rodErrors=Array(7).fill(0);
     Object.keys(state.skills).forEach(k=>state.skills[k]={correct:0,total:0});
     $('statMode').textContent=labels[state.mode]; $('statLevel').textContent=labels[state.difficulty]; $('statScore').textContent='0'; $('statStreak').textContent='0';
-    $('previewReportBtn').disabled=true; $('certificateBtn').disabled=true; $('checkBtn').disabled=false; $('hintBtn').disabled=false; $('nextBtn').disabled=true;
+    $('previewReportBtn').disabled=true; $('certificateBtn').disabled=true; $('checkBtn').disabled=false; $('hintBtn').disabled=false; $('nextBtn').disabled=true; $('endSessionBtn').disabled=false;
     $('calculatorTools').classList.toggle('is-visible',state.mode==='calculator'); $('demoControls').classList.remove('is-visible');
     if(state.mode==='calculator'){
       state.calculatorActivity='free'; document.querySelectorAll('[data-calc-activity]').forEach(b=>b.classList.toggle('is-active',b.dataset.calcActivity==='free'));
@@ -3788,7 +3808,7 @@
     return null;
   }
   function finishSession(){
-    if(!state.active || state.mode==='calculator') return; clearInterval(state.timer); clearTimeout(state.flashTimer); clearTimeout(state.autoAdvanceTimer); clearTimeout(state.transitionTimer); state.transitioning=false; document.querySelector('.game-panel')?.classList.remove('is-question-leaving','is-question-entering'); state.paused=false; state.pauseUi=null; state.active=false; $('checkBtn').disabled=true; $('hintBtn').disabled=true; $('nextBtn').disabled=true; $('abacusFrame').classList.add('is-locked');
+    if(!state.active || state.mode==='calculator') return; clearInterval(state.timer); clearTimeout(state.flashTimer); clearTimeout(state.autoAdvanceTimer); clearTimeout(state.transitionTimer); state.transitioning=false; document.querySelector('.game-panel')?.classList.remove('is-question-leaving','is-question-entering'); state.paused=false; state.pauseUi=null; state.active=false; $('checkBtn').disabled=true; $('hintBtn').disabled=true; $('nextBtn').disabled=true; $('endSessionBtn').disabled=true; $('abacusFrame').classList.add('is-locked');
     const m=sessionMetrics(); state.certificate=certificateFor(m); state.certificateId=state.certificate?`LOT 894-${new Date().getFullYear()}-${Math.abs(hash(`${state.score}-${m.mastery}-${state.records.length}-${Date.now()}`)).toString(36).toUpperCase().slice(0,8)}`:''; $('questionKicker').textContent='Session complete'; $('trainerTitle').textContent=`${Math.round(m.accuracy)}% accuracy · Mastery ${m.mastery}`; $('questionSupport').textContent=`${m.correct} of ${m.total} correct, average ${m.avg.toFixed(1)} seconds, best streak ${state.bestStreak}, ${Math.round(state.score/10)} XP, and ${m.correct*5} coins.`; $('feedbackLine').className='feedback-line'; $('feedbackLine').innerHTML=`<strong>${m.stars?'★'.repeat(m.stars):'Keep building'}</strong> ${state.certificate?`${state.certificate.title} certificate unlocked.`:'Review the report for the next recommended mission.'}`;
     $('previewReportBtn').disabled=false; $('certificateBtn').disabled=!state.certificate; saveSession(m); updateReport(m); tone(state.certificate?940:720,.18);
   }
@@ -3850,9 +3870,50 @@
   function toggleDemo(){ if(state.demoTimer){ clearInterval(state.demoTimer); state.demoTimer=null; $('demoPlayBtn').textContent='Play'; } else playDemo(); }
   function updateAbacusFullscreenButton(){ const btn=$('abacusFullscreenBtn'); const panel=$('gamePanel'); if(!btn||!panel) return; const active=document.fullscreenElement===panel; btn.setAttribute('aria-label',active?'Exit fullscreen':'Enter fullscreen'); btn.setAttribute('title',active?'Exit fullscreen':'Fullscreen'); }
   async function toggleAbacusFullscreen(){ const panel=$('gamePanel'); if(!panel) return; try { if(document.fullscreenElement===panel){ await document.exitFullscreen(); } else { await panel.requestFullscreen(); } } catch(err) { console.warn('Fullscreen unavailable', err); } updateAbacusFullscreenButton(); }
-  function resetSession(){ clearInterval(state.timer); clearTimeout(state.flashTimer); clearTimeout(state.autoAdvanceTimer); clearTimeout(state.transitionTimer); state.transitioning=false; document.querySelector('.game-panel')?.classList.remove('is-question-leaving','is-question-entering'); clearInterval(state.demoTimer); clearInterval(state.hintRotateTimer); state.demoTimer=null; state.hintRotateTimer=null; state.paused=false; state.pauseUi=null; state.active=false; state.current=null; state.records=[]; state.score=0; state.streak=0; state.bestStreak=0; resetBeads(); $('statQuestion').textContent='0 / 10'; $('statTimer').textContent='00:00'; $('statScore').textContent='0'; $('statStreak').textContent='0'; $('questionKicker').textContent='Ready for your first mission?'; $('trainerTitle').textContent='Press Start Session'; $('questionSupport').textContent='Choose four simple settings. Then answer by moving the beads.'; $('feedbackLine').className='feedback-line'; $('feedbackLine').innerHTML='<strong>Ready.</strong> Start a session, read the challenge, and form the answer on the Soroban.'; ['checkBtn','hintBtn','nextBtn','previewReportBtn','certificateBtn'].forEach(id=>$(id).disabled=true); $('abacusFrame').classList.add('is-locked'); $('calculatorTools').classList.remove('is-visible'); $('demoControls').classList.remove('is-visible'); startAutoHintRotation(true); }
+  function endSession(){
+    if(!state.active) return;
+    clearInterval(state.timer);
+    clearTimeout(state.flashTimer);
+    clearTimeout(state.autoAdvanceTimer);
+    clearTimeout(state.transitionTimer);
+    clearInterval(state.demoTimer);
+    clearInterval(state.hintRotateTimer);
+    state.demoTimer=null;
+    state.hintRotateTimer=null;
+    state.transitioning=false;
+    document.querySelector('.game-panel')?.classList.remove('is-question-leaving','is-question-entering');
+    state.paused=false;
+    state.pauseUi=null;
+
+    if(state.mode==='calculator'){
+      state.active=false;
+      $('checkBtn').disabled=true;
+      $('endSessionBtn').disabled=true;
+      $('abacusFrame').classList.add('is-locked');
+      $('questionKicker').textContent='Session ended';
+      $('trainerTitle').textContent='Soroban session ended';
+      $('questionSupport').textContent='Start a new session whenever you are ready.';
+      $('previewReportBtn').disabled=true;
+      $('certificateBtn').disabled=true;
+      return;
+    }
+
+    const hadAnsweredQuestions=state.records.length>0;
+    finishSession();
+    $('endSessionBtn').disabled=true;
+    $('questionKicker').textContent='Session ended';
+
+    if(hadAnsweredQuestions){
+      $('questionSupport').textContent='Your completed answers were kept and included in the session report.';
+    } else {
+      $('trainerTitle').textContent='No completed answers';
+      $('questionSupport').textContent='Start a new session when you are ready.';
+      $('previewReportBtn').disabled=true;
+      $('certificateBtn').disabled=true;
+    }
+  }
   buildAbacus(); $('abacusFrame').classList.add('is-locked'); $('year').textContent=new Date().getFullYear();
-  $('gameForm').addEventListener('submit',e=>{e.preventDefault();startSession();}); $('resetSessionBtn').addEventListener('click',resetSession); $('resetBeadsBtn').addEventListener('click',resetBeads); if($('hintBtn')) $('hintBtn').addEventListener('click',useHint); $('checkBtn').addEventListener('click',checkAnswer); $('nextBtn').addEventListener('click',advanceQuestion); startAutoHintRotation(true);
+  $('gameForm').addEventListener('submit',e=>{e.preventDefault();startSession();}); $('endSessionBtn').addEventListener('click',endSession); $('resetBeadsBtn').addEventListener('click',resetBeads); if($('hintBtn')) $('hintBtn').addEventListener('click',useHint); $('checkBtn').addEventListener('click',checkAnswer); $('nextBtn').addEventListener('click',advanceQuestion); startAutoHintRotation(true);
   $('previewReportBtn').addEventListener('click',()=>openPreview('report')); $('certificateBtn').addEventListener('click',()=>{ const entered=window.prompt('Name or nickname for the certificate:',state.nickname==='Guest Learner'?'':state.nickname); if(entered&&entered.trim())state.nickname=entered.trim().slice(0,60); openPreview('certificate'); }); $('closePreviewBtn').addEventListener('click',()=>{$('reportRoot').classList.remove('is-preview');document.body.style.overflow='';}); $('previewPrintBtn').addEventListener('click',()=>window.print()); $('soundToggle').addEventListener('click',()=>{state.sound=!state.sound;$('soundToggle').setAttribute('aria-pressed',String(state.sound));$('soundToggle').textContent=`Sound feedback: ${state.sound?'On':'Off'}`;}); $('abacusFullscreenBtn').addEventListener('click',toggleAbacusFullscreen); document.addEventListener('fullscreenchange',updateAbacusFullscreenButton); updateAbacusFullscreenButton();
   document.querySelectorAll('[data-calc-activity]').forEach(btn=>btn.addEventListener('click',()=>setCalculatorActivity(btn.dataset.calcActivity))); $('demoPreviousBtn').addEventListener('click',()=>{if(state.demoIndex>0){state.demoIndex--;showDemoStep();}}); $('demoNextBtn').addEventListener('click',()=>{if(state.demoIndex<state.demoSteps.length-1){state.demoIndex++;showDemoStep();}}); $('demoPlayBtn').addEventListener('click',toggleDemo); $('demoResetBtn').addEventListener('click',prepareDemo);
   document.querySelectorAll('.faq-item button').forEach(btn=>btn.addEventListener('click',()=>btn.closest('.faq-item').classList.toggle('is-open')));

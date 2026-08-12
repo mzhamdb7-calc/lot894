@@ -2191,7 +2191,7 @@ body { font-size: 15px; line-height: 1.5; }
 .game-report-actions {
   position: relative;
   z-index: 2;
-  display: grid;
+  display: none;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin-top: 10px;
@@ -2215,6 +2215,9 @@ body { font-size: 15px; line-height: 1.5; }
   border-color: #dbe3e1;
   background: transparent;
   opacity: 1;
+}
+.game-report-actions.is-visible {
+  display: grid;
 }
 @media (max-width: 620px) {
   .game-report-actions { grid-template-columns: 1fr; }
@@ -2689,6 +2692,10 @@ function stopRound(){
  const completed=state.settings.mode==='practice';
  endGame(completed?'Practice round finished':'Round stopped',completed);
 }
+function setReportActionsVisible(show){
+ const row=document.querySelector('.game-report-actions');
+ if(row)row.classList.toggle('is-visible',!!show);
+}
 function resetRound(){
  if(state.active&&!window.confirm('Reset the current round? Current answers will not be saved.'))return;
  clearInterval(state.timer);
@@ -2699,13 +2706,13 @@ function resetRound(){
  $('timeProgress').style.width='100%';
  $('feedback').className='feedback';
  $('feedback').textContent='Answer accurately before chasing speed.';
- $('certificateBtn').disabled=true;$('previewReportBtn').disabled=true;
+ $('certificateBtn').disabled=true;$('previewReportBtn').disabled=true;setReportActionsVisible(false);
  updateRoundControls();updateLive();
 }
 function startGame(){
  clearInterval(state.timer);
  state.active=true;state.paused=false;state.pausedAt=0;state.score=0;state.attempted=0;state.correct=0;state.streak=0;state.bestStreak=0;state.hearts=3;state.answers=[];state.adaptiveUp=0;state.adaptiveDown=0;state.currentLevel=state.settings.difficulty==='adaptive'?1:fixedLevel[state.settings.difficulty]??1;state.highestLevel=state.currentLevel;state.timeLeft=state.settings.duration;state.startAt=performance.now();state.rng=state.settings.mode==='daily'?seeded(new Date().toISOString().slice(0,10)):Math.random;
- $('arenaIdle').style.display='none';$('arenaGame').classList.add('is-visible');$('roundSummary').classList.remove('is-visible');$('timeProgress').style.width='100%';$('certificateBtn').disabled=true;$('previewReportBtn').disabled=true;
+ $('arenaIdle').style.display='none';$('arenaGame').classList.add('is-visible');$('roundSummary').classList.remove('is-visible');$('timeProgress').style.width='100%';$('certificateBtn').disabled=true;$('previewReportBtn').disabled=true;setReportActionsVisible(false);
  updateRoundControls();updateLive();renderQuestion();runRoundTimer();
 }
 function classifyError(q,given,rt){if(rt<.75)return'Fast guess';if(!Number.isFinite(given))return'Timeout';if(Math.sign(given)!==Math.sign(q.answer)&&q.answer!==0)return'Sign mistake';if(Math.abs(given*10-q.answer)<.02||Math.abs(given/10-q.answer)<.02)return'Decimal-place mistake';if(q.operation==='multiplication')return'Multiplication fact error';if(q.operation==='division')return'Division fact error';if(q.operation==='percentage'||q.operation==='fraction')return'Percentage or fraction conversion';return'Calculation slip'}
@@ -2739,7 +2746,7 @@ function endGame(reason,completed=true){
  saveHistory(state.session);$('arenaGame').classList.remove('is-visible','is-paused');$('roundSummary').classList.add('is-visible');$('finalScore').textContent=state.session.score.toLocaleString('en-US');$('finalRank').textContent=levels[m.rank].title;$('finalAccuracy').textContent=m.accuracy.toFixed(0)+'%';$('finalCpm').textContent=m.cpm.toFixed(1);$('finalResponse').textContent=m.avg.toFixed(2)+'s';$('finalProficiency').textContent=m.proficiency.toFixed(0)+'/100';
  const weak=weakestOperation(state.session),target=Math.max(0,Math.min(6,state.highestLevel)),nextThreshold=certAccuracyThresholds[target],nextQuestions=certMinQuestions[target];
  $('summaryCopy').textContent=`${reason}. ${m.accuracy>=90?'Strong accuracy':m.accuracy>=75?'Useful accuracy with room to stabilise':'Accuracy should be the next priority'}. ${weak.label} is the clearest practice focus. ${q.eligible?`${levels[q.levelIndex].title} certificate unlocked with ${m.accuracy.toFixed(0)}% accuracy.`:completed?`Certificate target: ${nextQuestions} questions, validated difficulty, and ${nextThreshold}% accuracy for ${levels[target].name}.`:'This stopped timed round is saved for review but cannot earn a certificate.'}`;
- $('certificateBtn').disabled=!q.eligible;$('previewReportBtn').disabled=false;populateReport();updateRoundControls();updateLive();
+ $('certificateBtn').disabled=!q.eligible;$('previewReportBtn').disabled=!completed;setReportActionsVisible(completed);populateReport();updateRoundControls();updateLive();
 }
 function weakestOperation(session){const groups=groupSkills(session);const items=Object.entries(groups).filter(([,v])=>v.attempted);if(!items.length)return{key:'mixed',label:'Mixed arithmetic',accuracy:0};items.sort((a,b)=>a[1].accuracy-b[1].accuracy);return{key:items[0][0],label:cap(items[0][0].replace('-',' ')),accuracy:items[0][1].accuracy}}
 function groupSkills(session){const names=['addition','subtraction','multiplication','division','percentage','fraction','square','root','mixed-chain'],g={};names.forEach(n=>g[n]={attempted:0,correct:0,times:[],accuracy:0,avg:0,maxLevel:0});session.answers.forEach(a=>{const x=g[a.operation]||(g[a.operation]={attempted:0,correct:0,times:[],accuracy:0,avg:0,maxLevel:0});x.attempted++;if(a.correct)x.correct++;x.times.push(a.rt);x.maxLevel=Math.max(x.maxLevel,a.level)});Object.values(g).forEach(x=>{x.accuracy=x.attempted?x.correct/x.attempted*100:0;x.avg=mean(x.times)});return g}
@@ -2817,7 +2824,7 @@ document.addEventListener('webkitfullscreenchange',syncFullscreenState);
 fullscreenBtn.addEventListener('click',toggleFullscreenView);
 syncFullscreenState();
 $('startBtn').addEventListener('click',startGame);$('pauseBtn').addEventListener('click',togglePause);$('stopBtn').addEventListener('click',stopRound);$('resetRoundBtn').addEventListener('click',resetRound);$('answerForm').addEventListener('submit',submitAnswer);$$('.keypad button').forEach(b=>b.addEventListener('click',()=>{if(!state.active||state.paused)return;const k=b.dataset.key,i=$('answerInput');if(k==='back')i.value=i.value.slice(0,-1);else if(k==='clear')i.value='';else i.value+=k;i.focus()}));
-$('previewReportBtn').addEventListener('click',previewReport);$('previewPrintBtn').addEventListener('click',printReport);$('closePreviewBtn').addEventListener('click',()=>{$('reportRoot').classList.remove('is-preview');document.body.style.overflow=''});$('certificateBtn').addEventListener('click',createCertificate);$('certificatePrintBtn').addEventListener('click',()=>{setPrintPage('landscape');document.body.classList.add('print-certificate');window.print();setTimeout(()=>document.body.classList.remove('print-certificate'),500)});$('closeCertificateBtn').addEventListener('click',()=>{$('certificateRoot').classList.remove('is-preview');document.body.style.overflow=''});$$('.faq-item button').forEach(b=>b.addEventListener('click',()=>b.parentElement.classList.toggle('is-open')));document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('reportRoot').classList.remove('is-preview');$('certificateRoot').classList.remove('is-preview');document.body.style.overflow=''}});$('year').textContent=new Date().getFullYear();$('certificateBtn').disabled=true;$('previewReportBtn').disabled=true;updateRoundControls();updateLive();
+$('previewReportBtn').addEventListener('click',previewReport);$('previewPrintBtn').addEventListener('click',printReport);$('closePreviewBtn').addEventListener('click',()=>{$('reportRoot').classList.remove('is-preview');document.body.style.overflow=''});$('certificateBtn').addEventListener('click',createCertificate);$('certificatePrintBtn').addEventListener('click',()=>{setPrintPage('landscape');document.body.classList.add('print-certificate');window.print();setTimeout(()=>document.body.classList.remove('print-certificate'),500)});$('closeCertificateBtn').addEventListener('click',()=>{$('certificateRoot').classList.remove('is-preview');document.body.style.overflow=''});$$('.faq-item button').forEach(b=>b.addEventListener('click',()=>b.parentElement.classList.toggle('is-open')));document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('reportRoot').classList.remove('is-preview');$('certificateRoot').classList.remove('is-preview');document.body.style.overflow=''}});$('year').textContent=new Date().getFullYear();$('certificateBtn').disabled=true;$('previewReportBtn').disabled=true;setReportActionsVisible(false);updateRoundControls();updateLive();
 })();
 </script>
 <script id="kalq-shared-shell">
