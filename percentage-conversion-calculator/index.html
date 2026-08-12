@@ -3260,12 +3260,6 @@
   #emptyResult.is-general p{max-width:100%;}
 }
 </style>
-<style id="percentage-default-hide-actions">
-/* Default/general page: hide Sample, Calculate/Convert, and Reset only. */
-#percentageForm.is-general-mode .kalq-input-action-stack {
-  display: none !important;
-}
-</style>
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
@@ -3273,11 +3267,11 @@
 <script src="../assets/lot894-static-header.js?v=20260812-3" defer></script>
 
 <script src="../assets/lot894-shared.js?v=20260812-7" defer></script>
-<link rel="stylesheet" href="../assets/lot894-shared.css?v=20260813-compactmasthead-final">
-<link rel="stylesheet" href="../assets/lot894-index-header.css?v=20260812-21">
+<link rel="stylesheet" href="../assets/lot894-shared.css?v=20260812-21">
+<link rel="stylesheet" href="../assets/lot894-index-header.css?v=20260813-01">
 
-<link rel="stylesheet" href="../assets/lot894-report-groups.css?v=20260813-5">
-<script defer src="../assets/lot894-report-groups.js?v=20260813-5"></script>
+<link rel="stylesheet" href="../assets/lot894-report-groups.css?v=20260812-20">
+<script defer src="../assets/lot894-report-groups.js?v=20260812-14"></script>
 </head>
 <body class="kalq-compact-input-boxes kalq-compact-output-boxes">
 <a class="skip-link" href="#calculator">Skip to calculator</a>
@@ -3400,7 +3394,7 @@
 </div>
 </div>
 </div>
-<form class="input-panel percentage-form is-general-mode" id="percentageForm" novalidate="">
+<form class="input-panel percentage-form" id="percentageForm" novalidate="">
 <div class="calculator-type-field">
 <label for="calculatorType">Conversion type</label>
 <div class="type-select-wrap"><select class="calculator-type-select" id="calculatorType"><option selected="" value="general">Percentage Conversion Calculator</option><option value="fractionPercent">Fraction to Percentage</option><option value="decimalPercent">Decimal to Percentage</option><option value="percentFraction">Percentage to Fraction</option><option value="percentDecimal">Percentage to Decimal</option><option value="ratioPercent">Ratio to Percentage</option></select></div>
@@ -3952,7 +3946,6 @@
   }
 
   function renderFields(resetValues=true) {
-    form.classList.toggle('is-general-mode', state.mode === 'general');
     $('emptyResult').classList.toggle('is-general', state.mode === 'general');
     const settings = document.querySelector('.calculator-settings');
     const actions = document.querySelector('.input-actions');

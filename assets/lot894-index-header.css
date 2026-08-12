@@ -569,10 +569,10 @@ html[data-theme="dark"] .moon-icon {
   }
 
   .topbar.kalq-site-header .brand-mark {
-    width: 150px !important;
-    height: 33px !important;
-    min-width: 150px !important;
-    flex: 0 0 150px !important;
+    width: 250px !important;
+    height: 55px !important;
+    min-width: 250px !important;
+    flex: 0 0 250px !important;
   }
 
   .topbar.kalq-site-header .topnav.nav-collections {
@@ -710,12 +710,34 @@ html[data-theme="dark"] .moon-icon {
   background: rgba(255, 255, 255, .10) !important;
 }
 
-/* Center the desktop collection tabs without changing the rest of the header. */
-@media screen and (min-width: 1180px) {
+/* 2026-08-13 header refinement: smaller LOT 894 logo and page-centered collection menu. */
+@media screen and (min-width: 721px) {
+  .topbar.kalq-site-header > .topbar-inner {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 16px !important;
+  }
+
+  .topbar.kalq-site-header .brand {
+    justify-self: start !important;
+  }
+
+  .topbar.kalq-site-header .brand-mark {
+    width: 205px !important;
+    height: 46px !important;
+    min-width: 205px !important;
+    flex: 0 0 205px !important;
+  }
+
   .topbar.kalq-site-header .topnav.nav-collections {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    justify-self: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+  }
+
+  .topbar.kalq-site-header .header-actions {
+    justify-self: end !important;
+    margin: 0 !important;
   }
 }

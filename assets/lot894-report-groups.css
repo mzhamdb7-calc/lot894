@@ -1,825 +1,105 @@
-/* LOT 894 Professional Report System
-   Shared across every calculator/mode that exposes a report.
-   Goals: result-first reading flow, guidance after results, consistent body sizing,
-   line-based sections, restrained three-tone palette, safe A4 print geometry,
-   and compact auto-hiding preview controls. */
+/* Guidance pagination only.
+   Output pages deliberately keep every calculator's original report CSS.
+   No shared cards, borders, coloured fills, padding or column conversions are
+   applied to report output or guidance content. */
 
-#reportRoot {
-  --kalq-report-navy: #18324a;
-  --kalq-report-ink: #3c4b55;
-  --kalq-report-muted: #71808a;
-  --kalq-report-line: #d8e0e3;
-  --kalq-report-teal: #3f7f7a;
-  --kalq-report-bronze: #9a7447;
-  --kalq-report-paper: #ffffff;
-  --kalq-report-canvas: #eef1f2;
-  --kalq-report-body: 9.2pt;
-}
-
-/* ---------- Preview shell ---------- */
-#reportRoot.is-preview {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 2147483000 !important;
-  display: block !important;
-  overflow: auto !important;
-  padding: 60px 0 42px !important;
-  background: var(--kalq-report-canvas) !important;
-  color: var(--kalq-report-ink) !important;
-}
-
-#reportRoot .preview-toolbar,
-#reportRoot .kalq-report-toolbar {
-  display: none !important;
-}
-
-/* Older calculators may still ship a standalone preview Close button.
-   The shared toolbar owns the one visible Close control. */
-#reportRoot > .preview-close,
-#reportRoot.is-preview > .preview-close {
-  display: none !important;
-}
-
-#reportRoot.is-preview .preview-toolbar,
-#reportRoot.is-preview .kalq-report-toolbar {
-  position: fixed !important;
-  inset: 0 0 auto 0 !important;
-  z-index: 2147483001 !important;
-  width: 100% !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  margin: 0 !important;
-  padding: 6px 18px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  gap: 8px !important;
-  border: 0 !important;
-  border-bottom: 1px solid rgba(24, 50, 74, .08) !important;
-  background: rgba(239, 243, 244, .94) !important;
-  backdrop-filter: blur(10px) !important;
-  box-shadow: none !important;
-  transform: translateY(0) !important;
-  transition: transform .22s ease, box-shadow .22s ease !important;
-}
-
-#reportRoot.is-preview .preview-toolbar.kalq-toolbar-hidden,
-#reportRoot.is-preview .kalq-report-toolbar.kalq-toolbar-hidden {
-  transform: translateY(calc(-100% - 2px)) !important;
-  box-shadow: none !important;
-}
-
-#reportRoot.is-preview .preview-toolbar button,
-#reportRoot.is-preview .kalq-report-toolbar button,
-#reportRoot.is-preview .preview-close {
-  position: static !important;
-  width: auto !important;
-  min-width: 0 !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  margin: 0 !important;
-  padding: 6px 15px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: 1px solid var(--kalq-report-line) !important;
-  border-radius: 999px !important;
-  background: #fff !important;
-  color: var(--kalq-report-navy) !important;
-  box-shadow: 0 4px 14px rgba(24, 50, 74, .08) !important;
-  font: 700 13px/1 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
-  cursor: pointer !important;
-  transition: transform .15s ease, box-shadow .15s ease, background .15s ease !important;
-}
-
-#reportRoot.is-preview .preview-toolbar button:hover,
-#reportRoot.is-preview .preview-toolbar button:focus-visible,
-#reportRoot.is-preview .kalq-report-toolbar button:hover,
-#reportRoot.is-preview .kalq-report-toolbar button:focus-visible,
-#reportRoot.is-preview .preview-close:hover,
-#reportRoot.is-preview .preview-close:focus-visible {
-  transform: translateY(-1px) !important;
-  background: #fff !important;
-  box-shadow: 0 6px 16px rgba(24, 50, 74, .12) !important;
-  outline: none !important;
-}
-
-/* ---------- Paper geometry ---------- */
-#reportRoot .report-page {
-  box-sizing: border-box !important;
-  position: relative !important;
+.kalq-report-group-page {
+  --kalq-report-block-gap: 4mm;
   width: 210mm !important;
   height: 297mm !important;
   min-height: 297mm !important;
   max-height: 297mm !important;
-  margin: 0 auto 22px !important;
-  padding: 13mm 16mm 20mm !important;
   overflow: hidden !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: var(--kalq-report-paper) !important;
-  color: var(--kalq-report-ink) !important;
-  box-shadow: 0 10px 32px rgba(24, 50, 74, .12) !important;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  page-break-after: always !important;
-  break-after: page !important;
 }
 
-#reportRoot .report-page.report-landscape,
-#reportRoot .report-page.kalq-report-landscape {
-  width: 297mm !important;
-  height: 210mm !important;
-  min-height: 210mm !important;
-  max-height: 210mm !important;
-  padding: 11mm 15mm 17mm !important;
+.kalq-report-group-page .report-title {
+  height: auto !important;
+  min-height: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 3.5mm !important;
+  padding-bottom: 2.5mm !important;
 }
 
-#reportRoot .report-page::before,
-#reportRoot .report-page::after {
-  display: none !important;
-  content: none !important;
+.kalq-report-group-page .report-title h1 {
+  margin: 1.5mm 0 1mm !important;
+  font-size: 23pt !important;
+  line-height: 1.08 !important;
 }
 
-#reportRoot .report-page.kalq-report-last-page {
-  page-break-after: auto !important;
-  break-after: auto !important;
+.kalq-report-group-page .report-title p {
+  max-width: 165mm !important;
+  margin: 0 !important;
+  font-size: 8.6pt !important;
+  line-height: 1.35 !important;
 }
 
-/* ---------- Report header ---------- */
-#reportRoot .report-masthead,
-#reportRoot .report-header {
+.kalq-report-group-page .kalq-report-group-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  margin: 2mm 0 0 !important;
+  padding: 0 !important;
+  gap: 3mm !important;
+}
+
+/* Retain each report's authored one-, two-, three- or four-column layout.
+   The wrapper moves as one block; its internal grid is never flattened. */
+.kalq-report-group-page .kalq-report-group-content > * {
   box-sizing: border-box !important;
   width: 100% !important;
+  max-width: 100% !important;
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
-  margin: 0 0 5.5mm !important;
-  padding: 0 0 4mm !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) auto !important;
-  grid-template-rows: auto !important;
-  align-items: start !important;
-  gap: 8mm !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--kalq-report-line) !important;
-  background: transparent !important;
-}
-
-#reportRoot .report-brand {
-  grid-column: 1 !important;
-  grid-row: 1 !important;
-  align-self: start !important;
-  justify-self: start !important;
-  width: auto !important;
-  min-width: 0 !important;
-  height: auto !important;
-  min-height: 0 !important;
   margin: 0 !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: flex-start !important;
-  gap: 0 !important;
-  color: var(--kalq-report-navy) !important;
 }
 
-#reportRoot .report-brand > .brand-mark {
-  grid-column: auto !important;
-  grid-row: auto !important;
-  align-self: auto !important;
-  width: 48mm !important;
-  height: 10.6mm !important;
-  min-width: 48mm !important;
-  flex: 0 0 48mm !important;
-  margin: 0 !important;
-  background-size: contain !important;
-  background-position: left center !important;
-}
-
-#reportRoot .report-brand-copy {
-  display: none !important;
-}
-
-#reportRoot .report-page-no,
-#reportRoot .report-meta {
-  grid-column: 2 !important;
-  grid-row: 1 !important;
-  align-self: start !important;
-  justify-self: end !important;
-  width: auto !important;
-  min-width: 38mm !important;
-  height: auto !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  color: var(--kalq-report-muted) !important;
-  font-size: 7.2pt !important;
-  line-height: 1.45 !important;
-  text-align: right !important;
-  white-space: nowrap !important;
-}
-
-#reportRoot .report-page-no *,
-#reportRoot .report-meta * {
-  font-size: inherit !important;
-  line-height: inherit !important;
-}
-
-#reportRoot .kalq-report-meta-title {
-  display: block !important;
-  margin: 0 0 .7mm !important;
-  color: var(--kalq-report-navy) !important;
-  font-weight: 800 !important;
-  letter-spacing: .04em !important;
-  text-transform: uppercase !important;
-}
-
-/* ---------- Page title ---------- */
-#reportRoot .report-title {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 0 0 6.5mm !important;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-}
-
-#reportRoot .report-title .eyebrow,
-#reportRoot .eyebrow,
-#reportRoot .report-kicker {
-  display: block !important;
-  margin: 0 0 1.5mm !important;
-  color: var(--kalq-report-teal) !important;
-  font-size: 7.5pt !important;
-  line-height: 1.25 !important;
-  font-weight: 800 !important;
-  letter-spacing: .12em !important;
-  text-transform: uppercase !important;
-}
-
-#reportRoot .report-title h1 {
-  margin: 0 !important;
-  color: var(--kalq-report-navy) !important;
-  font-size: 21pt !important;
-  line-height: 1.08 !important;
-  font-weight: 800 !important;
-  letter-spacing: -.02em !important;
-}
-
-#reportRoot .report-title h1::after {
-  content: "" !important;
-  display: block !important;
-  width: 18mm !important;
-  height: 1.2mm !important;
-  margin-top: 3.2mm !important;
-  border-radius: 999px !important;
-  background: linear-gradient(90deg,
-    var(--kalq-report-navy) 0 48%,
-    var(--kalq-report-teal) 48% 78%,
-    var(--kalq-report-bronze) 78% 100%) !important;
-}
-
-#reportRoot .report-title p {
-  max-width: 170mm !important;
-  margin: 3.2mm 0 0 !important;
-  color: var(--kalq-report-ink) !important;
-  font-size: var(--kalq-report-body) !important;
-  line-height: 1.45 !important;
-}
-
-#reportRoot .report-landscape .report-title,
-#reportRoot .kalq-report-landscape .report-title {
-  margin-bottom: 5mm !important;
-}
-
-#reportRoot .report-landscape .report-title h1,
-#reportRoot .kalq-report-landscape .report-title h1 {
-  font-size: 19pt !important;
-}
-
-/* ---------- Consistent ordinary typography ---------- */
-#reportRoot .report-page :is(
-  p, li, td, th, label, legend,
-  .report-section span, .report-section small, .report-section strong,
-  .analysis-panel span, .analysis-panel small, .analysis-panel strong,
-  .report-stat span, .report-stat small, .report-stat strong,
-  .report-identity span, .report-identity small, .report-identity strong,
-  .report-finding span, .report-finding small, .report-finding strong,
-  .report-faq span, .report-faq small, .report-faq strong,
-  .report-callout span, .report-callout small, .report-callout strong
+.kalq-report-group-page .kalq-report-group-content > :is(
+  .report-grid-2,
+  .report-grid-3,
+  .report-grid-4,
+  .analysis-grid
 ) {
-  font-size: var(--kalq-report-body) !important;
-  line-height: 1.45 !important;
+  grid-column: 1 / -1 !important;
 }
 
-#reportRoot .report-page h2 {
-  margin: 0 0 3mm !important;
-  color: var(--kalq-report-navy) !important;
-  font-size: 12pt !important;
-  line-height: 1.22 !important;
-  font-weight: 800 !important;
+/* Remove only the shared card treatment. Original page-authored rules remain
+   responsible for typography and any intentional report component styling. */
+.kalq-report-group-page .kalq-report-group-content > :is(
+  .report-section,
+  .analysis-panel,
+  .report-callout
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
 }
 
-#reportRoot .report-page h3 {
-  margin: 4mm 0 2mm !important;
-  color: var(--kalq-report-navy) !important;
-  font-size: 10pt !important;
-  line-height: 1.25 !important;
-  font-weight: 800 !important;
-}
-
-#reportRoot .report-page p {
-  margin: 0 !important;
-  color: var(--kalq-report-ink) !important;
-}
-
-#reportRoot .report-page :is(h1, h2, h3, h4, p, li, td, th, small, strong, span, div) {
-  min-width: 0 !important;
+.kalq-report-group-page .kalq-report-group-content :is(p, li, td, th, small, strong, span) {
   max-width: 100% !important;
   overflow-wrap: break-word !important;
   word-break: normal !important;
 }
 
-/* ---------- Line-based sections ---------- */
-#reportRoot .report-section,
-#reportRoot .analysis-panel,
-#reportRoot .kalq-report-section {
-  box-sizing: border-box !important;
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 7.5mm 0 0 !important;
-  padding: 5mm 0 0 !important;
-  border: 0 !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-#reportRoot .report-section:first-child,
-#reportRoot .analysis-panel:first-child,
-#reportRoot .kalq-report-section:first-child,
-#reportRoot .kalq-report-first-section {
-  margin-top: 0 !important;
-}
-
-#reportRoot .report-grid-2,
-#reportRoot .analysis-grid {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 7mm 0 0 !important;
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 10mm !important;
-  align-items: stretch !important;
-}
-
-#reportRoot .report-grid-3 {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 7mm 0 0 !important;
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 7mm !important;
-  align-items: stretch !important;
-}
-
-#reportRoot .report-grid-4 {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 7mm 0 0 !important;
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 5mm !important;
-  align-items: stretch !important;
-}
-
-#reportRoot :is(.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid) > * {
-  min-width: 0 !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  align-self: stretch !important;
-}
-
-/* ---------- Identity / context rows ---------- */
-#reportRoot .report-identity {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  margin: 0 0 7mm !important;
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  border: 0 !important;
-  border-block: 1px solid var(--kalq-report-line) !important;
-  background: transparent !important;
-}
-
-#reportRoot .report-identity > div {
-  min-width: 0 !important;
-  height: auto !important;
-  min-height: 0 !important;
-  padding: 3mm 3mm 3mm 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-}
-
-#reportRoot .report-identity > div + div {
-  padding-left: 3mm !important;
-  border-left: 1px solid var(--kalq-report-line) !important;
-}
-
-#reportRoot .report-identity :is(small, span) {
-  display: block !important;
-  margin: 0 !important;
-  color: var(--kalq-report-muted) !important;
-  font-weight: 700 !important;
-  text-transform: none !important;
-  letter-spacing: 0 !important;
-}
-
-#reportRoot .report-identity strong {
-  display: block !important;
-  margin: 1mm 0 0 !important;
-  color: var(--kalq-report-navy) !important;
-  font-weight: 800 !important;
-}
-
-/* ---------- Main result / hero ---------- */
-#reportRoot .report-hero {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 0 !important;
-  padding: 6mm 0 !important;
-  display: grid !important;
-  grid-template-columns: minmax(48mm, .72fr) minmax(0, 1.28fr) !important;
-  gap: 10mm !important;
-  align-items: center !important;
-  border: 0 !important;
-  border-block: 1px solid var(--kalq-report-line) !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-#reportRoot .report-hero :is(
-  .report-bmi, .report-score, .report-value, .report-apr,
-  .report-main-value, .report-result-value, .report-hero-value,
-  .hero-number, .big-number
-) {
-  display: block !important;
-  margin: 0 !important;
-  color: var(--kalq-report-navy) !important;
-  font-size: 30pt !important;
-  line-height: 1.02 !important;
-  font-weight: 850 !important;
-  letter-spacing: -.02em !important;
-}
-
-#reportRoot .report-summary {
-  color: var(--kalq-report-ink) !important;
-  font-size: var(--kalq-report-body) !important;
-  line-height: 1.45 !important;
-}
-
-/* ---------- Stats / findings / two-part rows ---------- */
-#reportRoot .report-stat,
-#reportRoot .report-metric,
-#reportRoot .report-kpi,
-#reportRoot .report-mini-stat {
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 0 !important;
-  padding: 3.6mm 0 !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--kalq-report-line) !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-#reportRoot .report-stat :is(small, span),
-#reportRoot .report-metric :is(small, span),
-#reportRoot .report-kpi :is(small, span),
-#reportRoot .report-mini-stat :is(small, span) {
-  color: var(--kalq-report-muted) !important;
-  font-weight: 700 !important;
-  text-transform: none !important;
-  letter-spacing: 0 !important;
-}
-
-#reportRoot .report-stat strong,
-#reportRoot .report-metric strong,
-#reportRoot .report-kpi strong,
-#reportRoot .report-mini-stat strong {
-  display: block !important;
-  margin: 1mm 0 0 !important;
-  color: var(--kalq-report-navy) !important;
-  font-weight: 800 !important;
-}
-
-#reportRoot .report-findings,
-#reportRoot .report-note-lines,
-#reportRoot .report-note-line,
-#reportRoot .report-analysis-strip {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  margin: 7mm 0 0 !important;
-  border: 0 !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
-  background: transparent !important;
-}
-
-#reportRoot .report-finding,
-#reportRoot .report-line-item,
-#reportRoot .report-analysis-item {
-  box-sizing: border-box !important;
-  width: 100% !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 3.4mm 0 !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-  gap: 10mm !important;
-  align-items: center !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--kalq-report-line) !important;
-  background: transparent !important;
-}
-
-#reportRoot :is(.report-finding, .report-line-item, .report-analysis-item) > :is(span, small, strong) {
-  width: 100% !important;
-  margin: 0 !important;
-  text-align: center !important;
-}
-
-#reportRoot :is(.report-finding, .report-line-item, .report-analysis-item) > :is(span, small) {
-  color: var(--kalq-report-teal) !important;
-  font-weight: 800 !important;
-}
-
-#reportRoot :is(.report-finding, .report-line-item, .report-analysis-item) > strong {
-  color: var(--kalq-report-navy) !important;
-  font-weight: 800 !important;
-}
-
-/* ---------- Charts, bars, gauges ---------- */
-#reportRoot .report-page :is(svg, canvas, img, picture, table, pre) {
+.kalq-report-group-page .kalq-report-group-content :is(table, svg, canvas, img, picture, pre) {
   max-width: 100% !important;
   box-sizing: border-box !important;
 }
 
-#reportRoot .report-svg,
-#reportRoot .report-chart-svg,
-#reportRoot .report-value-chart,
-#reportRoot .balance-chart {
-  width: 100% !important;
-  height: auto !important;
-  max-height: 55mm !important;
+.kalq-report-group-page[data-kalq-oversized="true"] .kalq-report-group-content {
+  gap: 3mm !important;
 }
 
-#reportRoot .report-gauge,
-#reportRoot .report-progress,
-#reportRoot .report-composition,
-#reportRoot .report-impact-track,
-#reportRoot .report-rate-track,
-#reportRoot .report-compare-track {
-  max-height: 18mm !important;
-}
-
-#reportRoot .report-composition,
-#reportRoot .report-impact-track,
-#reportRoot .report-rate-track,
-#reportRoot .report-compare-track {
-  border-radius: 999px !important;
-  overflow: hidden !important;
-}
-
-/* ---------- Tables ---------- */
-#reportRoot .report-table,
-#reportRoot .data-table,
-#reportRoot .report-record-table {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  border-collapse: collapse !important;
-  table-layout: auto !important;
-  background: transparent !important;
-}
-
-#reportRoot :is(.report-table, .data-table, .report-record-table) th,
-#reportRoot :is(.report-table, .data-table, .report-record-table) td {
-  height: auto !important;
-  min-height: 0 !important;
-  padding: 2.35mm 2mm !important;
-  border: 0 !important;
-  border-bottom: 1px solid #e7ecec !important;
-  background: transparent !important;
-  color: var(--kalq-report-ink) !important;
-  font-size: var(--kalq-report-body) !important;
-  line-height: 1.35 !important;
-  vertical-align: top !important;
-}
-
-#reportRoot :is(.report-table, .data-table, .report-record-table) th {
-  color: var(--kalq-report-muted) !important;
-  font-weight: 800 !important;
-  text-transform: none !important;
-  letter-spacing: 0 !important;
-  border-bottom-color: var(--kalq-report-line) !important;
-}
-
-#reportRoot .report-landscape :is(.report-table, .data-table, .report-record-table) th,
-#reportRoot .report-landscape :is(.report-table, .data-table, .report-record-table) td,
-#reportRoot .kalq-report-landscape :is(.report-table, .data-table, .report-record-table) th,
-#reportRoot .kalq-report-landscape :is(.report-table, .data-table, .report-record-table) td {
-  padding: 1.9mm 2.2mm !important;
-}
-
-/* ---------- Guidance / FAQ / formula / source content ---------- */
-#reportRoot .report-callout,
-#reportRoot .report-note-band {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 7mm 0 0 !important;
-  padding: 3.5mm 0 3.5mm 5mm !important;
-  border: 0 !important;
-  border-left: 3px solid var(--kalq-report-bronze) !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  color: var(--kalq-report-ink) !important;
-}
-
-#reportRoot .report-formula,
-#reportRoot .formula-line {
-  display: block !important;
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  margin: 3mm 0 !important;
-  padding: 3mm 0 !important;
-  border: 0 !important;
-  border-block: 1px solid var(--kalq-report-line) !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  color: var(--kalq-report-navy) !important;
-  font-family: Georgia, "Times New Roman", serif !important;
-  font-size: 10pt !important;
-  line-height: 1.45 !important;
-}
-
-#reportRoot .report-faq,
-#reportRoot .kalq-faq-item {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 4mm 0 !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--kalq-report-line) !important;
-  background: transparent !important;
-  break-inside: avoid !important;
-  page-break-inside: avoid !important;
-}
-
-#reportRoot .report-faq strong,
-#reportRoot .kalq-faq-item strong {
-  display: block !important;
-  margin: 0 0 1mm !important;
-  color: var(--kalq-report-navy) !important;
-  font-weight: 800 !important;
-}
-
-#reportRoot .report-references,
-#reportRoot .refs,
-#reportRoot .report-related,
-#reportRoot .related-list,
-#reportRoot .report-list-lines,
-#reportRoot .report-compact-list,
-#reportRoot .report-method-list,
-#reportRoot .report-small-list {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding-left: 5mm !important;
-}
-
-#reportRoot :is(
-  .report-references, .refs, .report-related, .related-list,
-  .report-list-lines, .report-compact-list, .report-method-list, .report-small-list
-) li {
-  margin: 0 0 3.4mm !important;
-  break-inside: avoid !important;
-  page-break-inside: avoid !important;
-}
-
-/* ---------- Professional guidance pages generated by shared JS ---------- */
-#reportRoot .kalq-report-group-page .report-title {
-  margin-bottom: 6mm !important;
-}
-
-#reportRoot .kalq-report-group-content {
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: block !important;
-}
-
-#reportRoot .kalq-report-group-content > * {
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-}
-
-#reportRoot .kalq-report-group-content > * + * {
-  margin-top: 7.5mm !important;
-  padding-top: 5mm !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
-}
-
-#reportRoot .kalq-report-group-content .report-section,
-#reportRoot .kalq-report-group-content .analysis-panel {
-  margin: 0 !important;
-  padding: 0 !important;
-  border-top: 0 !important;
-}
-
-#reportRoot .kalq-report-faq-list > .report-faq:first-child,
-#reportRoot .kalq-report-faq-list > .kalq-faq-item:first-child {
-  padding-top: 0 !important;
-}
-
-/* ---------- Sparse-page balancing without cramping ---------- */
-#reportRoot .report-page.kalq-output-page > .kalq-output-block + .kalq-output-block {
-  margin-top: var(--kalq-flow-gap, 5mm) !important;
-}
-
-#reportRoot .report-page.kalq-sparse-page :is(.report-finding, .report-line-item, .report-analysis-item) {
-  padding-block: var(--kalq-sparse-row-pad, 4.2mm) !important;
-}
-
-/* Safety strip above the report footer. */
-#reportRoot .report-footer,
-#reportRoot .kalq-report-footer {
-  position: absolute !important;
-  left: 16mm !important;
-  right: 16mm !important;
-  bottom: 6mm !important;
-  z-index: 4 !important;
-  min-height: 5mm !important;
-  margin: 0 !important;
-  padding-top: 1.5mm !important;
-  display: flex !important;
-  align-items: flex-end !important;
-  justify-content: space-between !important;
-  gap: 8mm !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
-  background: var(--kalq-report-paper) !important;
-  color: #8b9aa1 !important;
-  font-size: 6.5pt !important;
-  line-height: 1.3 !important;
-}
-
-#reportRoot .report-footer *,
-#reportRoot .kalq-report-footer * {
-  font-size: inherit !important;
-  line-height: inherit !important;
-}
-
-#reportRoot .report-landscape :is(.report-footer, .kalq-report-footer),
-#reportRoot .kalq-report-landscape :is(.report-footer, .kalq-report-footer) {
-  left: 15mm !important;
-  right: 15mm !important;
-  bottom: 5.5mm !important;
-}
-
-/* Measuring state lets the JS paginator work while the report is otherwise hidden. */
 #reportRoot.kalq-report-measuring {
   display: block !important;
   position: fixed !important;
   top: 0 !important;
-  left: -340mm !important;
+  left: -320mm !important;
   z-index: -9999 !important;
-  width: 297mm !important;
+  width: 210mm !important;
   height: auto !important;
   overflow: visible !important;
   visibility: hidden !important;
@@ -832,586 +112,153 @@
   box-shadow: none !important;
 }
 
-/* ---------- Responsive preview ---------- */
-@media screen and (max-width: 1100px) {
-  #reportRoot.is-preview .report-page {
-    transform-origin: top center !important;
-    transform: scale(.78) !important;
-    margin-bottom: -56mm !important;
-  }
+#reportRoot .report-page.kalq-report-last-page {
+  break-after: auto !important;
+  page-break-after: auto !important;
 }
 
-@media screen and (max-width: 800px) {
-  #reportRoot.is-preview {
-    padding-top: 54px !important;
-  }
-
-  #reportRoot.is-preview .preview-toolbar,
-  #reportRoot.is-preview .kalq-report-toolbar {
-    height: 44px !important;
-    min-height: 44px !important;
-    padding: 5px 10px !important;
-  }
-
-  #reportRoot.is-preview .preview-toolbar button,
-  #reportRoot.is-preview .kalq-report-toolbar button,
-  #reportRoot.is-preview .preview-close {
-    height: 32px !important;
-    min-height: 32px !important;
-    padding-inline: 12px !important;
-    font-size: 12px !important;
-  }
-
-  #reportRoot.is-preview .report-page {
-    transform: scale(.56) !important;
-    margin-bottom: -126mm !important;
-  }
+/* Preserve every report's authored columns while making paired blocks occupy
+   the same row height. A final table/list may grow into otherwise empty space,
+   but no block is moved, flattened or converted to a different format. */
+#reportRoot .report-page :is(
+  .report-grid-2,
+  .report-grid-3,
+  .report-grid-4,
+  .analysis-grid
+) {
+  align-items: stretch !important;
 }
 
-/* ---------- Print ---------- */
-@page kalqPortrait { size: A4 portrait; margin: 0; }
-@page kalqLandscape { size: A4 landscape; margin: 0; }
+#reportRoot .report-page :is(
+  .report-grid-2,
+  .report-grid-3,
+  .report-grid-4,
+  .analysis-grid
+) > * {
+  min-width: 0 !important;
+  align-self: stretch !important;
+  box-sizing: border-box !important;
+}
+
+#reportRoot .report-page :is(
+  .report-grid-2,
+  .report-grid-3,
+  .report-grid-4,
+  .analysis-grid
+) > :is(.report-section, .analysis-panel) {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+#reportRoot .report-page :is(
+  .report-grid-2,
+  .report-grid-3,
+  .report-grid-4,
+  .analysis-grid
+) > :is(.report-section, .analysis-panel) > :is(
+  .report-table,
+  table,
+  ul,
+  ol,
+  .report-related,
+  .report-findings
+):last-child {
+  flex-grow: 1 !important;
+}
+
+/* Text safety for both original output pages and generated guidance pages. */
+#reportRoot .report-page :is(h1, h2, h3, h4, p, li, td, th, small, strong, span, div) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+#reportRoot .report-page :is(table, svg, canvas, img, picture, pre) {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* The Age calendar pair combines a table with a three-part milestone stack.
+   Give both authored columns the same visible bottom edge while retaining the
+   existing two-column structure and every original report item. */
+#reportPage2 .report-grid-2:first-of-type > .report-section {
+  border-bottom: 1px solid #dce6e3 !important;
+  padding-bottom: 3.5mm !important;
+}
+
+/* These two long output pages exceeded the A4 content area by only a few
+   pixels. Compact their existing inter-section rhythm; no output is removed,
+   moved, resized into another column or clipped. */
+#reportRoot #reportPage2 > .report-section + .report-section {
+  margin-top: 4mm !important;
+}
+
+#reportRoot #reportPage2 .report-callout {
+  margin-top: 2mm !important;
+}
+
+#reportRoot #reportPage2 > .report-section[style*="margin-top:6mm"] {
+  margin-top: 4mm !important;
+}
+
+#reportRoot #reportPage2 > .report-section[style*="margin-top:5mm"] {
+  margin-top: 3.5mm !important;
+}
+
+#reportRoot .report-page:has(#reportBalanceChart) .report-title {
+  padding-bottom: 3mm !important;
+}
+
+#reportRoot .report-page:has(#reportBalanceChart) > .report-section {
+  padding-top: 2.5mm !important;
+}
+
+#reportRoot .report-page:has(#reportBalanceChart) .payment-composition-section {
+  margin-top: 3mm !important;
+}
+
+/* Unit Converter guidance can contain a long, mode-specific references block.
+   Keep it readable on its generated page while avoiding a blank spill page. */
+#reportRoot .kalq-report-group-page[data-kalq-oversized="true"] .kalq-report-group-content {
+  margin-top: 1.5mm !important;
+  gap: 2mm !important;
+}
+
+#reportRoot .kalq-report-group-page[data-kalq-oversized="true"] .report-section :is(p, li, td, th) {
+  line-height: 1.3 !important;
+}
+
+#reportRoot .kalq-report-group-page[data-kalq-oversized="true"] .report-title {
+  padding-top: 2.5mm !important;
+  padding-bottom: 2mm !important;
+}
+
+/* Guidance pages retain the original report header and footer. Use their
+   available A4 body height consistently so long method pages do not clip. */
+#reportRoot .kalq-report-group-page {
+  padding-top: 10mm !important;
+  padding-bottom: 9mm !important;
+}
+
+#reportRoot .kalq-report-group-page .report-masthead {
+  padding-top: 3mm !important;
+  padding-bottom: 4mm !important;
+}
 
 @media print {
-  #reportRoot,
-  #reportRoot.is-preview {
-    position: static !important;
-    inset: auto !important;
-    display: block !important;
-    width: auto !important;
-    height: auto !important;
-    overflow: visible !important;
-    padding: 0 !important;
-    background: #fff !important;
+  .kalq-report-group-page {
+    break-before: page;
+    page-break-before: always;
   }
 
-  #reportRoot .preview-toolbar,
-  #reportRoot .kalq-report-toolbar,
-  #reportRoot .preview-close {
-    display: none !important;
+  .kalq-report-group-page .kalq-report-group-content > * {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
-  #reportRoot .report-page {
-    page: kalqPortrait !important;
-    margin: 0 !important;
-    box-shadow: none !important;
-    transform: none !important;
+  #reportRoot .report-page.kalq-report-last-page {
+    break-after: auto !important;
+    page-break-after: auto !important;
   }
-
-  #reportRoot .report-page.report-landscape,
-  #reportRoot .report-page.kalq-report-landscape {
-    page: kalqLandscape !important;
-  }
-
-  #reportRoot .report-page :is(.report-section, .analysis-panel, .report-faq, .report-callout, table, tr) {
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
-}
-
-
-/* ---------- v3 cross-report consistency pass ----------
-   The individual calculators were authored with different report component systems.
-   This layer normalizes the remaining bespoke pieces so every report reads as one
-   LOT 894 family instead of preserving old card-heavy layouts. ---------- */
-#reportRoot .report-page :is(p, li, td, th, label, legend, dd, dt),
-#reportRoot .report-page :is(span, small, strong):not(.brand-mark):not(.report-brand-copy):not(.report-page-no):not(.report-meta) {
-  font-size: var(--kalq-report-body) !important;
-  line-height: 1.45 !important;
-}
-
-/* Header/footer metadata deliberately stay smaller than report content. */
-#reportRoot :is(.report-masthead, .report-header, .report-footer, .kalq-report-footer) *,
-#reportRoot :is(.report-page-no, .report-meta) * {
-  font-size: inherit !important;
-  line-height: inherit !important;
-}
-
-/* Reassert intentional hierarchy after the universal body-size rule. */
-#reportRoot .report-title .eyebrow,
-#reportRoot .report-title .report-kicker { font-size: 7.5pt !important; }
-#reportRoot .report-title h1 { font-size: 21pt !important; }
-#reportRoot .report-page h2 { font-size: 12pt !important; }
-#reportRoot .report-page h3 { font-size: 10pt !important; }
-#reportRoot .report-hero :is(
-  .report-bmi, .report-score, .report-value, .report-apr, .report-money,
-  .report-total, .report-duration, .report-change, .report-conversion,
-  .report-main-value, .report-result-value, .report-hero-value,
-  .report-payroll-number, .report-gpa, .report-due-date,
-  .hero-number, .big-number
-) { font-size: 30pt !important; line-height: 1.02 !important; }
-
-/* Remove old card treatments from bespoke blocks while keeping their semantics. */
-#reportRoot .report-page :is(
-  .report-profile-item, .report-mini, .report-mini-stat, .report-limitation,
-  .report-process-item, .report-milestone, .report-offer, .report-plan-row,
-  .planner-card, .clinical-field, .report-kpi, .report-metric,
-  .report-stat-compact, .report-visual-panel, .report-atom-card,
-  .report-impact-row, .report-compare-row, .payroll-record-line,
-  .review-line, .report-note-line, .report-action-row, .report-performance-chart,
-  .report-heatmap, .comment-area, .signature-lines, .signature-field,
-  .schedule-meta > div, .report-stats-4 > div, .report-mini-grid > div,
-  .report-line-grid > div, .report-grid-4 > div
-) {
-  min-height: 0 !important;
-  height: auto !important;
-  max-height: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-#reportRoot .report-page :is(
-  .report-profile-item, .report-mini, .report-limitation, .report-process-item,
-  .report-milestone, .report-offer, .report-plan-row, .planner-card,
-  .clinical-field, .report-stat-compact, .report-impact-row, .report-compare-row,
-  .payroll-record-line, .review-line, .report-action-row, .schedule-meta > div
-) {
-  padding: 3.4mm 0 !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--kalq-report-line) !important;
-}
-
-/* Full-width section rhythm. No report-specific block may collapse the visible gap. */
-#reportRoot .report-page > :is(
-  .report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid,
-  .report-findings, .report-callout, .report-note-band,
-  .scenario-chart, .report-chart-box, .chart-box, .report-gauge,
-  .report-composition, .report-table, .data-table, .report-record-table,
-  .report-process, .report-plan, .report-timeline, .report-progress-layout,
-  .report-periodic-table, .report-atom-comparison, .report-visual-grid,
-  .report-guide-columns, .report-compare, .report-line-grid,
-  .payment-composition-section, .schedule-meta
-) {
-  margin-top: 7mm !important;
-}
-
-/* Make bespoke two-column systems use the full page like the shared grids. */
-#reportRoot .report-page :is(
-  .report-guide-columns, .report-visual-grid, .report-progress-layout,
-  .report-compare, .report-line-grid, .schedule-meta
-) {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-height: 0 !important;
-}
-
-#reportRoot .report-page :is(.report-guide-columns, .report-visual-grid, .report-progress-layout) {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 10mm !important;
-  align-items: start !important;
-}
-
-/* Keep large authored visuals useful but prevent them from dominating a page. */
-#reportRoot .report-page :is(
-  .scenario-chart, .report-chart-box, .chart-box, .report-performance-chart,
-  .report-heatmap, .calendar-chart, .weekday-chart, .report-periodic-table,
-  .report-atom-comparison, .report-graph-frame
-) {
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: 62mm !important;
-  overflow: hidden !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-/* Protect the printable body from the footer even when legacy components had fixed heights. */
-#reportRoot .report-page > :not(.report-footer):not(.kalq-report-footer) {
-  box-sizing: border-box !important;
-}
-#reportRoot .report-page > :is(.report-footer, .kalq-report-footer) {
-  max-height: 9mm !important;
-}
-
-/* ---------- v4 unified report layout pass ----------
-   This pass is intentionally stricter than v3: it removes report-by-report
-   typography drift, prevents dense 4-column text blocks on portrait pages,
-   preserves visible section separation, and lets the paginator use additional
-   pages rather than shrinking or crowding content. */
-
-/* One ordinary text size everywhere inside the printable body. Header/footer
-   metadata and deliberate title/result hierarchy are reasserted below. */
-#reportRoot .report-page :where(p, li, td, th, label, legend, dt, dd, span, small, strong) {
-  font-size: var(--kalq-report-body) !important;
-  line-height: 1.48 !important;
-}
-
-#reportRoot :is(.report-masthead, .report-header, .report-footer, .kalq-report-footer, .report-page-no, .report-meta),
-#reportRoot :is(.report-masthead, .report-header, .report-footer, .kalq-report-footer, .report-page-no, .report-meta) * {
-  font-size: inherit !important;
-  line-height: inherit !important;
-}
-
-#reportRoot .report-title .eyebrow,
-#reportRoot .report-title .report-kicker,
-#reportRoot .kalq-output-chapter-kicker {
-  font-size: 7.5pt !important;
-  line-height: 1.25 !important;
-}
-#reportRoot .report-title h1 { font-size: 21pt !important; line-height: 1.08 !important; }
-#reportRoot .report-page h2 { font-size: 12pt !important; line-height: 1.22 !important; }
-#reportRoot .report-page h3 { font-size: 10pt !important; line-height: 1.25 !important; }
-#reportRoot .report-hero :is(
-  .report-bmi, .report-score, .report-value, .report-apr, .report-money,
-  .report-total, .report-duration, .report-change, .report-conversion,
-  .report-main-value, .report-result-value, .report-hero-value,
-  .report-payroll-number, .report-gpa, .report-due-date,
-  .hero-number, .big-number
-) { font-size: 30pt !important; line-height: 1.02 !important; }
-
-/* A portrait report should not squeeze explanatory text into four narrow
-   columns. Short numeric three-column summaries may remain three columns;
-   text-heavy grids are automatically marked by shared JS and use two. */
-#reportRoot .report-page:not(.report-landscape):not(.kalq-report-landscape) .report-grid-4 {
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 8mm 10mm !important;
-}
-#reportRoot .report-page:not(.report-landscape):not(.kalq-report-landscape) :is(.report-grid-3, .analysis-grid).kalq-text-grid,
-#reportRoot .report-page:not(.report-landscape):not(.kalq-report-landscape) :is(.report-visual-grid, .report-guide-columns).kalq-text-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 8mm 10mm !important;
-}
-#reportRoot .report-page.report-landscape .report-grid-4,
-#reportRoot .report-page.kalq-report-landscape .report-grid-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 6mm !important;
-}
-
-/* Grid children already belong to one section row. Do not add a second large
-   top margin inside each column; use the grid gap as the visible separation. */
-#reportRoot :is(.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid, .report-visual-grid, .report-guide-columns) > :is(.report-section, .analysis-panel) {
-  margin-top: 0 !important;
-  padding-top: 4mm !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
-}
-
-/* Findings frequently carry both report-finding and report-section classes in
-   older calculators. Treat each as one clean line, not two stacked sections. */
-#reportRoot :is(.report-findings, .growth-findings) .report-finding.report-section {
-  margin: 0 !important;
-  padding: 3.7mm 0 !important;
-  border-top: 0 !important;
-  border-bottom: 1px solid var(--kalq-report-line) !important;
-}
-
-/* Section rhythm: clearly distinguish sections without creating huge dead
-   zones. This gap is also used when content from the next authored output
-   chapter is pulled forward to use a sparse page. */
-#reportRoot .report-page.kalq-output-page > .kalq-output-block + .kalq-output-block,
-#reportRoot .report-page.kalq-output-page > .kalq-output-chapter,
-#reportRoot .report-page.kalq-output-page > .kalq-output-chapter + .kalq-output-block {
-  margin-top: var(--kalq-flow-gap, 7mm) !important;
-}
-
-#reportRoot .kalq-output-chapter {
-  width: 100% !important;
-  margin-bottom: 4.5mm !important;
-  padding-top: 5mm !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
-  background: transparent !important;
-}
-#reportRoot .kalq-output-chapter-kicker {
-  margin: 0 0 1.2mm !important;
-  color: var(--kalq-report-teal) !important;
-  font-weight: 800 !important;
-  letter-spacing: .11em !important;
-  text-transform: uppercase !important;
-}
-#reportRoot .kalq-output-chapter h2 {
-  margin: 0 !important;
-  color: var(--kalq-report-navy) !important;
-}
-#reportRoot .kalq-output-chapter p {
-  margin-top: 2mm !important;
-  max-width: 170mm !important;
-}
-
-/* Split grids must continue to use the full width of the page rather than
-   keeping a narrow legacy width after pagination. */
-#reportRoot .kalq-split-grid {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-/* Common bespoke savings/finance report components: normalize sizing and use
-   their row/column width rather than leaving tiny centered islands. */
-#reportRoot .annual-interest-panel,
-#reportRoot .growth-chart-section,
-#reportRoot .projection-table-wrap,
-#reportRoot .review-section,
-#reportRoot .payment-composition-section,
-#reportRoot .report-chart-wrap {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-height: 0 !important;
-  height: auto !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-#reportRoot .annual-interest-head,
-#reportRoot .report-composition-head,
-#reportRoot .schedule-meta {
-  width: 100% !important;
-  font-size: var(--kalq-report-body) !important;
-  line-height: 1.48 !important;
-}
-#reportRoot .annual-interest-head :is(span, small, strong),
-#reportRoot .report-composition-head :is(span, small, strong),
-#reportRoot .schedule-meta :is(span, small, strong) {
-  font-size: inherit !important;
-  line-height: inherit !important;
-}
-
-/* Keep all visuals comfortably inside the printable body and away from the
-   footer. They may be large enough to read, but never consume the whole page. */
-#reportRoot .report-page :is(.report-chart, .report-chart-wrap svg, .report-chart-wrap canvas) {
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
-  max-height: 58mm !important;
-}
-#reportRoot .report-page :is(.composition-bar, .report-stack, .report-impact-track, .report-rate-track, .report-compare-track) {
-  max-height: 12mm !important;
-}
-
-/* The footer safety zone is fixed. Content is paginated before entering it. */
-#reportRoot .report-page {
-  padding-bottom: 21mm !important;
-}
-#reportRoot .report-page.report-landscape,
-#reportRoot .report-page.kalq-report-landscape {
-  padding-bottom: 18mm !important;
-}
-
-/* Do not enlarge rows just to consume a sparse page. Empty space should be
-   reduced by reflowing content forward, while remaining whitespace is used as
-   section separation rather than oversized components. */
-#reportRoot .report-page.kalq-sparse-page :is(.report-finding, .report-line-item, .report-analysis-item) {
-  padding-block: 4.6mm !important;
-}
-
-/* Portrait four-item grids are converted into full-width two-column rows by
-   shared JS. Each row becomes a natural pagination unit, so a report can use
-   the page without forcing four narrow cards or moving an entire grid. */
-#reportRoot .kalq-grid-row {
-  width: 100% !important;
-  max-width: 100% !important;
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 10mm !important;
-  align-items: start !important;
-}
-#reportRoot .kalq-grid-row > * {
-  min-width: 0 !important;
-  width: 100% !important;
-  margin-top: 0 !important;
-  align-self: stretch !important;
-}
-#reportRoot .kalq-grid-row > :is(.report-section, .analysis-panel) {
-  padding-top: 4mm !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
-}
-
-/* When the last analytical output page has a substantial safe remainder, the
-   report may begin the first educational section there. It remains visually
-   separate and always appears after every result/output item. */
-#reportRoot .kalq-inline-guidance-content {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-top: 10mm !important;
-  padding-top: 6mm !important;
-  border-top: 1.5px solid var(--kalq-report-line) !important;
-}
-#reportRoot .kalq-inline-guidance-content > * + * {
-  margin-top: 7.5mm !important;
-  padding-top: 5mm !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
-}
-
-/* When mixed legacy pages lose one guidance column, the remaining output uses
-   the full printable width instead of sitting in half a page. */
-#reportRoot .kalq-single-grid {
-  width: 100% !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  gap: 0 !important;
-}
-
-/* Neutral legacy wrappers can become one-column after instructional siblings
-   are moved into the guidance flow. Let the remaining analytical section use
-   the complete printable width. */
-#reportRoot .kalq-single-semantic {
-  width: 100% !important;
-  max-width: 100% !important;
-  display: block !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-}
-#reportRoot .kalq-single-semantic > * {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-inline: 0 !important;
-}
-
-/* ---------- v5 full reflow pass ----------
-   Final cross-report rules: use the complete printable width, keep ordinary
-   content at one body size, separate chapters with visible whitespace/rules,
-   and choose columns only when both columns can be used well. */
-
-#reportRoot .report-page > :not(.report-masthead):not(.report-header):not(.report-title):not(.report-footer):not(.kalq-report-footer) {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  box-sizing: border-box !important;
-}
-
-#reportRoot .report-page :is(.report-section, .analysis-panel, .report-note-band, .report-callout, .report-findings, .report-table, .data-table, .report-record-table) {
-  max-width: 100% !important;
-  min-width: 0 !important;
-}
-
-/* A stacked grid is one real full-width reading column. */
-#reportRoot .report-page :is(.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid, .report-visual-grid, .report-guide-columns).kalq-stack-grid {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  gap: 7.5mm !important;
-}
-
-/* When two columns are selected, use the entire width equally. */
-#reportRoot .report-page :is(.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid, .report-visual-grid, .report-guide-columns).kalq-balanced-two {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 8mm 10mm !important;
-  align-items: start !important;
-}
-
-/* Only short, genuinely symmetric metric groups stay three-across. */
-#reportRoot .report-page :is(.report-grid-2, .report-grid-3, .report-grid-4, .analysis-grid, .report-visual-grid, .report-guide-columns).kalq-balanced-three {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 6mm !important;
-  align-items: start !important;
-}
-
-#reportRoot .kalq-balanced-two > *,
-#reportRoot .kalq-balanced-three > *,
-#reportRoot .kalq-stack-grid > * {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  margin-inline: 0 !important;
-}
-
-/* Section boundaries stay obvious but not oversized. */
-#reportRoot .kalq-report-group-content > * + *,
-#reportRoot .report-page.kalq-output-page > .kalq-output-block + .kalq-output-block,
-#reportRoot .report-page.kalq-output-page > .kalq-output-chapter + .kalq-output-block {
-  margin-top: 7.5mm !important;
-}
-
-#reportRoot .kalq-report-group-content > :is(.report-section, .analysis-panel, .kalq-guidance-chapter) + :is(.report-section, .analysis-panel, .kalq-guidance-chapter),
-#reportRoot .kalq-output-chapter {
-  padding-top: 5mm !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
-}
-
-/* Tables and charts always use the chosen page orientation fully. */
-#reportRoot .report-page :is(table, .report-table, .data-table, .report-record-table, .projection-table-wrap, .report-chart-wrap, .growth-chart-section, .annual-interest-panel) {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-inline: 0 !important;
-}
-
-#reportRoot .report-page.report-landscape > :not(.report-masthead):not(.report-header):not(.report-title):not(.report-footer):not(.kalq-report-footer),
-#reportRoot .report-page.kalq-report-landscape > :not(.report-masthead):not(.report-header):not(.report-title):not(.report-footer):not(.kalq-report-footer) {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-/* Continuation tables inserted into spare output space keep normal report text
-   and a clear separation from the previous analytical chapter. */
-#reportRoot .kalq-partial-table {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-top: 7.5mm !important;
-  padding-top: 4.5mm !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
-}
-
-/* Do not let legacy fixed minimum heights manufacture empty report pages. */
-#reportRoot .report-page :is(
-  .report-section, .analysis-panel, .report-grid-2, .report-grid-3,
-  .report-grid-4, .analysis-grid, .report-visual-grid, .report-guide-columns,
-  .report-findings, .report-callout, .report-note-band, .report-timeline,
-  .report-process, .report-plan, .report-mini-grid, .report-line-grid,
-  .annual-interest-panel, .growth-chart-section, .review-section
-) {
-  min-height: 0 !important;
-  height: auto !important;
-  max-height: none !important;
-}
-
-/* Keep a dependable print-safe zone above the footer. */
-#reportRoot .report-page { padding-bottom: 22mm !important; }
-#reportRoot .report-page.report-landscape,
-#reportRoot .report-page.kalq-report-landscape { padding-bottom: 19mm !important; }
-
-/* Body content remains consistent even inside formerly bespoke small/large
-   components. Deliberate report headings and hero values are reasserted after. */
-#reportRoot .report-page :where(p, li, td, th, label, legend, dt, dd, span, small, strong) {
-  font-size: var(--kalq-report-body) !important;
-  line-height: 1.48 !important;
-}
-#reportRoot :is(.report-masthead, .report-header, .report-footer, .kalq-report-footer, .report-page-no, .report-meta),
-#reportRoot :is(.report-masthead, .report-header, .report-footer, .kalq-report-footer, .report-page-no, .report-meta) * {
-  font-size: inherit !important;
-  line-height: inherit !important;
-}
-#reportRoot .report-title .eyebrow,
-#reportRoot .report-title .report-kicker,
-#reportRoot .kalq-output-chapter-kicker { font-size: 7.5pt !important; }
-#reportRoot .report-title h1 { font-size: 21pt !important; }
-#reportRoot .report-page h2 { font-size: 12pt !important; }
-#reportRoot .report-page h3 { font-size: 10pt !important; }
-#reportRoot .report-hero :is(
-  .report-bmi, .report-score, .report-value, .report-apr, .report-money,
-  .report-total, .report-duration, .report-change, .report-conversion,
-  .report-main-value, .report-result-value, .report-hero-value,
-  .report-payroll-number, .report-gpa, .report-due-date, .hero-number, .big-number
-) { font-size: 30pt !important; line-height: 1.02 !important; }
-
-/* The report header stays compact: logo and report metadata share one row. */
-#reportRoot .report-masthead,
-#reportRoot .report-header {
-  grid-template-rows: auto !important;
-  min-height: 0 !important;
-  height: auto !important;
-  padding-bottom: 4mm !important;
-  margin-bottom: 5.5mm !important;
-}
-#reportRoot .report-page-no,
-#reportRoot .report-meta {
-  align-self: start !important;
-  margin-top: 0 !important;
-}
-
-/* v5.1: use safe leftover space on the final output page for the first
-   guidance chapter. The divider makes the transition unmistakable. */
-#reportRoot .kalq-inline-guidance-content {
-  display: block !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-top: 10mm !important;
-  padding-top: 6mm !important;
-  border-top: 1.5px solid var(--kalq-report-line) !important;
-}
-#reportRoot .kalq-inline-guidance-content > * + * {
-  margin-top: 7.5mm !important;
-  padding-top: 5mm !important;
-  border-top: 1px solid var(--kalq-report-line) !important;
 }
