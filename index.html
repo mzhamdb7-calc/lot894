@@ -1,0 +1,4360 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Online Calculators & Tools with Reports | LOT894</title>
+<meta name="description" content="Free online calculators & tools with clear reports for finance, health, math, education, construction, conversions, time, work, energy and everyday use.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://lot894.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Online Calculators & Tools with Reports | LOT894">
+<meta property="og:description" content="Search free online calculators & tools with clear, useful reports from LOT894.">
+<meta property="og:url" content="https://lot894.com/">
+<meta name="theme-color" content="#f7f5ef">
+<style>
+:root{
+  --ink:#202420;
+  --muted:#77736d;
+  --olive:#566451;
+  --olive-dark:#3e493b;
+  --cream:#f8f6f1;
+  --paper:#fff;
+  --sand:#e7e1d8;
+  --line:#dcd6cd;
+  --soft:#f0ede7;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--sand);
+  color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+a{color:inherit}
+button,input,select{font:inherit}
+button{cursor:pointer}
+img{display:block;max-width:100%}
+[hidden]{display:none!important}
+
+.frame{
+  display:grid;
+  grid-template-columns:10vw 80vw 10vw;
+  min-height:100vh;
+}
+.adrail{
+  background:#ddd8cf;
+  padding:18px 9px;
+}
+.adrail.left{border-right:1px solid #c9c2b8}
+.adrail.right{border-left:1px solid #c9c2b8}
+.ad-placeholder{
+  min-height:560px;
+  display:grid;
+  place-items:center;
+  border:1px dashed #b9b1a6;
+  color:#817b72;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+}
+
+.site{min-width:0;background:var(--cream)}
+.inner{
+  width:min(100%,1300px);
+  margin:0 auto;
+  padding:0 clamp(20px,3vw,42px) 34px;
+}
+
+/* Completely different: centered search-home */
+.search-home{
+  padding:54px 0 26px;
+  text-align:center;
+}
+.logo{
+  display:inline-block;
+}
+.logo img{
+  width:min(360px,70vw);
+  max-height:110px;
+  object-fit:contain;
+  object-position:center;
+  mix-blend-mode:multiply;
+  margin:0 auto;
+}
+.search-home h1{
+  margin:22px auto 8px;
+  max-width:760px;
+  font-size:clamp(1.7rem,3.2vw,2.8rem);
+  line-height:1.08;
+  letter-spacing:-.035em;
+}
+.search-home p{
+  margin:0 auto;
+  max-width:680px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+}
+.search-shell{
+  max-width:900px;
+  margin:24px auto 0;
+}
+.search-form{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 190px auto;
+  gap:8px;
+}
+.search-box{
+  display:flex;
+  align-items:center;
+  min-width:0;
+  padding:0 16px;
+  border:1px solid #cfc9c0;
+  border-radius:999px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(32,36,32,.06);
+}
+.search-box svg{
+  width:19px;height:19px;
+  flex:0 0 auto;
+  margin-right:10px;
+  fill:none;
+  stroke:var(--olive);
+  stroke-width:1.8;
+}
+.search-box input{
+  width:100%;
+  min-width:0;
+  min-height:54px;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--ink);
+  font-size:14px;
+}
+.search-box input::placeholder{color:#969087}
+.category-select{
+  min-height:54px;
+  border:1px solid #cfc9c0;
+  border-radius:999px;
+  padding:0 14px;
+  background:#fff;
+  color:var(--ink);
+  font-size:11px;
+  font-weight:750;
+}
+.clear-btn{
+  min-width:78px;
+  border:1px solid #7a896f;
+  border-radius:999px;
+  background:#7a896f;
+  color:#fff;
+  font-size:11px;
+  font-weight:850;
+  transition:.18s ease;
+}
+.clear-btn:hover{
+  background:#6f7d65;
+  border-color:#6f7d65;
+}
+.search-status{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  margin-top:10px;
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.search-status strong{color:var(--olive)}
+
+/* A-Z rail */
+.az-wrap{
+  position:sticky;
+  top:0;
+  z-index:20;
+  margin-top:18px;
+  padding:9px 0;
+  background:rgba(248,246,241,.97);
+  backdrop-filter:blur(10px);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.az{
+  display:flex;
+  justify-content:center;
+  gap:4px;
+  overflow-x:auto;
+}
+.az-link{
+  flex:0 0 auto;
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  border-radius:7px;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:850;
+  text-decoration:none;
+}
+.az-link:hover{
+  background:#ece9e3;
+  color:var(--ink);
+}
+.az-link.active{
+  background:var(--olive);
+  color:#fff;
+}
+.az-link.disabled{
+  opacity:.25;
+  pointer-events:none;
+}
+
+/* Sitemap-style index */
+.index{
+  margin-top:24px;
+}
+.index-header{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:end;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--line);
+}
+.index-header small{
+  display:block;
+  margin-bottom:2px;
+  color:var(--olive);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.index-header h2{
+  margin:0;
+  font-size:1.05rem;
+}
+.index-header span{
+  color:var(--muted);
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.index-section{
+  display:grid;
+  grid-template-columns:64px minmax(0,1fr);
+  gap:16px;
+  padding:18px 0;
+  border-bottom:1px solid var(--line);
+}
+.letter-cell{
+  align-self:start;
+  text-align:center;
+}
+.letter-cell h2{
+  margin:0;
+  font-size:2rem;
+  line-height:1;
+  color:var(--olive-dark);
+  letter-spacing:-.05em;
+}
+.letter-cell span{
+  display:block;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:8px;
+  font-weight:800;
+}
+.name-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:0 22px;
+}
+.index-link{
+  min-width:0;
+  display:block;
+  padding:8px 0;
+  border-bottom:1px solid #ece7df;
+  text-decoration:none;
+}
+.index-link:hover .index-name{
+  color:var(--olive);
+}
+.index-name{
+  display:block;
+  font-size:.78rem;
+  font-weight:720;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.index-cat{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:8px;
+}
+.no-results{
+  margin-top:18px;
+  padding:24px;
+  border:1px dashed var(--line);
+  border-radius:12px;
+  color:var(--muted);
+  background:#fff;
+  font-size:11px;
+  text-align:center;
+}
+
+/* Minimal SEO note, visually quiet */
+.about{
+  max-width:900px;
+  margin:30px auto 0;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+  text-align:center;
+}
+.about h2{
+  margin:0 0 5px;
+  font-size:.9rem;
+}
+.about p{
+  margin:0 auto;
+  max-width:760px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.55;
+}
+.center-ad{
+  margin-top:28px;
+  min-height:80px;
+  display:grid;
+  place-items:center;
+  border:1px dashed #bbb3a8;
+  border-radius:12px;
+  color:#81796f;
+  background:rgba(255,255,255,.45);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.footer{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  margin-top:22px;
+  padding:14px 0 4px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:9px;
+}
+.footer strong{color:var(--olive)}
+
+@media(max-width:1150px){
+  .name-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .frame{display:block}
+  .adrail{display:none}
+  .name-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  .inner{padding-inline:14px}
+  .search-home{padding-top:36px}
+  .search-form{grid-template-columns:1fr}
+  .category-select,.clear-btn{min-height:46px}
+  .name-grid{grid-template-columns:1fr}
+  .index-section{grid-template-columns:42px minmax(0,1fr);gap:10px}
+  .letter-cell h2{font-size:1.45rem}
+  .footer{flex-direction:column}
+}
+
+/* ===== CTA + NO HORIZONTAL PAGE SCROLL ===== */
+html,body{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+}
+.frame,.site,.inner,main{
+  min-width:0;
+  max-width:100%;
+}
+.az{
+  flex-wrap:wrap;
+  overflow-x:visible;
+}
+.az-wrap{
+  overflow:hidden;
+}
+
+/* Suggest-a-calculator CTA */
+.suggest-cta{
+  margin-top:34px;
+  padding:0;
+}
+.suggest-card{
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:28px;
+  align-items:center;
+  padding:26px 28px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 88% 0%, rgba(86,100,81,.10), transparent 34%),
+    #f5f2ec;
+}
+.suggest-card::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:5px;
+  background:var(--olive);
+}
+.suggest-copy{
+  position:relative;
+  z-index:1;
+}
+.suggest-kicker{
+  display:block;
+  margin-bottom:5px;
+  color:var(--olive);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.suggest-card h2{
+  margin:0 0 6px;
+  font-size:clamp(1.45rem,2.4vw,2.1rem);
+  line-height:1.08;
+  letter-spacing:-.035em;
+}
+.suggest-card p{
+  margin:0;
+  max-width:720px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.55;
+}
+.suggest-button{
+  position:relative;
+  z-index:1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  min-height:48px;
+  padding:0 20px;
+  border:1px solid #7a896f;
+  border-radius:999px;
+  background:#7a896f;
+  color:#fff;
+  font-size:11px;
+  font-weight:850;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:.18s ease;
+}
+.suggest-button:hover{
+  transform:translateY(-1px);
+  background:#6f7d65;
+  border-color:#6f7d65;
+}
+.suggest-button span{
+  font-size:14px;
+  line-height:1;
+}
+@media(max-width:680px){
+  .suggest-card{
+    grid-template-columns:1fr;
+    gap:18px;
+    padding:22px 20px;
+  }
+  .suggest-button{
+    width:100%;
+  }
+}
+
+
+/* ===== TOP AREA WITHOUT LOGO ===== */
+.search-home{
+  padding:58px 0 30px;
+}
+.search-home h1{
+  max-width:980px;
+  margin:0 auto 14px;
+  font-size:clamp(2.3rem,4.4vw,4.25rem);
+}
+.search-home .hero-description{
+  max-width:900px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.75;
+}
+@media(max-width:680px){
+  .search-home{
+    padding-top:36px;
+  }
+  .search-home h1{
+    font-size:clamp(2rem,10vw,3rem);
+  }
+  .search-home .hero-description{
+    font-size:11px;
+    line-height:1.65;
+  }
+}
+
+
+/* ===== ONE-LINE DESKTOP TITLE ===== */
+.search-home h1{
+  max-width:none;
+  margin:0 auto 14px;
+  font-size:clamp(1.9rem,3.15vw,3.35rem);
+  line-height:1.05;
+  letter-spacing:-.04em;
+  white-space:nowrap;
+}
+@media(max-width:900px){
+  .search-home h1{
+    white-space:normal;
+    font-size:clamp(2rem,7vw,3rem);
+  }
+}
+
+
+/* ===== COMPACT SUGGEST CTA ===== */
+.suggest-cta{
+  margin-top:26px;
+}
+.suggest-card{
+  gap:20px;
+  padding:16px 22px;
+  border-radius:16px;
+}
+.suggest-card::before{
+  width:4px;
+}
+.suggest-kicker{
+  margin-bottom:3px;
+  font-size:5px;
+  letter-spacing:.12em;
+}
+.suggest-card h2{
+  margin:0 0 4px;
+  font-size:clamp(1.12rem,1.8vw,1.55rem);
+  line-height:1.08;
+}
+.suggest-card p{
+  font-size:9px;
+  line-height:1.45;
+}
+.suggest-button{
+  min-height:38px;
+  padding:0 15px;
+  font-size:9px;
+  gap:7px;
+}
+.suggest-button span{
+  font-size:11px;
+}
+@media(max-width:680px){
+  .suggest-card{
+    gap:12px;
+    padding:15px 16px;
+  }
+  .suggest-card h2{
+    font-size:1.15rem;
+  }
+  .suggest-card p{
+    font-size:9px;
+  }
+  .suggest-button{
+    min-height:38px;
+  }
+}
+
+
+/* ===== DETAILED ABOUT SECTION ===== */
+.about{
+  max-width:960px;
+  margin:30px auto 0;
+  padding:20px 22px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+  text-align:left;
+}
+.about h2{
+  margin:0 0 9px;
+  font-size:1rem;
+  text-align:center;
+}
+.about p{
+  max-width:none;
+  margin:0;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.65;
+}
+.about p + p{
+  margin-top:8px;
+}
+@media(max-width:680px){
+  .about{
+    padding:16px;
+  }
+  .about h2{
+    text-align:left;
+  }
+}
+
+
+/* ===== MATCH SIDE RESERVE TO MAIN PAGE ===== */
+.adrail{
+  background:var(--cream);
+}
+.adrail.left{
+  border-right:1px solid var(--line);
+}
+.adrail.right{
+  border-left:1px solid var(--line);
+}
+.ad-placeholder{
+  background:transparent;
+  border-color:var(--line);
+  color:var(--muted);
+}
+
+
+/* ===== REMOVE FOOTER + SIDE DIVIDERS ===== */
+.adrail.left,
+.adrail.right{
+  border:0 !important;
+}
+.footer{
+  display:none !important;
+}
+
+
+/* ===== BOXED INDEX LAYOUT ===== */
+.az-wrap{
+  margin-top:18px;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+}
+.index-header{
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+}
+.index-section{
+  align-items:start;
+  margin-top:14px;
+  padding:16px 18px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fff;
+}
+.letter-cell{
+  padding:10px 8px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--soft);
+}
+.name-grid{
+  gap:10px 12px;
+}
+.index-link{
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+}
+.index-link:hover{
+  background:#f6f3ed;
+  border-color:#c9c2b7;
+}
+.index-name{
+  white-space:normal;
+}
+.index-cat{
+  margin-top:3px;
+}
+@media(max-width:680px){
+  .az-wrap{
+    padding:10px;
+    border-radius:12px;
+  }
+  .index-header{
+    padding:12px 14px;
+    border-radius:12px;
+  }
+  .index-section{
+    padding:14px;
+    border-radius:14px;
+  }
+  .letter-cell{
+    padding:8px 6px;
+  }
+}
+
+
+/* ===== ALIGN ABOUT BOX WITH MAIN CONTENT WIDTH ===== */
+.about{
+  width:100%;
+  max-width:none;
+  margin:30px 0 0;
+}
+
+
+/* ===== REMOVE ABOUT OUTER BOX ===== */
+.about{
+  width:100%;
+  max-width:none;
+  margin:30px 0 0;
+  padding:18px 0 0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  border-top:1px solid var(--line);
+}
+
+
+/* ===== REMOVE CTA OUTER BORDER LINE ===== */
+.suggest-card{
+  border:0 !important;
+}
+
+
+/* ===== REMOVE CTA OUTER BOX APPEARANCE COMPLETELY ===== */
+.suggest-card{
+  border:0 !important;
+  background:transparent !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:12px 0 12px 18px !important;
+}
+.suggest-card::before{
+  left:0;
+  border-radius:999px;
+}
+.suggest-cta{
+  margin-top:26px;
+}
+@media(max-width:680px){
+  .suggest-card{
+    padding:12px 0 12px 16px !important;
+  }
+}
+
+
+/* ===== 75% USABLE CONTENT WIDTH ===== */
+.frame{
+  grid-template-columns:12.5vw 75vw 12.5vw !important;
+}
+
+
+/* ===== MATCH WIDER FIRST-SCREENSHOT CONTENT WIDTH ===== */
+.frame{
+  grid-template-columns:10vw 80vw 10vw !important;
+}
+.inner{
+  width:min(100%,1440px) !important;
+}
+
+
+/* ===== SEO / SITE INFORMATION LINKS ===== */
+.site-info-links{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px 14px;
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.site-info-links a{
+  color:var(--olive);
+  font-size:9px;
+  font-weight:800;
+  text-decoration:none;
+}
+.site-info-links a:hover{
+  text-decoration:underline;
+}
+
+
+/* ===== MINIMAL LOT 894 FOOTER ===== */
+.main-footer{
+  margin-top:0;
+  border-top:1px solid rgba(23,50,71,.10);
+  background:#fbfaf6;
+  color:#294a61;
+}
+.main-footer-inner{
+  width:min(80vw,1440px);
+  margin:0 auto;
+  padding:26px clamp(20px,3vw,42px) 12px;
+}
+.footer-main{
+  display:grid;
+  grid-template-columns:minmax(260px,.9fr) minmax(360px,1.15fr) minmax(430px,1.35fr);
+  gap:34px;
+  align-items:start;
+}
+.footer-main > section{
+  min-width:0;
+}
+.footer-brand{
+  max-width:420px;
+}
+.footer-logo{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  color:#202420;
+  text-decoration:none;
+}
+.footer-logo-mark{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  margin-right:8px;
+}
+.footer-logo-rule{
+  width:1px;
+  height:32px;
+  margin-right:9px;
+  background:#b9b8af;
+}
+.footer-logo-wordmark{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.footer-logo-wordmark strong{
+  color:#202420;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:23px;
+  line-height:.9;
+  font-weight:700;
+  letter-spacing:.07em;
+  white-space:nowrap;
+}
+.footer-logo-wordmark small{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  margin-top:4px;
+  color:#9a9d96;
+  font-size:5px;
+  line-height:1;
+  font-weight:700;
+  letter-spacing:.23em;
+}
+.footer-logo-wordmark small::before,
+.footer-logo-wordmark small::after{
+  content:"";
+  width:10px;
+  height:1px;
+  background:#979b91;
+}
+.footer-brand p{
+  max-width:380px;
+  margin:10px 0 0;
+  color:#61717b;
+  font-size:10px;
+  line-height:1.6;
+}
+.footer-heading{
+  margin:1px 0 11px;
+  color:#173247;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.footer-links{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+  column-gap:18px;
+  row-gap:8px;
+  white-space:normal;
+}
+.footer-links a{
+  width:max-content;
+  max-width:100%;
+  color:#35556a;
+  font-size:10px;
+  line-height:1.4;
+  text-decoration:none;
+}
+.footer-links a:hover{
+  color:var(--olive);
+  text-decoration:underline;
+}
+.footer-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  margin-top:22px;
+  padding-top:12px;
+  border-top:1px solid rgba(23,50,71,.10);
+  color:#70808a;
+  font-size:9px;
+}
+.footer-bottom > span:nth-child(2){
+  margin-left:auto;
+  text-align:right;
+}
+.footer-bottom a{
+  color:inherit;
+  text-decoration:none;
+}
+.footer-bottom a:hover{text-decoration:underline}
+.footer{display:none!important}
+
+@media(max-width:900px){
+  .footer-main{
+    grid-template-columns:1fr 1fr;
+    gap:28px 40px;
+  }
+  .footer-brand{
+    grid-column:1/-1;
+    max-width:none;
+  }
+  .footer-links{
+    display:grid;
+    grid-template-columns:repeat(2,max-content);
+    gap:8px 20px;
+    white-space:normal;
+  }
+  .footer-bottom{
+    align-items:flex-start;
+  }
+}
+@media(max-width:900px){
+  .main-footer-inner{width:min(100%,1440px);}
+}
+@media(max-width:620px){
+  .main-footer-inner{width:min(100%,1440px);padding:22px 16px 12px}
+  .footer-main{grid-template-columns:1fr;gap:24px}
+  .footer-brand{grid-column:auto}
+  .footer-links{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;white-space:normal}
+  .footer-bottom{flex-direction:column;gap:5px}
+  .footer-bottom > span:nth-child(2){margin-left:0;text-align:left}
+}
+
+
+/* ===== ALIGN FOOTER WITH VISIBLE LOGO ===== */
+@media(min-width:901px){
+  .footer-brand{
+    display:block !important;
+    max-width:300px;
+  }
+  .footer-logo{
+    display:inline-flex;
+    flex:0 0 auto;
+  }
+  .footer-logo-mark{
+    width:30px;
+    height:30px;
+    flex-basis:30px;
+    margin-right:6px;
+  }
+  .footer-logo-rule{
+    height:26px;
+    margin-right:7px;
+  }
+  .footer-logo-wordmark strong{
+    font-size:19px;
+  }
+  .footer-logo-wordmark small{
+    font-size:4.5px;
+    margin-top:3px;
+    gap:3px;
+  }
+  .footer-logo-wordmark small::before,
+  .footer-logo-wordmark small::after{
+    width:8px;
+  }
+  .footer-brand p{
+    max-width:300px;
+    margin:10px 0 0;
+    font-size:9px;
+    line-height:1.45;
+  }
+  .footer-main{
+    grid-template-columns:minmax(330px,.85fr) minmax(330px,1fr) minmax(420px,1.25fr) !important;
+    gap:28px !important;
+    align-items:start;
+  }
+  .footer-main > section{
+    width:100%;
+    max-width:none;
+    justify-self:stretch;
+  }
+  .footer-main > section:nth-child(2),
+  .footer-main > section:nth-child(3){
+    width:100%;
+    min-width:0;
+    justify-self:stretch;
+    text-align:left;
+  }
+  .footer-main > section:nth-child(3) .footer-links{
+    justify-content:flex-start;
+  }
+  .footer-bottom{
+    display:grid !important;
+    grid-template-columns:minmax(330px,.85fr) minmax(330px,1fr) minmax(420px,1.25fr) !important;
+    gap:28px !important;
+    align-items:center;
+  }
+  .footer-bottom > span:first-child{
+    grid-column:1;
+    margin:0 !important;
+    justify-self:start !important;
+    text-align:left !important;
+  }
+  .footer-bottom > span:nth-child(2){
+    grid-column:3;
+    margin:0 !important;
+    justify-self:end !important;
+    text-align:right !important;
+  }
+}
+
+@media(max-width:1180px) and (min-width:901px){
+  .main-footer-inner{width:min(94vw,1440px);}
+  .footer-main{
+    grid-template-columns:1fr 1fr !important;
+    gap:24px 36px !important;
+  }
+  .footer-brand{
+    grid-column:1/-1;
+  }
+  .footer-main > section:nth-child(2),
+  .footer-main > section:nth-child(3){
+    width:100%;
+    min-width:0;
+  }
+  .footer-links{
+    display:flex;
+    flex-wrap:wrap;
+    column-gap:16px;
+    row-gap:8px;
+    white-space:normal;
+  }
+  .footer-bottom{
+    grid-template-columns:1fr 1fr !important;
+    gap:24px !important;
+  }
+  .footer-bottom > span:first-child{grid-column:1;}
+  .footer-bottom > span:nth-child(2){grid-column:2;justify-self:end !important;text-align:right !important;}
+}
+
+@media(max-width:620px){
+  .footer-logo-mark{width:32px;height:32px;flex-basis:32px;margin-right:6px}
+  .footer-logo-rule{height:27px;margin-right:7px}
+  .footer-logo-wordmark strong{font-size:19px}
+  .footer-logo-wordmark small{font-size:4.5px;margin-top:3px;gap:3px}
+  .footer-logo-wordmark small::before,.footer-logo-wordmark small::after{width:8px}
+}
+
+
+/* ===== FLOATING BACK-TO-TOP ON SCROLL ===== */
+.back-top{
+  position:fixed !important;
+  right:22px;
+  bottom:22px;
+  z-index:80;
+  width:52px;
+  height:52px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  padding:0;
+  border:1px solid #d7e0dc;
+  border-radius:14px;
+  background:#fbfaf6;
+  color:#294a61;
+  font-size:9px;
+  line-height:1;
+  font-weight:750;
+  text-decoration:none;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(10px);
+  pointer-events:none;
+  box-shadow:0 8px 24px rgba(23,50,71,.12);
+  transition:opacity .2s ease, transform .2s ease, visibility .2s ease, background .2s ease, border-color .2s ease;
+}
+.back-top svg{
+  width:15px;
+  height:15px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.back-top:hover,
+.back-top:focus-visible{
+  background:#fff;
+  border-color:#aebfbb;
+  color:#173247;
+  outline:none;
+}
+.back-top:focus-visible{
+  box-shadow:0 0 0 3px rgba(10,166,154,.13),0 8px 24px rgba(23,50,71,.12);
+}
+.back-top.is-visible{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+@media(max-width:700px){
+  .back-top{
+    right:14px;
+    bottom:14px;
+    width:48px;
+    height:48px;
+  }
+}
+
+
+
+/* ===== LOT 894 GLOBAL HEADER + MOVING TOOL BAR ===== */
+.top-tool-ticker{
+  position:relative;
+  z-index:10;
+  height:30px;
+  margin:0;
+  overflow:hidden;
+  border:1px solid #c8d2dc;
+  border-radius:12px;
+  background:#edf3fa;
+  color:#193247;
+}
+.top-tool-ticker::before,
+.top-tool-ticker::after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  z-index:3;
+  width:28px;
+  pointer-events:none;
+}
+.top-tool-ticker::before{left:0;background:linear-gradient(90deg,#edf3fa,rgba(237,243,250,0))}
+.top-tool-ticker::after{right:0;background:linear-gradient(270deg,#edf3fa,rgba(237,243,250,0))}
+.tool-ticker-track{
+  display:flex;
+  width:max-content;
+  height:100%;
+  align-items:center;
+  will-change:transform;
+  animation:lot894Ticker 46s linear infinite;
+}
+.top-tool-ticker:hover .tool-ticker-track{animation-play-state:paused}
+.tool-ticker-set{
+  display:flex;
+  align-items:center;
+  gap:0;
+  flex:0 0 auto;
+  height:100%;
+  padding-right:28px;
+}
+.ticker-tool,
+.ticker-label{
+  display:inline-flex;
+  align-items:center;
+  flex:0 0 auto;
+  height:100%;
+  color:#193247;
+  text-decoration:none;
+  white-space:nowrap;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.005em;
+}
+.ticker-tool{padding:0 14px 0 11px}
+.ticker-tool::after{
+  content:"•";
+  margin-left:15px;
+  color:#8397a8;
+  font-size:8px;
+}
+.ticker-tool:hover{color:#566451}
+.ticker-label{
+  gap:7px;
+  padding:0 7px 0 4px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.ticker-label::before{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#ef776f;
+}
+.ticker-label:not(.popular){color:#19aaa5}
+.ticker-label:not(.popular)::before{background:#19aaa5}
+.ticker-label.popular{color:#f59e0b}
+.ticker-label.popular::before{background:#f59e0b}
+@keyframes lot894Ticker{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+.site-header-global{
+  position:relative;
+  z-index:100;
+  height:62px;
+  border-bottom:1px solid rgba(220,214,205,.38);
+  background:#fbfaf6;
+  color:#173247;
+}
+.site-header-global .header-inner{
+  width:min(calc(100% - 40px),1600px);
+  height:100%;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr) auto;
+  align-items:center;
+  gap:18px;
+}
+.header-brand{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  color:#202420;
+  text-decoration:none;
+}
+.header-brand-mark{
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  margin-right:7px;
+}
+.header-brand-rule{
+  width:1px;
+  height:30px;
+  margin-right:8px;
+  background:#b9b8af;
+}
+.header-wordmark{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  transform:translateY(1px);
+}
+.header-wordmark strong{
+  color:#202420;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:22px;
+  line-height:.9;
+  font-weight:700;
+  letter-spacing:.07em;
+  white-space:nowrap;
+}
+.header-wordmark small{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-top:4px;
+  color:#a3a49d;
+  font-size:5px;
+  line-height:1;
+  font-weight:700;
+  letter-spacing:.23em;
+}
+.header-wordmark small::before,
+.header-wordmark small::after{
+  content:"";
+  width:10px;
+  height:1px;
+  background:#979b91;
+}
+.header-nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:21px;
+  min-width:0;
+}
+.header-nav a{
+  color:#5b7180;
+  font-size:12px;
+  font-weight:750;
+  line-height:1;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:color .18s ease;
+}
+.header-nav a:hover{color:#263f50}
+.header-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:16px;
+}
+.header-icon-link,
+.header-icon-button{
+  display:inline-grid;
+  place-items:center;
+  width:25px;
+  height:32px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#173247;
+  text-decoration:none;
+}
+.header-icon-link svg,
+.header-icon-button svg{
+  width:21px;
+  height:21px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.85;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.header-icon-link:hover,
+.header-icon-button:hover{color:#566451}
+.header-currency{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:58px;
+  height:42px;
+  padding:0 12px;
+  border:1px solid #d7e0e2;
+  border-radius:999px;
+  background:#fbfcfa;
+  color:#173247;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-decoration:none;
+}
+.header-currency:hover{border-color:#bdc9ca;background:#fff}
+.header-search-wrap{
+  position:relative;
+  width:clamp(180px,20vw,310px);
+  min-width:180px;
+}
+.header-search-form{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  height:42px;
+  padding:0 14px;
+  border:1px solid #d8d1c7;
+  border-radius:999px;
+  background:#fffdf9;
+  color:#5d6e79;
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset;
+  transition:border-color .18s ease,background .18s ease,box-shadow .18s ease;
+}
+.header-search-form:focus-within{
+  border-color:#b9c2b7;
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(86,100,81,.08);
+}
+.header-search-form svg{
+  width:18px;
+  height:18px;
+  flex:0 0 auto;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.85;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.header-search-input{
+  width:100%;
+  min-width:0;
+  height:100%;
+  padding:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#173247;
+  font-size:12px;
+  font-weight:500;
+}
+.header-search-input::placeholder{color:#9a8775;opacity:1}
+.header-search-results{
+  position:absolute;
+  top:calc(100% + 7px);
+  left:0;
+  right:0;
+  z-index:1200;
+  display:none;
+  max-height:300px;
+  overflow:auto;
+  padding:6px;
+  border:1px solid #d8ddd9;
+  border-radius:12px;
+  background:#fffdf9;
+  box-shadow:0 12px 30px rgba(23,50,71,.14);
+}
+.header-search-results.is-open{display:block}
+.header-search-result{
+  display:block;
+  padding:9px 10px;
+  border-radius:8px;
+  color:#294a61;
+  font-size:10px;
+  line-height:1.3;
+  text-decoration:none;
+}
+.header-search-result:hover,
+.header-search-result:focus{
+  background:#f0f1ec;
+  color:#173247;
+  outline:0;
+}
+.header-search-empty{
+  padding:9px 10px;
+  color:#7b868c;
+  font-size:10px;
+}
+
+@media(max-width:1250px){
+  .site-header-global{height:auto}
+  .site-header-global .header-inner{
+    grid-template-columns:205px minmax(0,1fr) auto;
+    min-height:62px;
+    gap:14px;
+  }
+  .header-nav{gap:15px}
+  .header-nav a{font-size:11px}
+  .header-actions{gap:11px}
+  .header-search-wrap{width:210px;min-width:210px}
+  .header-wordmark strong{font-size:21px}
+}
+@media(max-width:980px){
+  .site-header-global .header-inner{
+    width:min(calc(100% - 28px),1600px);
+    grid-template-columns:1fr auto;
+    grid-template-areas:"brand actions" "nav nav";
+    padding:7px 0 8px;
+  }
+  .header-brand{grid-area:brand}
+  .header-actions{grid-area:actions}
+  .header-nav{
+    grid-area:nav;
+    justify-content:flex-start;
+    overflow-x:auto;
+    padding:2px 0 1px;
+    scrollbar-width:none;
+  }
+  .header-nav::-webkit-scrollbar{display:none}
+  .header-search-wrap{width:190px;min-width:190px}
+}
+@media(max-width:620px){
+  .top-tool-ticker{height:27px}
+  .ticker-tool{font-size:10px;padding-inline:8px 10px}
+  .ticker-tool::after{margin-left:11px}
+  .ticker-label{font-size:9px}
+  .site-header-global .header-inner{width:calc(100% - 24px)}
+  .header-brand-mark{width:30px;height:30px;flex-basis:30px;margin-right:5px}
+  .header-brand-rule{height:26px;margin-right:6px}
+  .header-wordmark strong{font-size:17px}
+  .header-wordmark small{font-size:4.5px;margin-top:2px;letter-spacing:.16em;gap:2px}
+  .header-wordmark small::before,.header-wordmark small::after{width:8px}
+  .header-actions{gap:8px}
+  .header-search-wrap{width:148px;min-width:148px}
+  .header-search-form{height:36px;padding:0 10px;gap:7px}
+  .header-search-input{font-size:10px}
+  .header-actions a[href="/#directory"],
+  .header-actions a[href="/unit-converter/"]{display:none}
+  .header-currency{min-width:50px;height:34px;padding:0 9px;font-size:11px}
+  .header-nav{gap:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  .tool-ticker-track{animation:none}
+  .top-tool-ticker{overflow-x:auto}
+}
+
+
+
+/* ===== HEADER QUICK CALCULATOR ===== */
+.header-calculator-button{cursor:pointer}
+.quick-calc-overlay{
+  position:fixed;
+  top:var(--quick-calc-top-offset,92px);
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:1000;
+  display:none;
+  align-items:stretch;
+  justify-content:flex-end;
+  padding:0 7px 10px 0;
+  background:transparent;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  pointer-events:none;
+}
+.quick-calc-overlay.is-open{display:flex}
+.quick-calc-panel{
+  width:min(405px,100%);
+  height:100%;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  pointer-events:auto;
+  border:1px solid #d8ddd9;
+  border-radius:16px;
+  background:#fbfaf6;
+  color:#173247;
+  box-shadow:0 14px 36px rgba(23,50,71,.14);
+}
+.quick-calc-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:8px 11px 7px;
+  border-bottom:1px solid #e6e4de;
+}
+.quick-calc-tabs{
+  display:flex;
+  flex:1 1 0;
+  width:auto;
+  max-width:none;
+  gap:3px;
+  padding:2px;
+  border:1px solid #dfe2dd;
+  border-radius:999px;
+  background:#f1f0eb;
+}
+.quick-calc-tab{
+  flex:1 1 0;
+  min-width:0;
+  min-height:27px;
+  padding:0 11px;
+  border:0;
+  border-radius:999px;
+  background:transparent;
+  color:#60717b;
+  text-align:center;
+  font-size:9px;
+  font-weight:800;
+}
+.quick-calc-tab.is-active{
+  background:#fff;
+  color:#173247;
+  box-shadow:0 1px 3px rgba(23,50,71,.08);
+}
+.quick-calc-close{
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#536873;
+  font-size:18px;
+  line-height:1;
+}
+.quick-calc-close:hover{background:#efeee9;color:#173247}
+.quick-calc-copy{padding:9px 13px 7px}
+.quick-calc-copy h2{
+  margin:0 0 3px;
+  color:#173247;
+  font-size:14px;
+  line-height:1.15;
+}
+.quick-calc-copy p{
+  margin:0;
+  color:#758188;
+  font-size:8.5px;
+  line-height:1.35;
+}
+.quick-calc-screen{
+  margin:0 12px 8px;
+  min-height:66px;
+  padding:9px 11px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  border:1px solid #dfe3df;
+  border-radius:12px;
+  background:#fff;
+  text-align:right;
+}
+.quick-calc-expression{
+  min-height:14px;
+  overflow-wrap:anywhere;
+  color:#7c878c;
+  font-size:9px;
+  line-height:1.25;
+}
+.quick-calc-value{
+  margin-top:3px;
+  overflow-wrap:anywhere;
+  color:#173247;
+  font-size:23px;
+  font-weight:800;
+  line-height:1;
+  letter-spacing:-.025em;
+}
+.quick-calc-keys{
+  flex:1;
+  display:grid;
+  gap:5px;
+  padding:0 12px 9px;
+  align-content:stretch;
+  grid-auto-rows:minmax(0,1fr);
+}
+.quick-calc-keys.is-basic{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr))}
+.quick-calc-keys.is-scientific{grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(7,minmax(0,1fr))}
+.quick-calc-key{
+  min-height:0;
+  height:100%;
+  padding:0 5px;
+  border:1px solid #d9dfdc;
+  border-radius:9px;
+  background:#fff;
+  color:#1f3b50;
+  font-size:11px;
+  font-weight:780;
+  transition:transform .08s ease,background .12s ease,border-color .12s ease,box-shadow .12s ease;
+}
+.quick-calc-key:hover{background:#f6f6f3;border-color:#c9d1cd}
+.quick-calc-key:active{transform:translateY(1px)}
+.quick-calc-key:not(.is-operator):not(.is-action):not(.is-equals){
+  background:#fff;
+  border-color:#d7dfdd;
+  color:#173247;
+  box-shadow:inset 0 -1px 0 rgba(23,50,71,.03);
+}
+.quick-calc-key.is-operator{
+  background:#e5ece4;
+  border-color:#cad7ca;
+  color:#405340;
+  font-weight:820;
+}
+.quick-calc-key.is-action{
+  background:#f3ede7;
+  border-color:#ddd2c5;
+  color:#716556;
+  font-weight:800;
+}
+.quick-calc-key.is-equals{
+  border-color:#485543;
+  background:#485543;
+  color:#fff;
+  font-weight:850;
+}
+.quick-calc-key.is-wide{grid-column:span 2}
+.quick-calc-key.is-angle{font-size:8px;letter-spacing:.05em}
+.quick-calc-hint{
+  margin:0 12px 9px;
+  color:#899198;
+  font-size:7.5px;
+  line-height:1.25;
+  text-align:center;
+}
+@media(max-height:700px) and (min-width:621px){
+  .quick-calc-topbar{padding-block:6px}
+  .quick-calc-copy{padding:7px 12px 5px}
+  .quick-calc-screen{min-height:58px;margin-bottom:6px;padding:7px 10px}
+  .quick-calc-value{font-size:21px}
+  .quick-calc-keys{gap:4px;padding:0 11px 7px}
+  .quick-calc-key{min-height:32px;font-size:10px}
+  .quick-calc-hint{margin-bottom:7px;font-size:7px}
+}
+@media(max-width:620px){
+  .quick-calc-overlay{
+    align-items:stretch;
+    justify-content:flex-end;
+    padding:0 6px 10px 0;
+  }
+  .quick-calc-panel{
+    width:calc(100% - 18px);
+    height:100%;
+    overflow:hidden;
+    border-radius:14px;
+  }
+  .quick-calc-topbar{padding:7px 9px 6px}
+  .quick-calc-copy{padding:7px 11px 5px}
+  .quick-calc-screen{min-height:58px;margin:0 10px 6px}
+  .quick-calc-keys{gap:4px;padding:0 10px 7px}
+  .quick-calc-key{min-height:31px;font-size:10px}
+  .quick-calc-hint{margin:0 10px 7px;font-size:7px}
+}
+
+.ad-placeholder{
+  border:0 !important;
+  color:transparent !important;
+  background:transparent !important;
+}
+
+
+/* ===== INNER CONTENT REFRESH — HEADER + FOOTER UNTOUCHED ===== */
+.site main{
+  --content-teal:#1aa7a1;
+  --content-teal-soft:#eaf8f6;
+  --content-orange:#e99632;
+  --content-orange-soft:#fff4e5;
+  --content-blue:#4b7fb3;
+  --content-blue-soft:#edf4fb;
+  --content-purple:#7d6bb1;
+  --content-purple-soft:#f3effb;
+  --content-rose:#c86f83;
+  --content-rose-soft:#fbeff2;
+  --content-green:#6d9270;
+  --content-green-soft:#eff6ee;
+}
+
+/* Hero / search area */
+.site main .search-home{
+  position:relative;
+  overflow:hidden;
+  margin-top:24px;
+  padding:44px clamp(22px,4vw,54px) 34px;
+  border:1px solid rgba(23,50,71,.08);
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(26,167,161,.12), transparent 26%),
+    radial-gradient(circle at 94% 18%, rgba(233,150,50,.12), transparent 28%),
+    linear-gradient(135deg,#fffdfa 0%,#fbfdfc 48%,#fffaf4 100%);
+  box-shadow:0 18px 48px rgba(23,50,71,.055);
+}
+.site main .search-home::before,
+.site main .search-home::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:.7;
+}
+.site main .search-home::before{
+  width:160px;height:160px;
+  left:-90px;bottom:-95px;
+  background:rgba(75,127,179,.08);
+}
+.site main .search-home::after{
+  width:120px;height:120px;
+  right:-64px;bottom:-56px;
+  background:rgba(125,107,177,.07);
+}
+.site main .search-home h1{
+  position:relative;
+  z-index:1;
+  color:#173247;
+  text-shadow:0 1px 0 rgba(255,255,255,.75);
+}
+.site main .search-home .hero-description{
+  position:relative;
+  z-index:1;
+  color:#667780;
+}
+.site main .search-shell{
+  position:relative;
+  z-index:1;
+  margin-top:26px;
+  padding:10px;
+  border:1px solid rgba(23,50,71,.08);
+  border-radius:22px;
+  background:rgba(255,255,255,.76);
+  box-shadow:0 12px 30px rgba(23,50,71,.06);
+  backdrop-filter:blur(8px);
+}
+.site main .search-box,
+.site main .category-select{
+  border-color:#d8dfe0;
+  background:#fff;
+}
+.site main .search-box:focus-within,
+.site main .category-select:focus{
+  border-color:rgba(26,167,161,.55);
+  box-shadow:0 0 0 3px rgba(26,167,161,.08);
+}
+.site main .clear-btn{
+  border-color:#72856f;
+  background:#72856f;
+  box-shadow:0 6px 14px rgba(86,100,81,.13);
+}
+.site main .clear-btn:hover{
+  background:#61745f;
+  border-color:#61745f;
+  transform:translateY(-1px);
+}
+.site main .search-status{
+  margin-top:11px;
+  color:#7d8588;
+}
+.site main .search-status strong{
+  color:var(--content-teal);
+}
+
+/* Moving bar now lives inside the page content */
+.site main .top-tool-ticker{
+  height:34px;
+  margin-top:18px;
+  border:1px solid rgba(23,50,71,.09);
+  border-radius:12px;
+  background:linear-gradient(90deg,#f7fbfb 0%,#fffaf2 50%,#f7fbfb 100%);
+  box-shadow:0 7px 18px rgba(23,50,71,.04);
+}
+.site main .top-tool-ticker::before{
+  background:linear-gradient(90deg,#f7fbfb,rgba(247,251,251,0));
+}
+.site main .top-tool-ticker::after{
+  background:linear-gradient(270deg,#f7fbfb,rgba(247,251,251,0));
+}
+.site main .ticker-tool:hover{
+  color:var(--content-teal);
+}
+
+/* A–Z navigation */
+.site main .az-wrap{
+  margin-top:18px;
+  padding:13px 15px;
+  border-color:rgba(23,50,71,.09);
+  border-radius:16px;
+  background:linear-gradient(90deg,#fff 0%,#fcfbf7 50%,#fff 100%);
+  box-shadow:0 8px 22px rgba(23,50,71,.035);
+}
+.site main .az{
+  gap:6px;
+}
+.site main .az-link{
+  width:31px;
+  height:31px;
+  border:1px solid transparent;
+  transition:transform .15s ease,background .15s ease,color .15s ease,border-color .15s ease;
+}
+.site main .az-link:hover{
+  transform:translateY(-1px);
+  border-color:#f0d9ba;
+  background:var(--content-orange-soft);
+  color:#a96316;
+}
+.site main .az-link.active{
+  border-color:rgba(26,167,161,.3);
+  background:var(--content-teal);
+  color:#fff;
+  box-shadow:0 5px 12px rgba(26,167,161,.2);
+}
+
+/* A–Z links and Clear button share the same navigation box */
+.site main .search-form{
+  grid-template-columns:minmax(0,1fr);
+}
+.site main .az-wrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.site main .az-wrap .az{
+  flex:1 1 auto;
+  min-width:0;
+  justify-content:center;
+}
+.site main .az-category-select{
+  flex:0 0 190px;
+  width:190px;
+  min-height:42px;
+  align-self:center;
+}
+.site main .az-clear-btn{
+  flex:0 0 auto;
+  min-width:78px;
+  min-height:42px;
+  padding:0 18px;
+  align-self:center;
+}
+@media(max-width:680px){
+  .site main .search-form{
+    grid-template-columns:1fr;
+  }
+  .site main .az-wrap{
+    flex-wrap:wrap;
+    gap:10px;
+    padding:10px;
+  }
+  .site main .az-wrap .az{
+    flex:1 0 100%;
+    justify-content:flex-start;
+  }
+  .site main .az-category-select{
+    flex:1 1 auto;
+    width:auto;
+    min-width:0;
+    min-height:46px;
+    margin-left:auto;
+  }
+  .site main .az-clear-btn{
+    min-width:72px;
+    min-height:46px;
+    padding:0 14px;
+  }
+}
+
+/* Directory heading */
+.site main .index{
+  margin-top:20px;
+}
+.site main .index-header{
+  position:relative;
+  overflow:hidden;
+  padding:17px 19px;
+  border-color:rgba(23,50,71,.08);
+  border-radius:16px;
+  background:linear-gradient(110deg,#f0f8f7 0%,#fff 45%,#fff7eb 100%);
+  box-shadow:0 8px 22px rgba(23,50,71,.035);
+}
+.site main .index-header::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:4px;
+  background:linear-gradient(180deg,var(--content-teal),var(--content-orange));
+}
+.site main .index-header small{
+  color:var(--content-teal);
+}
+.site main .index-header h2{
+  color:#173247;
+}
+.site main .index-header > span{
+  padding:5px 8px;
+  border:1px solid #eadfcf;
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
+  color:#8b7559;
+}
+
+/* Alphabet sections */
+.site main .index-section{
+  border-color:rgba(23,50,71,.075);
+  box-shadow:0 7px 20px rgba(23,50,71,.03);
+  transition:box-shadow .18s ease,border-color .18s ease;
+}
+.site main .index-section:hover{
+  border-color:rgba(23,50,71,.12);
+  box-shadow:0 10px 26px rgba(23,50,71,.045);
+}
+.site main .letter-cell{
+  border:0;
+  box-shadow:inset 0 0 0 1px rgba(23,50,71,.06);
+}
+.site main #indexContent .index-section:nth-child(6n+1) .letter-cell{background:#eaf8f6}
+.site main #indexContent .index-section:nth-child(6n+1) .letter-cell h2{color:#16877f}
+.site main #indexContent .index-section:nth-child(6n+2) .letter-cell{background:#fff3e4}
+.site main #indexContent .index-section:nth-child(6n+2) .letter-cell h2{color:#b86d1c}
+.site main #indexContent .index-section:nth-child(6n+3) .letter-cell{background:#edf4fb}
+.site main #indexContent .index-section:nth-child(6n+3) .letter-cell h2{color:#3f6f9d}
+.site main #indexContent .index-section:nth-child(6n+4) .letter-cell{background:#f3effb}
+.site main #indexContent .index-section:nth-child(6n+4) .letter-cell h2{color:#705ea3}
+.site main #indexContent .index-section:nth-child(6n+5) .letter-cell{background:#fbeff2}
+.site main #indexContent .index-section:nth-child(6n+5) .letter-cell h2{color:#aa5f70}
+.site main #indexContent .index-section:nth-child(6n) .letter-cell{background:#eff6ee}
+.site main #indexContent .index-section:nth-child(6n) .letter-cell h2{color:#5e805f}
+
+/* Individual tool cards */
+.site main .index-link{
+  position:relative;
+  overflow:hidden;
+  border-color:#e5e1da;
+  box-shadow:0 3px 10px rgba(23,50,71,.025);
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease;
+}
+.site main .index-link::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  border-radius:12px 0 0 12px;
+  background:#a8b4b9;
+  opacity:.9;
+}
+.site main .index-link:hover{
+  transform:translateY(-2px);
+  border-color:#d6d9d5;
+  background:#fff;
+  box-shadow:0 9px 20px rgba(23,50,71,.07);
+}
+.site main .index-link[data-category="Finance"]::before{background:#4b7fb3}
+.site main .index-link[data-category="Health"]::before{background:#c86f83}
+.site main .index-link[data-category="Education"]::before{background:#7d6bb1}
+.site main .index-link[data-category="Math"]::before{background:#e99632}
+.site main .index-link[data-category="Converters"]::before{background:#1aa7a1}
+.site main .index-link[data-category="Time"]::before{background:#5f91bd}
+.site main .index-link[data-category="Work"]::before{background:#788d63}
+.site main .index-link[data-category="Construction"]::before{background:#c77945}
+.site main .index-link[data-category="Energy"]::before{background:#5f996f}
+.site main .index-link[data-category="Tools"]::before{background:#6e7e8a}
+.site main .index-name{
+  color:#263f50;
+}
+.site main .index-cat{
+  display:inline-flex;
+  width:max-content;
+  align-items:center;
+  margin-top:5px;
+  padding:3px 7px;
+  border:1px solid #e3e7e7;
+  border-radius:999px;
+  background:#f5f7f7;
+  color:#6b787e;
+  font-size:7.5px;
+  font-weight:800;
+  letter-spacing:.02em;
+}
+.site main .index-link[data-category="Finance"] .index-cat{background:#edf4fb;border-color:#dbe8f4;color:#3f6f9d}
+.site main .index-link[data-category="Health"] .index-cat{background:#fbeff2;border-color:#f1dce2;color:#a85f70}
+.site main .index-link[data-category="Education"] .index-cat{background:#f3effb;border-color:#e5def5;color:#705ea3}
+.site main .index-link[data-category="Math"] .index-cat{background:#fff4e5;border-color:#f6e2c7;color:#aa691e}
+.site main .index-link[data-category="Converters"] .index-cat{background:#eaf8f6;border-color:#d4eeeb;color:#16877f}
+.site main .index-link[data-category="Time"] .index-cat{background:#eef5fb;border-color:#dce9f4;color:#507da4}
+.site main .index-link[data-category="Work"] .index-cat{background:#f1f5ec;border-color:#e1e9d7;color:#687c57}
+.site main .index-link[data-category="Construction"] .index-cat{background:#fff1e9;border-color:#f3dfd3;color:#a8653b}
+.site main .index-link[data-category="Energy"] .index-cat{background:#edf6ef;border-color:#dceade;color:#568562}
+.site main .index-link[data-category="Tools"] .index-cat{background:#f0f3f5;border-color:#e0e5e8;color:#5f707c}
+
+/* Empty state, about and suggestion area */
+.site main .no-results{
+  border-color:#efd5b2;
+  background:#fff9ef;
+}
+.site main .about{
+  margin-top:34px;
+  padding:24px 26px;
+  border:1px solid rgba(23,50,71,.075);
+  border-top:1px solid rgba(23,50,71,.075);
+  border-radius:18px;
+  background:linear-gradient(135deg,#f7fbfb 0%,#fff 55%,#fff9f1 100%);
+  box-shadow:0 8px 22px rgba(23,50,71,.03);
+}
+.site main .about h2{
+  color:#173247;
+}
+.site main .about h2::after{
+  content:"";
+  display:block;
+  width:44px;
+  height:3px;
+  margin:9px auto 0;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--content-teal),var(--content-orange));
+}
+.site main .about p{
+  color:#67767e;
+}
+.site main .center-ad{
+  border-color:#d9dfda;
+  background:linear-gradient(90deg,rgba(234,248,246,.55),rgba(255,255,255,.7),rgba(255,244,229,.55));
+}
+.site main .suggest-card{
+  padding:18px 20px 18px 22px !important;
+  border-radius:16px !important;
+  background:linear-gradient(110deg,#edf8f6 0%,#fff 56%,#fff2e1 100%) !important;
+  box-shadow:0 8px 22px rgba(23,50,71,.035) !important;
+}
+.site main .suggest-card::before{
+  width:4px;
+  background:linear-gradient(180deg,var(--content-teal),var(--content-orange));
+}
+.site main .suggest-kicker{
+  color:var(--content-teal);
+}
+.site main .suggest-button{
+  border-color:#173247;
+  background:#173247;
+  box-shadow:0 7px 16px rgba(23,50,71,.12);
+}
+.site main .suggest-button:hover{
+  border-color:var(--content-teal);
+  background:var(--content-teal);
+}
+
+@media(max-width:680px){
+  .site main .search-home{
+    margin-top:14px;
+    padding:30px 16px 24px;
+    border-radius:20px;
+  }
+  .site main .search-shell{
+    padding:8px;
+    border-radius:16px;
+  }
+  .site main .top-tool-ticker{
+    margin-top:14px;
+    border-radius:10px;
+  }
+  .site main .az-wrap{
+    margin-top:14px;
+  }
+  .site main .about{
+    padding:19px 17px;
+    border-radius:15px;
+  }
+  .site main .about h2::after{
+    margin-left:0;
+  }
+  .site main .suggest-card{
+    padding:16px !important;
+  }
+}
+
+
+/* ===== ADS REMOVED COMPLETELY ===== */
+.frame{
+  display:block !important;
+}
+.frame > .site{
+  width:100%;
+  margin:0;
+}
+
+
+/* ===== RELIABLE AUTO-HIDING FIXED HEADER ===== */
+.site-header-global{
+  position:fixed !important;
+  top:0;
+  left:0;
+  right:0;
+  width:100%;
+  transition:transform .18s ease;
+  transform:translate3d(0,0,0);
+  will-change:transform;
+}
+.site-header-global.header-scroll-hidden{
+  transform:translate3d(0,-101%,0);
+}
+.site-header-global.header-scroll-visible{
+  transform:translate3d(0,0,0);
+}
+.site-header-spacer{
+  width:100%;
+  height:var(--site-header-height,62px);
+  pointer-events:none;
+}
+@media(prefers-reduced-motion:reduce){
+  .site-header-global{
+    transition:none;
+  }
+}
+
+
+/* ===== REMOVE REMAINING EXPOSED BEIGE PAGE BACKGROUND ===== */
+html,
+body,
+.frame{
+  background:var(--cream) !important;
+}
+
+
+
+/* ===== INDEX CONTENT WIDTH MATCHES AGE CALCULATOR =====
+   Main index content only. Header and footer remain untouched. */
+.frame > .site > .inner{
+  width:100% !important;
+  max-width:1160px !important;
+  margin-inline:auto !important;
+  padding-left:20px !important;
+  padding-right:20px !important;
+}
+@media(max-width:620px){
+  .frame > .site > .inner{
+    padding-left:16px !important;
+    padding-right:16px !important;
+  }
+}
+
+/* ===== A-Z CONTROL SIZE CONSISTENCY =====
+   Category and Clear controls match the alphabet buttons' visual scale. */
+.site main .az-category-select{
+  flex:0 0 145px !important;
+  width:145px !important;
+  min-height:31px !important;
+  height:31px !important;
+  padding:0 27px 0 10px !important;
+  border-radius:8px !important;
+  font-size:9px !important;
+  line-height:1 !important;
+  font-weight:800 !important;
+}
+.site main .az-clear-btn{
+  flex:0 0 56px !important;
+  min-width:56px !important;
+  width:56px !important;
+  min-height:31px !important;
+  height:31px !important;
+  padding:0 10px !important;
+  border-radius:8px !important;
+  font-size:9px !important;
+  line-height:1 !important;
+  font-weight:850 !important;
+}
+@media(max-width:680px){
+  .site main .az-category-select{
+    flex:0 0 145px !important;
+    width:145px !important;
+    min-width:145px !important;
+    min-height:31px !important;
+    height:31px !important;
+    margin-left:auto;
+  }
+  .site main .az-clear-btn{
+    flex:0 0 56px !important;
+    min-width:56px !important;
+    width:56px !important;
+    min-height:31px !important;
+    height:31px !important;
+  }
+}
+
+
+
+/* ===== FOOTER MATCH — compact brand + information layout ===== */
+.main-footer{
+  margin-top:0;
+  border-top:1px solid rgba(23,50,71,.10);
+  background:#fbfaf6;
+  color:#294a61;
+}
+.main-footer-inner{
+  width:min(80vw,1440px) !important;
+  margin:0 auto;
+  padding:20px 0 10px !important;
+}
+.footer-main{
+  display:grid !important;
+  grid-template-columns:minmax(360px,.95fr) minmax(620px,1.35fr) !important;
+  gap:72px !important;
+  align-items:start !important;
+}
+.footer-main > section{
+  width:100% !important;
+  max-width:none !important;
+  min-width:0;
+  grid-column:auto !important;
+  justify-self:stretch !important;
+  text-align:left !important;
+}
+.footer-brand{
+  max-width:470px !important;
+}
+.footer-logo{
+  display:inline-flex !important;
+  align-items:center;
+  width:max-content;
+}
+.footer-logo-mark{
+  width:36px !important;
+  height:36px !important;
+  flex:0 0 36px !important;
+  margin-right:9px !important;
+}
+.footer-logo-rule{
+  width:1px;
+  height:31px !important;
+  margin-right:10px !important;
+}
+.footer-logo-wordmark strong{
+  font-size:26px !important;
+  line-height:.9;
+}
+.footer-logo-wordmark small{
+  margin-top:4px !important;
+  gap:4px !important;
+  font-size:5px !important;
+}
+.footer-logo-wordmark small::before,
+.footer-logo-wordmark small::after{
+  width:10px !important;
+}
+.footer-brand p{
+  max-width:470px !important;
+  margin:9px 0 0 !important;
+  color:#61717b;
+  font-size:10px !important;
+  line-height:1.55 !important;
+}
+.footer-main > section[aria-labelledby="footer-info"]{
+  justify-self:end !important;
+  max-width:700px !important;
+}
+.footer-heading{
+  margin:0 0 10px !important;
+  color:#173247;
+  font-size:10px !important;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.footer-links{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  flex-wrap:wrap !important;
+  column-gap:24px !important;
+  row-gap:10px !important;
+  white-space:normal !important;
+}
+.footer-links a{
+  width:max-content;
+  max-width:100%;
+  color:#35556a;
+  font-size:10px !important;
+  line-height:1.4;
+  text-decoration:none;
+}
+.footer-bottom{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  grid-template-columns:none !important;
+  gap:24px !important;
+  margin-top:16px !important;
+  padding-top:9px !important;
+  border-top:1px solid rgba(23,50,71,.10);
+  color:#70808a;
+  font-size:9px;
+}
+.footer-bottom > span:first-child,
+.footer-bottom > span:nth-child(2){
+  grid-column:auto !important;
+  margin:0 !important;
+}
+.footer-bottom > span:first-child{
+  justify-self:auto !important;
+  text-align:left !important;
+}
+.footer-bottom > span:nth-child(2){
+  margin-left:auto !important;
+  justify-self:auto !important;
+  text-align:right !important;
+}
+@media(max-width:1180px){
+  .main-footer-inner{
+    width:min(92vw,1160px) !important;
+  }
+  .footer-main{
+    grid-template-columns:minmax(300px,.8fr) minmax(0,1.2fr) !important;
+    gap:44px !important;
+  }
+  .footer-main > section[aria-labelledby="footer-info"]{
+    max-width:none !important;
+  }
+  .footer-links{
+    column-gap:18px !important;
+  }
+}
+@media(max-width:760px){
+  .main-footer-inner{
+    width:100% !important;
+    padding:18px 18px 10px !important;
+  }
+  .footer-main{
+    grid-template-columns:1fr !important;
+    gap:18px !important;
+  }
+  .footer-main > section[aria-labelledby="footer-info"]{
+    justify-self:stretch !important;
+  }
+  .footer-bottom{
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:6px !important;
+  }
+  .footer-bottom > span:nth-child(2){
+    margin-left:0 !important;
+    text-align:left !important;
+  }
+}
+
+
+
+/* ===== SEARCH + A-Z COMPACT REFINEMENT =====
+   Main-content only: header and footer are intentionally untouched. */
+
+/* Remove the visible outer search card so it blends into the larger hero box. */
+.site main .search-shell{
+  margin-top:22px !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Keep the actual search field, but center its text/placeholder. */
+.site main .search-box input{
+  text-align:center !important;
+}
+.site main .search-box input::placeholder{
+  text-align:center !important;
+}
+
+/* Keep A-Z + category + Clear on one compact row. */
+.site main .az-wrap{
+  flex-wrap:nowrap !important;
+  gap:8px !important;
+  padding:6px 8px !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  scrollbar-width:thin;
+}
+.site main .az-wrap .az{
+  flex:1 0 auto !important;
+  min-width:max-content !important;
+  flex-wrap:nowrap !important;
+  justify-content:center !important;
+  gap:3px !important;
+  overflow:visible !important;
+}
+.site main .az-link{
+  width:28px !important;
+  height:28px !important;
+  flex:0 0 28px !important;
+}
+.site main .az-category-select{
+  flex:0 0 145px !important;
+  width:145px !important;
+  min-width:145px !important;
+  min-height:31px !important;
+  height:31px !important;
+  margin-left:0 !important;
+}
+.site main .az-clear-btn{
+  flex:0 0 56px !important;
+  width:56px !important;
+  min-width:56px !important;
+  min-height:31px !important;
+  height:31px !important;
+}
+
+@media(max-width:680px){
+  .site main .search-shell{
+    padding:0 !important;
+    border-radius:0 !important;
+  }
+  .site main .az-wrap{
+    flex-wrap:nowrap !important;
+    gap:7px !important;
+    padding:5px 6px !important;
+  }
+  .site main .az-wrap .az{
+    flex:0 0 auto !important;
+    min-width:max-content !important;
+    justify-content:flex-start !important;
+  }
+}
+
+
+
+/* ===== FOOTER BRAND HEIGHT BALANCE =====
+   Reduce the left brand block so its visual height matches the Information block. */
+@media(min-width:761px){
+  .footer-brand{
+    align-self:start !important;
+  }
+  .footer-logo-mark{
+    width:24px !important;
+    height:24px !important;
+    flex:0 0 24px !important;
+    margin-right:6px !important;
+  }
+  .footer-logo-rule{
+    height:21px !important;
+    margin-right:7px !important;
+  }
+  .footer-logo-wordmark strong{
+    font-size:18px !important;
+    line-height:.9 !important;
+  }
+  .footer-logo-wordmark small{
+    margin-top:2px !important;
+    gap:3px !important;
+    font-size:3.8px !important;
+    letter-spacing:.20em !important;
+  }
+  .footer-logo-wordmark small::before,
+  .footer-logo-wordmark small::after{
+    width:7px !important;
+  }
+  .footer-brand p{
+    max-width:400px !important;
+    margin:5px 0 0 !important;
+    font-size:8.5px !important;
+    line-height:1.32 !important;
+  }
+}
+
+
+
+/* ===== FOOTER BRAND REMOVED =====
+   Keep the remaining Information section full-width with no empty brand column. */
+.footer-main{
+  grid-template-columns:minmax(0,1fr) !important;
+  gap:0 !important;
+}
+.footer-main > section[aria-labelledby="footer-info"]{
+  width:100% !important;
+  max-width:none !important;
+  justify-self:stretch !important;
+}
+
+
+/* ===== FOOTER SINGLE BOTTOM ROW =====
+   Put copyright, information links and warning on one compact line. */
+.main-footer-inner{
+  width:min(96vw,1540px) !important;
+  padding:7px 0 !important;
+}
+.footer-main{
+  display:none !important;
+}
+.footer-bottom.footer-bottom--single-row{
+  display:grid !important;
+  grid-template-columns:max-content minmax(0,1fr) max-content !important;
+  align-items:center !important;
+  gap:18px !important;
+  margin-top:0 !important;
+  padding-top:0 !important;
+  min-height:34px;
+  border-top:0 !important;
+  white-space:nowrap;
+}
+.footer-bottom--single-row .footer-copyright,
+.footer-bottom--single-row .footer-warning{
+  margin:0 !important;
+  color:#70808a;
+  font-size:8px !important;
+  line-height:1.2;
+}
+.footer-bottom--single-row .footer-warning{
+  justify-self:end !important;
+  text-align:right !important;
+}
+.footer-links.footer-links--bottom{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex-wrap:nowrap !important;
+  min-width:0;
+  gap:15px !important;
+  overflow:visible;
+  white-space:nowrap !important;
+}
+.footer-links--bottom a{
+  flex:0 0 auto;
+  font-size:8px !important;
+  line-height:1.2 !important;
+}
+@media(max-width:1180px){
+  .main-footer-inner{
+    width:calc(100% - 24px) !important;
+  }
+  .footer-bottom.footer-bottom--single-row{
+    gap:12px !important;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .footer-bottom.footer-bottom--single-row::-webkit-scrollbar{display:none;}
+  .footer-links.footer-links--bottom{gap:11px !important;}
+  .footer-links--bottom a,
+  .footer-bottom--single-row .footer-copyright,
+  .footer-bottom--single-row .footer-warning{font-size:7.5px !important;}
+}
+@media(max-width:760px){
+  .main-footer-inner{
+    width:100% !important;
+    padding:7px 12px !important;
+  }
+  .footer-bottom.footer-bottom--single-row{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    gap:12px !important;
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+  .footer-links.footer-links--bottom{
+    flex:0 0 auto !important;
+  }
+  .footer-bottom--single-row .footer-warning{
+    margin-left:0 !important;
+  }
+}
+
+
+
+/* ===== FOOTER WARNING CLEARANCE FROM BACK-TO-TOP ===== */
+.footer-bottom--single-row .footer-warning{
+  margin-right:70px !important;
+}
+@media(max-width:700px){
+  .footer-bottom--single-row .footer-warning{
+    margin-right:60px !important;
+  }
+}
+
+
+/* ===== HEADER REPORT LOGO SETTINGS ===== */
+.header-settings-button{cursor:pointer}
+.report-settings-overlay{
+  position:fixed;
+  top:var(--quick-calc-top-offset,62px);
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:1010;
+  display:none;
+  align-items:flex-start;
+  justify-content:flex-end;
+  padding:7px 7px 10px 0;
+  background:transparent;
+  pointer-events:none;
+}
+.report-settings-overlay.is-open{display:flex}
+.report-settings-panel{
+  width:min(360px,calc(100% - 18px));
+  max-height:calc(100% - 7px);
+  overflow:auto;
+  pointer-events:auto;
+  border:1px solid #d8ddd9;
+  border-radius:16px;
+  background:#fbfaf6;
+  color:#173247;
+  box-shadow:0 14px 36px rgba(23,50,71,.14);
+}
+.report-settings-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 13px 10px;
+  border-bottom:1px solid #e6e4de;
+}
+.report-settings-heading{min-width:0}
+.report-settings-kicker{
+  display:block;
+  margin:0 0 2px;
+  color:#72856f;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.report-settings-title{
+  margin:0;
+  color:#173247;
+  font-size:14px;
+  line-height:1.15;
+}
+.report-settings-close{
+  width:30px;
+  height:30px;
+  flex:0 0 30px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#536873;
+  font-size:19px;
+  line-height:1;
+}
+.report-settings-close:hover,
+.report-settings-close:focus-visible{background:#efeee9;color:#173247;outline:none}
+.report-settings-body{
+  display:grid;
+  gap:12px;
+  padding:13px;
+}
+.report-settings-copy{
+  margin:0;
+  color:#758188;
+  font-size:9px;
+  line-height:1.5;
+}
+.report-logo-preview{
+  min-height:92px;
+  display:grid;
+  place-items:center;
+  padding:13px;
+  overflow:hidden;
+  border:1px solid #dfe3df;
+  border-radius:12px;
+  background:#fff;
+}
+.report-logo-default-preview{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#202420;
+}
+.report-logo-default-preview svg{width:37px;height:37px;flex:0 0 37px}
+.report-logo-default-preview::after{
+  content:"LOT 894";
+  padding-left:9px;
+  border-left:1px solid #c8c5bc;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:.07em;
+  white-space:nowrap;
+}
+.report-logo-custom-preview{
+  display:block;
+  width:auto;
+  max-width:100%;
+  max-height:66px;
+  object-fit:contain;
+}
+.report-logo-custom-preview[hidden],
+.report-logo-default-preview[hidden]{display:none!important}
+.report-logo-upload-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+}
+.report-logo-file{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.report-logo-upload-button,
+.report-logo-reset-button{
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 12px;
+  border-radius:9px;
+  font-size:9px;
+  font-weight:850;
+  text-decoration:none;
+  cursor:pointer;
+}
+.report-logo-upload-button{
+  border:1px solid #72856f;
+  background:#72856f;
+  color:#fff;
+}
+.report-logo-upload-button:hover,
+.report-logo-upload-button:focus-visible{background:#61745f;border-color:#61745f;outline:none}
+.report-logo-reset-button{
+  border:1px solid #d5d8d3;
+  background:#fff;
+  color:#536873;
+}
+.report-logo-reset-button:hover,
+.report-logo-reset-button:focus-visible{background:#f3f2ed;border-color:#c6cbc5;outline:none}
+.report-logo-meta{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  color:#899198;
+  font-size:7.5px;
+  line-height:1.4;
+}
+.report-logo-status{margin:0;min-height:1.4em}
+.report-logo-status.is-error{color:#a45149}
+.report-logo-note{margin:0;text-align:right;white-space:nowrap}
+@media(max-width:620px){
+  .report-settings-overlay{padding:6px 6px 10px 0}
+  .report-settings-panel{width:calc(100% - 18px);border-radius:14px}
+  .report-logo-upload-row{grid-template-columns:1fr}
+  .report-logo-reset-button{width:100%}
+}
+
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "LOT 894 Tools",
+  "url": "https://lot894.com/",
+  "description": "Free online calculators & tools with clear results, explanations and reports."
+}
+</script>
+
+
+
+<style>
+/* ===== HEADER SEARCH — HALF DESKTOP WIDTH ===== */
+@media (min-width:981px){
+  .header-search-wrap{
+    width:clamp(90px,10vw,155px) !important;
+    min-width:90px !important;
+  }
+}
+</style>
+<link rel="stylesheet" href="/index-search-suggestions.css">
+</head>
+<body id="top">
+
+<header class="site-header-global" aria-label="LOT 894 main navigation">
+  <div class="header-inner">
+    <a class="header-brand" href="/" aria-label="LOT 894 Tools home">
+      <svg class="header-brand-mark" viewBox="0 0 70 70" role="img" aria-label="LOT 894 emblem">
+        <circle cx="35" cy="35" r="29" fill="none" stroke="#66725f" stroke-width="1.8"/>
+        <circle cx="35" cy="35" r="25" fill="none" stroke="#9ca399" stroke-width=".8" stroke-dasharray="2 6"/>
+        <path d="M35 2v8M35 60v8M2 35h8M60 35h8" fill="none" stroke="#66725f" stroke-width="1.4"/>
+        <text x="35" y="23" text-anchor="middle" fill="#566451" font-size="7" font-family="Arial,sans-serif" letter-spacing="2">LOT</text>
+        <text x="35" y="44" text-anchor="middle" fill="#354334" font-size="20" font-family="Georgia,serif" font-weight="700" letter-spacing="1">894</text>
+        <circle cx="22" cy="49" r="1.2" fill="#66725f"/><circle cx="48" cy="49" r="1.2" fill="#66725f"/>
+      </svg>
+      <span class="header-brand-rule" aria-hidden="true"></span>
+      <span class="header-wordmark"><strong>LOT 894</strong><small>TOOLS</small></span>
+    </a>
+
+    <nav class="header-nav" aria-label="Calculator categories">
+      <a href="/?category=Finance#directory">Finance</a>
+      <a href="/?category=Health#directory">Health</a>
+      <a href="/?category=Time#directory">Time</a>
+      <a href="/?category=Math#directory">Math</a>
+      <a href="/?category=Converters#directory">Converters</a>
+      <a href="/?category=Education#directory">Education</a>
+      <a href="/?category=Work#directory">Work</a>
+      <a href="/?category=Construction#directory">Construction</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="header-search-wrap">
+        <form class="header-search-form" id="headerSearchForm" role="search" autocomplete="off">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 5 5"/></svg>
+          <label for="headerSearchInput" style="position:absolute;left:-9999px">Search calculators &amp; tools</label>
+          <input class="header-search-input" id="headerSearchInput" type="search" placeholder="Search calculators &amp; tools: loan, BMI, GPA…" aria-controls="headerSearchResults" aria-expanded="false">
+        </form>
+        <div class="header-search-results" id="headerSearchResults" role="listbox" aria-label="Header search results"></div>
+      </div>
+      <a class="header-icon-link" href="/unit-converter/" aria-label="Converters and international tools">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.3 12h17.4M12 3c2.3 2.45 3.5 5.45 3.5 9S14.3 18.55 12 21M12 3C9.7 5.45 8.5 8.45 8.5 12S9.7 18.55 12 21"/></svg>
+      </a>
+      <a class="header-currency" href="/currency-converter-comparison/" aria-label="Currency: Malaysian Ringgit">RM</a>
+      <button class="header-icon-button header-calculator-button" id="quickCalculatorButton" type="button" aria-label="Open quick calculators" aria-haspopup="dialog" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.2" y="2.5" width="15.6" height="19" rx="2.5"/><rect x="7.2" y="5.2" width="9.6" height="4" rx=".8"/><path d="M7.6 13h.01M12 13h.01M16.4 13h.01M7.6 17h.01M12 17h.01M16.4 17h.01" stroke-width="2.6"/></svg>
+      </button>
+      <button class="header-icon-button header-settings-button" id="reportSettingsButton" type="button" aria-label="Open report logo settings" aria-haspopup="dialog" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21H9.6v-.1a1.7 1.7 0 0 0-.4-1.1 1.7 1.7 0 0 0-1-.6 1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3V9.6h.1a1.7 1.7 0 0 0 1.1-.4 1.7 1.7 0 0 0 .6-1A1.7 1.7 0 0 0 4.46 6.3l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9.2 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.1a1.7 1.7 0 0 0 .4 1.1 1.7 1.7 0 0 0 1 .6 1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9.2a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.1.4h.1v4h-.1a1.7 1.7 0 0 0-1.1.4 1.7 1.7 0 0 0-.6 1Z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="site-header-spacer" aria-hidden="true"></div>
+
+<div class="quick-calc-overlay" id="quickCalcOverlay" aria-hidden="true">
+  <section class="quick-calc-panel" id="quickCalcPanel" role="dialog" aria-modal="true" aria-labelledby="quickCalcTitle" tabindex="-1">
+    <div class="quick-calc-topbar">
+      <div class="quick-calc-tabs" role="tablist" aria-label="Calculator type">
+        <button class="quick-calc-tab is-active" id="basicCalcTab" type="button" role="tab" aria-selected="true" data-calc-mode="basic">Basic</button>
+        <button class="quick-calc-tab" id="scientificCalcTab" type="button" role="tab" aria-selected="false" data-calc-mode="scientific">Scientific</button>
+      </div>
+      <button class="quick-calc-close" id="quickCalcClose" type="button" aria-label="Close calculator">×</button>
+    </div>
+
+    <div class="quick-calc-copy">
+      <h2 id="quickCalcTitle">Basic Calculator</h2>
+      <p id="quickCalcDescription">Quick arithmetic for everyday addition, subtraction, multiplication and division.</p>
+    </div>
+
+    <div class="quick-calc-screen" aria-live="polite" aria-atomic="true">
+      <div class="quick-calc-expression" id="quickCalcExpression"></div>
+      <div class="quick-calc-value" id="quickCalcValue">0</div>
+    </div>
+
+    <div class="quick-calc-keys is-basic" id="quickCalcKeys" aria-label="Calculator keypad"></div>
+    <p class="quick-calc-hint">Keyboard ready: use number keys, operators, Enter, Backspace and Esc.</p>
+  </section>
+</div>
+
+<div class="report-settings-overlay" id="reportSettingsOverlay" aria-hidden="true">
+  <section class="report-settings-panel" id="reportSettingsPanel" role="dialog" aria-modal="true" aria-labelledby="reportSettingsTitle" tabindex="-1">
+    <div class="report-settings-topbar">
+      <div class="report-settings-heading">
+        <span class="report-settings-kicker">Report settings</span>
+        <h2 class="report-settings-title" id="reportSettingsTitle">Report logo</h2>
+      </div>
+      <button class="report-settings-close" id="reportSettingsClose" type="button" aria-label="Close report settings">×</button>
+    </div>
+    <div class="report-settings-body">
+      <p class="report-settings-copy">Replace the LOT 894 logo shown on generated reports with your own logo. The logo is stored only in this browser.</p>
+
+      <div class="report-logo-preview" aria-label="Report logo preview">
+        <div class="report-logo-default-preview" id="reportLogoDefaultPreview" aria-label="Default LOT 894 report logo">
+          <svg viewBox="0 0 70 70" aria-hidden="true">
+            <circle cx="35" cy="35" r="29" fill="none" stroke="#66725f" stroke-width="1.8"/>
+            <circle cx="35" cy="35" r="25" fill="none" stroke="#9ca399" stroke-width=".8" stroke-dasharray="2 6"/>
+            <path d="M35 2v8M35 60v8M2 35h8M60 35h8" fill="none" stroke="#66725f" stroke-width="1.4"/>
+            <text x="35" y="23" text-anchor="middle" fill="#566451" font-size="7" font-family="Arial,sans-serif" letter-spacing="2">LOT</text>
+            <text x="35" y="44" text-anchor="middle" fill="#354334" font-size="20" font-family="Georgia,serif" font-weight="700" letter-spacing="1">894</text>
+            <circle cx="22" cy="49" r="1.2" fill="#66725f"/><circle cx="48" cy="49" r="1.2" fill="#66725f"/>
+          </svg>
+        </div>
+        <img class="report-logo-custom-preview" id="reportLogoCustomPreview" alt="Custom report logo preview" hidden>
+      </div>
+
+      <div class="report-logo-upload-row">
+        <input class="report-logo-file" id="reportLogoFile" type="file" accept="image/png,image/jpeg,image/webp">
+        <label class="report-logo-upload-button" for="reportLogoFile">Choose your logo</label>
+        <button class="report-logo-reset-button" id="reportLogoReset" type="button">Use LOT 894 logo</button>
+      </div>
+
+      <div class="report-logo-meta">
+        <p class="report-logo-status" id="reportLogoStatus" aria-live="polite"></p>
+        <p class="report-logo-note">PNG, JPG or WebP · max 1.5 MB</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<div class="frame">
+<div class="site">
+    <div class="inner">
+      <main>
+        <section class="search-home">
+<h1>Free Online Calculators &amp; Tools with Reports</h1>
+          <p class="hero-description">Use free calculators & tools for finance, health, education, mathematics, construction, conversions, time, work, energy and everyday decisions. These calculators & tools are designed to give you clear results quickly, with useful explanations, calculations and report-ready information where available. Search the calculators & tools library, choose a category, or browse the complete alphabetical index below.</p>
+
+          <div class="search-shell">
+            <form class="search-form" id="searchForm" role="search">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                <label for="searchInput" style="position:absolute;left:-9999px">Search calculators &amp; tools</label>
+                <input id="searchInput" type="search" autocomplete="off" placeholder="Search calculators &amp; tools: loan, BMI, GPA, concrete, percentage…" aria-controls="indexSearchResults" aria-expanded="false">
+              </div>
+            </form>
+            <div class="index-search-results" id="indexSearchResults" role="listbox" aria-label="Calculator and mode search results"></div>
+            <div class="search-status"><strong id="resultCount">30</strong><span>calculators &amp; tools shown</span></div>
+          </div>
+        </section>
+
+        <!-- Moving calculator bar: positioned between search/status and A–Z navigation -->
+        <div class="top-tool-ticker" aria-label="Featured calculators and tools">
+          <div class="tool-ticker-track">
+            <div class="tool-ticker-set">
+              <a class="ticker-tool" href="/percentage-calculator/">Percentage Calculator</a>
+              <a class="ticker-tool" href="/age-calculator/">Age Calculator</a>
+              <a class="ticker-tool" href="/semester-gpa-calculator/">GPA Calculator</a>
+              <a class="ticker-tool" href="/unit-converter/">Unit Converter</a>
+              <span class="ticker-label">Recently Added</span>
+              <a class="ticker-tool" href="/apr-calculator/">APR Calculator</a>
+              <a class="ticker-tool" href="/credit-card-payoff-calculator/">Credit Card Payoff Calculator</a>
+              <a class="ticker-tool" href="/currency-converter-comparison/">Currency Converter &amp; Comparison</a>
+              <a class="ticker-tool" href="/date-difference-calculator/">Date Difference Calculator</a>
+              <span class="ticker-label popular">Popular Tools</span>
+              <a class="ticker-tool" href="/mortgage-calculator/">Mortgage Calculator</a>
+              <a class="ticker-tool" href="/bmi-calculator/">BMI Calculator</a>
+              <a class="ticker-tool" href="/compound-interest-calculator/">Compound Interest Calculator</a>
+            </div>
+            <div class="tool-ticker-set" aria-hidden="true">
+              <a class="ticker-tool" tabindex="-1" href="/percentage-calculator/">Percentage Calculator</a>
+              <a class="ticker-tool" tabindex="-1" href="/age-calculator/">Age Calculator</a>
+              <a class="ticker-tool" tabindex="-1" href="/semester-gpa-calculator/">GPA Calculator</a>
+              <a class="ticker-tool" tabindex="-1" href="/unit-converter/">Unit Converter</a>
+              <span class="ticker-label">Recently Added</span>
+              <a class="ticker-tool" tabindex="-1" href="/apr-calculator/">APR Calculator</a>
+              <a class="ticker-tool" tabindex="-1" href="/credit-card-payoff-calculator/">Credit Card Payoff Calculator</a>
+              <a class="ticker-tool" tabindex="-1" href="/currency-converter-comparison/">Currency Converter &amp; Comparison</a>
+              <a class="ticker-tool" tabindex="-1" href="/date-difference-calculator/">Date Difference Calculator</a>
+              <span class="ticker-label popular">Popular Tools</span>
+              <a class="ticker-tool" tabindex="-1" href="/mortgage-calculator/">Mortgage Calculator</a>
+              <a class="ticker-tool" tabindex="-1" href="/bmi-calculator/">BMI Calculator</a>
+              <a class="ticker-tool" tabindex="-1" href="/compound-interest-calculator/">Compound Interest Calculator</a>
+            </div>
+          </div>
+        </div>
+
+        <nav class="az-wrap" aria-label="Browse calculators & tools alphabetically">
+          <div class="az"><a class="az-link" href="#letter-a" data-letter="A">A</a><a class="az-link" href="#letter-b" data-letter="B">B</a><a class="az-link" href="#letter-c" data-letter="C">C</a><a class="az-link" href="#letter-d" data-letter="D">D</a><a class="az-link disabled" href="#" data-letter="E">E</a><a class="az-link" href="#letter-f" data-letter="F">F</a><a class="az-link" href="#letter-g" data-letter="G">G</a><a class="az-link" href="#letter-h" data-letter="H">H</a><a class="az-link disabled" href="#" data-letter="I">I</a><a class="az-link disabled" href="#" data-letter="J">J</a><a class="az-link disabled" href="#" data-letter="K">K</a><a class="az-link" href="#letter-l" data-letter="L">L</a><a class="az-link" href="#letter-m" data-letter="M">M</a><a class="az-link disabled" href="#" data-letter="N">N</a><a class="az-link disabled" href="#" data-letter="O">O</a><a class="az-link" href="#letter-p" data-letter="P">P</a><a class="az-link disabled" href="#" data-letter="Q">Q</a><a class="az-link" href="#letter-r" data-letter="R">R</a><a class="az-link" href="#letter-s" data-letter="S">S</a><a class="az-link" href="#letter-t" data-letter="T">T</a><a class="az-link" href="#letter-u" data-letter="U">U</a><a class="az-link disabled" href="#" data-letter="V">V</a><a class="az-link disabled" href="#" data-letter="W">W</a><a class="az-link disabled" href="#" data-letter="X">X</a><a class="az-link disabled" href="#" data-letter="Y">Y</a><a class="az-link disabled" href="#" data-letter="Z">Z</a></div>
+          <select class="category-select az-category-select" id="categorySelect" aria-label="Filter by category">
+            <option value="All">All categories</option><option value="Finance">Finance (11)</option><option value="Health">Health (3)</option><option value="Time">Time (3)</option><option value="Math">Math (1)</option><option value="Converters">Converters (2)</option><option value="Education">Education (3)</option><option value="Work">Work (2)</option><option value="Construction">Construction (5)</option>
+          </select>
+          <button type="button" class="clear-btn az-clear-btn" id="clearBtn">Clear</button>
+        </nav>
+
+        <section class="index" id="directory">
+          <div class="index-header">
+            <div><small>Complete index</small><h2 id="indexTitle">All calculators &amp; tools</h2></div>
+            <span>Alphabetical</span>
+          </div>
+
+          <div id="indexContent">
+
+      <section class="index-section" id="letter-a" data-section-letter="A">
+        <div class="letter-cell">
+          <h2>A</h2>
+          <span>3</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/age-calculator/"
+             data-category="Health"
+             data-letter="A"
+             data-search="age calculator health calculate exact age and use all four age and date modes."
+             title="Calculate exact age and use all four age and date modes.">
+            <span class="index-name">Age Calculator</span>
+            <span class="index-cat">Health</span>
+          </a>
+          <a class="index-link"
+             href="/apr-calculator/"
+             data-category="Finance"
+             data-letter="A"
+             data-search="apr calculator finance estimate annual percentage rate, payments, total cost, and fee impact for a fixed-rate installment loan."
+             title="Estimate annual percentage rate, payments, total cost, and fee impact for a fixed-rate installment loan.">
+            <span class="index-name">APR Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+          <a class="index-link"
+             href="/apy-calculator/"
+             data-category="Finance"
+             data-letter="A"
+             data-search="apy calculator finance calculate annual percentage yield from a nominal annual interest rate and compounding frequency."
+             title="Calculate annual percentage yield from a nominal annual interest rate and compounding frequency.">
+            <span class="index-name">APY Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-b" data-section-letter="B">
+        <div class="letter-cell">
+          <h2>B</h2>
+          <span>2</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/birthday-calculator/"
+             data-category="Time"
+             data-letter="B"
+             data-search="birthday calculator time calculate age, birthdays, milestones, calendar details, and traditional cultural references."
+             title="Calculate age, birthdays, milestones, calendar details, and traditional cultural references.">
+            <span class="index-name">Birthday Calculator</span>
+            <span class="index-cat">Time</span>
+          </a>
+          <a class="index-link"
+             href="/bmi-calculator/"
+             data-category="Health"
+             data-letter="B"
+             data-search="bmi calculator health calculate adult body mass index from height and weight, then review the standard bmi category, reference weight range and calculation details."
+             title="Calculate adult body mass index from height and weight, then review the standard BMI category, reference weight range and calculation details.">
+            <span class="index-name">BMI Calculator</span>
+            <span class="index-cat">Health</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-c" data-section-letter="C">
+        <div class="letter-cell">
+          <h2>C</h2>
+          <span>6</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/calorie-calculator/"
+             data-category="Health"
+             data-letter="C"
+             data-search="calorie calculator health estimate resting energy, total daily expenditure, maintenance intake, or a calorie target for weight loss or weight gain using transparent formulas, assumptions and scenario analysis."
+             title="Estimate resting energy, total daily expenditure, maintenance intake, or a calorie target for weight loss or weight gain using transparent formulas, assumptions and scenario analysis.">
+            <span class="index-name">Calorie Calculator</span>
+            <span class="index-cat">Health</span>
+          </a>
+          <a class="index-link"
+             href="/compound-interest-calculator/"
+             data-category="Finance"
+             data-letter="C"
+             data-search="compound interest calculator finance calculate compound interest with optional contributions and track future value, total contributions, and interest earned over time."
+             title="Calculate compound interest with optional contributions and track future value, total contributions, and interest earned over time.">
+            <span class="index-name">Compound Interest Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+          <a class="index-link"
+             href="/concrete-calculator/"
+             data-category="Construction"
+             data-letter="C"
+             data-search="concrete calculator construction estimate concrete quantity, bag requirements, material proportions and project cost for slabs, walls, footings and columns. each mode includes a calculation report, practical guidance and a dimension illustration for work or learning reference."
+             title="Estimate concrete quantity, bag requirements, material proportions and project cost for slabs, walls, footings and columns. Each mode includes a calculation report, practical guidance and a dimension illustration for work or learning reference.">
+            <span class="index-name">Concrete Calculator</span>
+            <span class="index-cat">Construction</span>
+          </a>
+          <a class="index-link"
+             href="/concrete-design-calculator/"
+             data-category="Construction"
+             data-letter="C"
+             data-search="concrete design calculator construction design and check reinforced-concrete members with transparent calculations, detailing views, governing checks, and a full report."
+             title="Design and check reinforced-concrete members with transparent calculations, detailing views, governing checks, and a full report.">
+            <span class="index-name">Concrete Design Calculator</span>
+            <span class="index-cat">Construction</span>
+          </a>
+          <a class="index-link"
+             href="/credit-card-payoff-calculator/"
+             data-category="Finance"
+             data-letter="C"
+             data-search="credit card payoff calculator finance estimate payoff time, required payments, minimum-payment costs, or savings from extra payments. compare interest and repayment schedules."
+             title="Estimate payoff time, required payments, minimum-payment costs, or savings from extra payments. Compare interest and repayment schedules.">
+            <span class="index-name">Credit Card Payoff Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+          <a class="index-link"
+             href="/currency-converter/"
+             data-category="Converters"
+             data-letter="C"
+             data-search="currency converter converters convert an amount between supported currencies using current or historical indicative exchange-rate data."
+             title="Convert an amount between supported currencies using current or historical indicative exchange-rate data.">
+            <span class="index-name">Currency Converter</span>
+            <span class="index-cat">Converters</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-d" data-section-letter="D">
+        <div class="letter-cell">
+          <h2>D</h2>
+          <span>4</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/date-calculator/"
+             data-category="Time"
+             data-letter="D"
+             data-search="date calculator time compare dates, shift dates, count days, and check weekdays or week numbers."
+             title="Compare dates, shift dates, count days, and check weekdays or week numbers.">
+            <span class="index-name">Date Calculator</span>
+            <span class="index-cat">Time</span>
+          </a>
+          <a class="index-link"
+             href="/debt-consolidation-calculator/"
+             data-category="Finance"
+             data-letter="D"
+             data-search="debt consolidation calculator finance compare existing debts with one consolidation loan by payment, interest, fees, term, and total cost."
+             title="Compare existing debts with one consolidation loan by payment, interest, fees, term, and total cost.">
+            <span class="index-name">Debt Consolidation Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+          <a class="index-link"
+             href="/debt-payoff-calculator/"
+             data-category="Finance"
+             data-letter="D"
+             data-search="debt payoff calculator finance compare debt snowball, debt avalanche, fixed payment, target payoff, and extra payment strategies."
+             title="Compare debt snowball, debt avalanche, fixed payment, target payoff, and extra payment strategies.">
+            <span class="index-name">Debt Payoff Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+          <a class="index-link"
+             href="/debt-to-income-ratio-calculator/"
+             data-category="Finance"
+             data-letter="D"
+             data-search="debt-to-income ratio calculator finance calculate current and projected debt-to-income ratios from gross monthly income and required monthly debt payments."
+             title="Calculate current and projected debt-to-income ratios from gross monthly income and required monthly debt payments.">
+            <span class="index-name">Debt-to-Income Ratio Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-f" data-section-letter="F">
+        <div class="letter-cell">
+          <h2>F</h2>
+          <span>1</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/flooring-calculator/"
+             data-category="Construction"
+             data-letter="F"
+             data-search="flooring calculator construction estimate flooring area, waste, packs, planks, sheet vinyl, and project cost across eight flooring modes."
+             title="Estimate flooring area, waste, packs, planks, sheet vinyl, and project cost across eight flooring modes.">
+            <span class="index-name">Flooring Calculator</span>
+            <span class="index-cat">Construction</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-g" data-section-letter="G">
+        <div class="letter-cell">
+          <h2>G</h2>
+          <span>2</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/gpa-calculator/"
+             data-category="Education"
+             data-letter="G"
+             data-search="gpa calculator education calculate standard, weighted, cumulative, or target gpa using grades, credits, and current gpa data."
+             title="Calculate standard, weighted, cumulative, or target GPA using grades, credits, and current GPA data.">
+            <span class="index-name">GPA Calculator</span>
+            <span class="index-cat">Education</span>
+          </a>
+          <a class="index-link"
+             href="/grade-calculator/"
+             data-category="Education"
+             data-letter="G"
+             data-search="grade calculator education calculate current and weighted grades, required scores, and the average needed to reach a target grade."
+             title="Calculate current and weighted grades, required scores, and the average needed to reach a target grade.">
+            <span class="index-name">Grade Calculator</span>
+            <span class="index-cat">Education</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-h" data-section-letter="H">
+        <div class="letter-cell">
+          <h2>H</h2>
+          <span>1</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/hourly-wage-calculator/"
+             data-category="Work"
+             data-letter="H"
+             data-search="hourly wage calculator work estimate gross earnings from an hourly wage and work schedule, including optional overtime."
+             title="Estimate gross earnings from an hourly wage and work schedule, including optional overtime.">
+            <span class="index-name">Hourly Wage Calculator</span>
+            <span class="index-cat">Work</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-l" data-section-letter="L">
+        <div class="letter-cell">
+          <h2>L</h2>
+          <span>2</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/loan-affordability-calculator/"
+             data-category="Finance"
+             data-letter="L"
+             data-search="loan affordability calculator finance estimate borrowing capacity from income, debt, rate, term, and target debt ratio, with an optional cash-flow check."
+             title="Estimate borrowing capacity from income, debt, rate, term, and target debt ratio, with an optional cash-flow check.">
+            <span class="index-name">Loan Affordability Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+          <a class="index-link"
+             href="/loan-calculator/"
+             data-category="Finance"
+             data-letter="L"
+             data-search="loan calculator finance calculate payments, interest, balances, amortization, and payoff dates across seven loan types."
+             title="Calculate payments, interest, balances, amortization, and payoff dates across seven loan types.">
+            <span class="index-name">Loan Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-m" data-section-letter="M">
+        <div class="letter-cell">
+          <h2>M</h2>
+          <span>1</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/mortgage-calculator/"
+             data-category="Finance"
+             data-letter="M"
+             data-search="mortgage calculator finance estimate mortgage payments, amortization, extra-payment savings, down payment, housing costs, payoff, and refinance break-even."
+             title="Estimate mortgage payments, amortization, extra-payment savings, down payment, housing costs, payoff, and refinance break-even.">
+            <span class="index-name">Mortgage Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-p" data-section-letter="P">
+        <div class="letter-cell">
+          <h2>P</h2>
+          <span>3</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/paint-calculator/"
+             data-category="Construction"
+             data-letter="P"
+             data-search="paint calculator construction calculate wall, ceiling, opening, paint quantity, coat, coverage, and cost estimates across seven paint modes."
+             title="Calculate wall, ceiling, opening, paint quantity, coat, coverage, and cost estimates across seven paint modes.">
+            <span class="index-name">Paint Calculator</span>
+            <span class="index-cat">Construction</span>
+          </a>
+          <a class="index-link"
+             href="/percentage-calculator/"
+             data-category="Math"
+             data-letter="P"
+             data-search="percentage calculator math calculate percentage amounts, changes, differences, rate changes, reverse percentages, and whole values across nine modes."
+             title="Calculate percentage amounts, changes, differences, rate changes, reverse percentages, and whole values across nine modes.">
+            <span class="index-name">Percentage Calculator</span>
+            <span class="index-cat">Math</span>
+          </a>
+          <a class="index-link"
+             href="/periodic-table/"
+             data-category="Education"
+             data-letter="P"
+             data-search="periodic table education explore all 118 elements, compare properties, map periodic trends, and view electron configurations."
+             title="Explore all 118 elements, compare properties, map periodic trends, and view electron configurations.">
+            <span class="index-name">Periodic Table</span>
+            <span class="index-cat">Education</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-r" data-section-letter="R">
+        <div class="letter-cell">
+          <h2>R</h2>
+          <span>1</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/roi-calculator/"
+             data-category="Finance"
+             data-letter="R"
+             data-search="roi calculator finance calculate return on investment, net return, break-even value, annualized return, and target-return requirements."
+             title="Calculate return on investment, net return, break-even value, annualized return, and target-return requirements.">
+            <span class="index-name">ROI Calculator</span>
+            <span class="index-cat">Finance</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-s" data-section-letter="S">
+        <div class="letter-cell">
+          <h2>S</h2>
+          <span>2</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/salary-calculator/"
+             data-category="Work"
+             data-letter="S"
+             data-search="salary calculator work convert gross salary across common pay periods, work schedules, unpaid leave, and five-year salary growth projections."
+             title="Convert gross salary across common pay periods, work schedules, unpaid leave, and five-year salary growth projections.">
+            <span class="index-name">Salary Calculator</span>
+            <span class="index-cat">Work</span>
+          </a>
+          <a class="index-link"
+             href="/season-calculator/"
+             data-category="Time"
+             data-letter="S"
+             data-search="season calculator time find meteorological, astronomical, or regional climate seasons for any date and worldwide location."
+             title="Find meteorological, astronomical, or regional climate seasons for any date and worldwide location.">
+            <span class="index-name">Season Calculator</span>
+            <span class="index-cat">Time</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-t" data-section-letter="T">
+        <div class="letter-cell">
+          <h2>T</h2>
+          <span>1</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/tile-calculator/"
+             data-category="Construction"
+             data-letter="T"
+             data-search="tile calculator construction calculate tile quantity, layout, grout joints, waste, boxes, and project cost across eight tile modes."
+             title="Calculate tile quantity, layout, grout joints, waste, boxes, and project cost across eight tile modes.">
+            <span class="index-name">Tile Calculator</span>
+            <span class="index-cat">Construction</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="index-section" id="letter-u" data-section-letter="U">
+        <div class="letter-cell">
+          <h2>U</h2>
+          <span>1</span>
+        </div>
+        <div class="name-grid">
+          <a class="index-link"
+             href="/unit-converter/"
+             data-category="Converters"
+             data-letter="U"
+             data-search="unit converter converters convert values across 21 measurement quantities using standard conversion factors and equations."
+             title="Convert values across 21 measurement quantities using standard conversion factors and equations.">
+            <span class="index-name">Unit Converter</span>
+            <span class="index-cat">Converters</span>
+          </a>
+        </div>
+      </section>
+          </div>
+
+          <div class="no-results" id="noResults" hidden>No matching calculators & tools found.</div>
+        </section>
+
+        <section class="about">
+          <h2>About LOT 894 Tools</h2>
+          <p>LOT 894 Tools is a free collection of practical online calculators & tools designed to make everyday calculations easier to understand and complete. The library covers finance, health, education, mathematics, construction, conversions, time, work, energy and other common tasks.</p>
+          <p>These calculators & tools are built to give you clear results quickly, with useful supporting information such as formulas, calculation details, explanations and report-ready summaries where available. You can search the calculators & tools library, filter by category, or browse the complete A–Z index.</p>
+          <p>LOT 894 Tools is intended for general informational and planning purposes. Results may be estimates depending on the information entered, so important financial, medical, legal or professional decisions should be checked with an appropriate qualified professional.</p>
+</section>
+<section class="suggest-cta" aria-labelledby="suggest-title">
+          <div class="suggest-card">
+            <div class="suggest-copy">
+              <span class="suggest-kicker">Help expand LOT 894</span>
+              <h2 id="suggest-title">Need calculators & tools added?</h2>
+              <p>Suggest practical calculators & tools that would make LOT 894 more useful.</p>
+            </div>
+            <a class="suggest-button" href="/suggest-a-calculator/">
+              Suggest calculators &amp; tools <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </section>
+      </main>
+</div>
+  </div>
+</div>
+
+<script src="/directory-tools.js"></script>
+
+<script>
+(() => {
+  const links = Array.from(document.querySelectorAll('.index-link'));
+  const sections = Array.from(document.querySelectorAll('.index-section'));
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+  const categorySelect = document.getElementById('categorySelect');
+  const clearBtn = document.getElementById('clearBtn');
+  const resultCount = document.getElementById('resultCount');
+  const indexTitle = document.getElementById('indexTitle');
+  const noResults = document.getElementById('noResults');
+  const azLinks = Array.from(document.querySelectorAll('.az-link:not(.disabled)'));
+
+  let activeLetter = 'All';
+
+  function applyFilters() {
+    const q = searchInput.value.trim().toLowerCase();
+    const category = categorySelect.value;
+    let visible = 0;
+
+    links.forEach(link => {
+      const qMatch = !q || link.dataset.search.includes(q);
+      const cMatch = category === 'All' || link.dataset.category === category;
+      const lMatch = activeLetter === 'All' || link.dataset.letter === activeLetter;
+      const show = qMatch && cMatch && lMatch;
+      link.hidden = !show;
+      if (show) visible++;
+    });
+
+    sections.forEach(section => {
+      const anyVisible = Array.from(section.querySelectorAll('.index-link')).some(link => !link.hidden);
+      section.hidden = !anyVisible;
+    });
+
+    resultCount.textContent = visible;
+    noResults.hidden = visible !== 0;
+
+    if (q) indexTitle.textContent = `Search: “${searchInput.value}”`;
+    else if (category !== 'All' && activeLetter !== 'All') indexTitle.textContent = `${category} · ${activeLetter}`;
+    else if (category !== 'All') indexTitle.textContent = `${category} calculators & tools`;
+    else if (activeLetter !== 'All') indexTitle.textContent = `Calculators & tools starting with ${activeLetter}`;
+    else indexTitle.textContent = 'All calculators & tools';
+  }
+
+  searchInput.addEventListener('input', () => {
+    activeLetter = 'All';
+    azLinks.forEach(a => a.classList.remove('active'));
+    applyFilters();
+  });
+
+  searchForm.addEventListener('submit', event => {
+    event.preventDefault();
+    applyFilters();
+    document.getElementById('directory').scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+
+  function scrollToMovingBar() {
+    const movingBar = document.querySelector('.top-tool-ticker');
+    if (!movingBar) return;
+
+    requestAnimationFrame(() => {
+      const offset = 12;
+      const top = movingBar.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: 'smooth'
+      });
+    });
+  }
+
+  categorySelect.addEventListener('change', () => {
+    applyFilters();
+    scrollToMovingBar();
+  });
+
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    categorySelect.value = 'All';
+    activeLetter = 'All';
+    azLinks.forEach(a => a.classList.remove('active'));
+    applyFilters();
+    searchInput.focus({ preventScroll:true });
+    scrollToMovingBar();
+  });
+
+  azLinks.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      activeLetter = a.dataset.letter;
+      azLinks.forEach(x => x.classList.toggle('active', x === a));
+      applyFilters();
+      scrollToMovingBar();
+    });
+  });
+
+  document.querySelectorAll('.az-link.disabled').forEach(a => {
+    a.setAttribute('aria-disabled', 'true');
+    a.setAttribute('tabindex', '-1');
+  });
+})();
+</script>
+
+<footer class="main-footer" aria-label="LOT 894 site footer">
+  <div class="main-footer-inner">
+    <div class="footer-bottom footer-bottom--single-row">
+      <span class="footer-copyright">© 2026 LOT 894. All rights reserved.</span>
+      <nav class="footer-links footer-links--bottom" aria-label="Site information">
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+        <a href="/privacy-policy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+        <a href="/disclaimer/">Disclaimer</a>
+        <a href="/methodology/">Methodology</a>
+        <a href="/sitemap/">Sitemap</a>
+        <a href="/cookie-policy/">Cookies</a>
+        <a href="/faq/">FAQ</a>
+        <a href="/privacy-policy/#consent-choices">Cookie Settings</a>
+      </nav>
+      <span class="footer-warning">Results are estimates for informational use.</span>
+      <a class="back-top" href="#top" aria-label="Back to top">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 10.5 8 5.5l5 5"/></svg>
+        Top
+      </a>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+(() => {
+  const params = new URLSearchParams(window.location.search);
+  const requestedCategory = params.get('category');
+  const categorySelect = document.getElementById('categorySelect');
+  if (requestedCategory && categorySelect) {
+    const valid = Array.from(categorySelect.options).some(o => o.value === requestedCategory);
+    if (valid) {
+      categorySelect.value = requestedCategory;
+      categorySelect.dispatchEvent(new Event('change'));
+    }
+  }
+})();
+</script>
+
+
+<script>
+(() => {
+  const backTop = document.querySelector('.back-top');
+  if (!backTop) return;
+
+  const updateBackTop = () => {
+    backTop.classList.toggle('is-visible', window.scrollY > 260);
+  };
+
+  window.addEventListener('scroll', updateBackTop, { passive: true });
+  updateBackTop();
+
+  backTop.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+
+
+<script>
+(() => {
+  const form = document.getElementById('headerSearchForm');
+  const input = document.getElementById('headerSearchInput');
+  const results = document.getElementById('headerSearchResults');
+  if (!form || !input || !results) return;
+
+  const tools = (window.LOT894_DIRECTORY_TOOLS || []).map(tool => ({
+    ...tool,
+    search: [tool.name, tool.category, tool.description || ''].join(' ').toLowerCase()
+  })).filter(tool => tool.name && tool.href);
+
+  const closeResults = () => {
+    results.classList.remove('is-open');
+    input.setAttribute('aria-expanded','false');
+  };
+
+  const renderResults = () => {
+    const q = input.value.trim().toLowerCase();
+    results.innerHTML = '';
+    if (!q) return closeResults();
+
+    const matches = tools.filter(tool =>
+      tool.name.toLowerCase().includes(q) ||
+      tool.category.toLowerCase().includes(q) ||
+      tool.search.includes(q)
+    ).slice(0,8);
+
+    if (!matches.length) {
+      const empty = document.createElement('div');
+      empty.className = 'header-search-empty';
+      empty.textContent = 'No matching calculators & tools.';
+      results.appendChild(empty);
+    } else {
+      matches.forEach(tool => {
+        const a = document.createElement('a');
+        a.className = 'header-search-result';
+        a.href = tool.href;
+        a.setAttribute('role','option');
+        a.textContent = tool.category ? `${tool.name} · ${tool.category}` : tool.name;
+        results.appendChild(a);
+      });
+    }
+    results.classList.add('is-open');
+    input.setAttribute('aria-expanded','true');
+  };
+
+  input.addEventListener('input', renderResults);
+  input.addEventListener('focus', renderResults);
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const first = results.querySelector('.header-search-result');
+    if (first) window.location.href = first.href;
+  });
+
+  input.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      closeResults();
+      input.blur();
+    }
+    if (event.key === 'ArrowDown') {
+      const first = results.querySelector('.header-search-result');
+      if (first) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
+  results.addEventListener('keydown', event => {
+    const items = Array.from(results.querySelectorAll('.header-search-result'));
+    const index = items.indexOf(document.activeElement);
+    if (event.key === 'ArrowDown' && index > -1) {
+      event.preventDefault();
+      (items[index + 1] || items[0])?.focus();
+    } else if (event.key === 'ArrowUp' && index > -1) {
+      event.preventDefault();
+      if (index === 0) input.focus();
+      else items[index - 1]?.focus();
+    } else if (event.key === 'Escape') {
+      closeResults();
+      input.focus();
+    }
+  });
+
+  document.addEventListener('pointerdown', event => {
+    if (!form.parentElement.contains(event.target)) closeResults();
+  });
+})();
+</script>
+
+
+<script>
+(() => {
+  const openButton = document.getElementById('quickCalculatorButton');
+  const overlay = document.getElementById('quickCalcOverlay');
+  const panel = document.getElementById('quickCalcPanel');
+  const closeButton = document.getElementById('quickCalcClose');
+  const tabs = Array.from(document.querySelectorAll('.quick-calc-tab'));
+  const title = document.getElementById('quickCalcTitle');
+  const description = document.getElementById('quickCalcDescription');
+  const expressionEl = document.getElementById('quickCalcExpression');
+  const valueEl = document.getElementById('quickCalcValue');
+  const keysEl = document.getElementById('quickCalcKeys');
+  if (!openButton || !overlay || !panel || !closeButton || !keysEl) return;
+
+  const siteHeader = document.querySelector('.site-header-global');
+  const syncQuickCalcOffset = () => {
+    const offset = (siteHeader?.offsetHeight || 62);
+    document.documentElement.style.setProperty('--quick-calc-top-offset', `${offset}px`);
+  };
+  syncQuickCalcOffset();
+  window.addEventListener('resize', syncQuickCalcOffset);
+
+  let activeMode = 'basic';
+  let angleMode = 'DEG';
+  let lastFocused = null;
+  let previousBodyOverflow = '';
+
+  const states = {
+    basic: { expr: '', lastExpression: '', justEvaluated: false },
+    scientific: { expr: '', lastExpression: '', justEvaluated: false }
+  };
+
+  const modeCopy = {
+    basic: {
+      title: 'Basic Calculator',
+      description: 'Quick arithmetic for everyday addition, subtraction, multiplication and division.'
+    },
+    scientific: {
+      title: 'Scientific Calculator',
+      description: 'Advanced calculations with powers, roots, logarithms and trigonometric functions.'
+    }
+  };
+
+  const basicKeys = [
+    { label:'AC', action:'clear', className:'is-action' },
+    { label:'±', action:'negate', className:'is-action' },
+    { label:'%', action:'percent', className:'is-action' },
+    { label:'÷', value:'/', className:'is-operator' },
+    { label:'7', value:'7' }, { label:'8', value:'8' }, { label:'9', value:'9' },
+    { label:'×', value:'*', className:'is-operator' },
+    { label:'4', value:'4' }, { label:'5', value:'5' }, { label:'6', value:'6' },
+    { label:'−', value:'-', className:'is-operator' },
+    { label:'1', value:'1' }, { label:'2', value:'2' }, { label:'3', value:'3' },
+    { label:'+', value:'+', className:'is-operator' },
+    { label:'0', value:'0', className:'is-wide' }, { label:'.', value:'.' },
+    { label:'=', action:'equals', className:'is-equals' }
+  ];
+
+  function scientificKeys(){
+    return [
+      { label:angleMode, action:'angle', className:'is-action is-angle' },
+      { label:'(', value:'(' }, { label:')', value:')' },
+      { label:'AC', action:'clear', className:'is-action' },
+      { label:'⌫', action:'backspace', className:'is-action' },
+      { label:'sin', value:'sin(', className:'is-operator' },
+      { label:'cos', value:'cos(', className:'is-operator' },
+      { label:'tan', value:'tan(', className:'is-operator' },
+      { label:'log', value:'log10(', className:'is-operator' },
+      { label:'ln', value:'ln(', className:'is-operator' },
+      { label:'√', value:'sqrt(', className:'is-operator' },
+      { label:'x²', action:'square', className:'is-operator' },
+      { label:'xʸ', value:'^', className:'is-operator' },
+      { label:'1/x', action:'reciprocal', className:'is-operator' },
+      { label:'÷', value:'/', className:'is-operator' },
+      { label:'7', value:'7' }, { label:'8', value:'8' }, { label:'9', value:'9' },
+      { label:'π', value:'pi' }, { label:'×', value:'*', className:'is-operator' },
+      { label:'4', value:'4' }, { label:'5', value:'5' }, { label:'6', value:'6' },
+      { label:'e', value:'e' }, { label:'−', value:'-', className:'is-operator' },
+      { label:'1', value:'1' }, { label:'2', value:'2' }, { label:'3', value:'3' },
+      { label:'%', action:'percent', className:'is-action' }, { label:'+', value:'+', className:'is-operator' },
+      { label:'0', value:'0' }, { label:'00', value:'00' }, { label:'.', value:'.' },
+      { label:'±', action:'negate', className:'is-action' },
+      { label:'=', action:'equals', className:'is-equals' }
+    ];
+  }
+
+  function state(){ return states[activeMode]; }
+
+  function pretty(expr){
+    return (expr || '')
+      .replace(/log10\(/g,'log(')
+      .replace(/sqrt\(/g,'√(')
+      .replace(/pi/g,'π')
+      .replace(/\*/g,'×')
+      .replace(/\//g,'÷')
+      .replace(/-/g,'−');
+  }
+
+  function render(){
+    const s = state();
+    title.textContent = modeCopy[activeMode].title;
+    description.textContent = modeCopy[activeMode].description;
+    expressionEl.textContent = s.lastExpression || (s.expr ? pretty(s.expr) : '');
+    valueEl.textContent = s.expr ? pretty(s.expr) : '0';
+    keysEl.className = `quick-calc-keys is-${activeMode}`;
+    keysEl.innerHTML = '';
+
+    const keys = activeMode === 'basic' ? basicKeys : scientificKeys();
+    keys.forEach(key => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `quick-calc-key ${key.className || ''}`.trim();
+      button.textContent = key.label;
+      if (key.value !== undefined) button.dataset.value = key.value;
+      if (key.action) button.dataset.action = key.action;
+      button.setAttribute('aria-label', key.label === '⌫' ? 'Backspace' : key.label);
+      keysEl.appendChild(button);
+    });
+
+    tabs.forEach(tab => {
+      const selected = tab.dataset.calcMode === activeMode;
+      tab.classList.toggle('is-active', selected);
+      tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+  }
+
+  function open(){
+    if (overlay.classList.contains('is-open')) return;
+    lastFocused = document.activeElement;
+    previousBodyOverflow = document.body.style.overflow;
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden','false');
+    openButton.setAttribute('aria-expanded','true');
+    openButton.setAttribute('aria-label','Close quick calculators');
+    document.body.style.overflow = 'hidden';
+    render();
+    window.setTimeout(() => panel.focus(), 0);
+  }
+
+  function close(){
+    if (!overlay.classList.contains('is-open')) return;
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden','true');
+    openButton.setAttribute('aria-expanded','false');
+    openButton.setAttribute('aria-label','Open quick calculators');
+    document.body.style.overflow = previousBodyOverflow;
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  }
+
+  function switchMode(mode){
+    if (!states[mode]) return;
+    activeMode = mode;
+    render();
+  }
+
+  function clear(){
+    const s = state();
+    s.expr = '';
+    s.lastExpression = '';
+    s.justEvaluated = false;
+    render();
+  }
+
+  function append(value){
+    const s = state();
+    const isOperator = ['+','-','*','/','^'].includes(value);
+    const startsFresh = !isOperator && ![')', '%'].includes(value);
+    if (s.justEvaluated && startsFresh) {
+      s.expr = '';
+      s.lastExpression = '';
+    }
+    s.justEvaluated = false;
+
+    if (s.expr === 'Error') s.expr = '';
+
+    if (value === '.') {
+      const currentNumber = s.expr.match(/(?:^|[+\-*/^(])(-?\d*\.?\d*)$/)?.[1] || '';
+      if (currentNumber.includes('.')) return;
+    }
+
+    const valueStartsOperand = /^(?:\d|\.|\(|pi$|e$|sin\(|cos\(|tan\(|log10\(|ln\(|sqrt\()/.test(value);
+    const expressionEndsOperand = /(?:\d|\)|pi|e)$/.test(s.expr);
+    const needsImplicitMultiply = expressionEndsOperand && valueStartsOperand &&
+      (/^(?:\(|pi$|e$|sin\(|cos\(|tan\(|log10\(|ln\(|sqrt\()/.test(value) || /(?:\)|pi|e)$/.test(s.expr));
+    if (needsImplicitMultiply) s.expr += '*';
+
+    if (isOperator) {
+      if (!s.expr && value !== '-') return;
+      if (value === '-' && /[+*/^(]$/.test(s.expr)) s.expr += value;
+      else if (/[+\-*/^]$/.test(s.expr)) s.expr = s.expr.slice(0,-1) + value;
+      else s.expr += value;
+    } else {
+      s.expr += value;
+    }
+    s.lastExpression = '';
+    render();
+  }
+
+  function backspace(){
+    const s = state();
+    if (s.justEvaluated) return clear();
+    const tokens = ['log10(','sqrt(','sin(','cos(','tan(','ln(','pi'];
+    const token = tokens.find(t => s.expr.endsWith(t));
+    s.expr = token ? s.expr.slice(0,-token.length) : s.expr.slice(0,-1);
+    s.lastExpression = '';
+    render();
+  }
+
+  function negate(){
+    const s = state();
+    if (!s.expr) { s.expr = '-'; render(); return; }
+    const match = s.expr.match(/(-?\d*\.?\d+)$/);
+    if (match) {
+      const current = match[1];
+      const replacement = current.startsWith('-') ? current.slice(1) : '-' + current;
+      s.expr = s.expr.slice(0, match.index) + replacement;
+    } else {
+      s.expr = `-(${s.expr})`;
+    }
+    s.justEvaluated = false;
+    s.lastExpression = '';
+    render();
+  }
+
+  function percent(){
+    const s = state();
+    const match = s.expr.match(/(-?\d*\.?\d+)$/);
+    if (!match) return;
+    s.expr = s.expr.slice(0, match.index) + `(${match[1]}/100)`;
+    s.justEvaluated = false;
+    s.lastExpression = '';
+    render();
+  }
+
+  function square(){
+    const s = state();
+    if (!s.expr) return;
+    s.expr = `(${s.expr})^2`;
+    s.justEvaluated = false;
+    s.lastExpression = '';
+    render();
+  }
+
+  function reciprocal(){
+    const s = state();
+    if (!s.expr) return;
+    s.expr = `1/(${s.expr})`;
+    s.justEvaluated = false;
+    s.lastExpression = '';
+    render();
+  }
+
+  function formatNumber(value){
+    if (!Number.isFinite(value)) throw new Error('Invalid result');
+    if (Object.is(value,-0)) value = 0;
+    const abs = Math.abs(value);
+    if ((abs !== 0 && abs < 1e-9) || abs >= 1e12) return value.toExponential(10).replace(/\.0+e/,'e').replace(/(\.\d*?)0+e/,'$1e');
+    return Number(value.toPrecision(12)).toString();
+  }
+
+  function evaluate(){
+    const s = state();
+    if (!s.expr) return;
+    const original = s.expr;
+    try {
+      let raw = s.expr;
+      if (!/^[0-9+\-*/^().A-Za-z]+$/.test(raw)) throw new Error('Unsupported character');
+      const knownRemoved = raw.replace(/log10|sqrt|sin|cos|tan|ln|pi|e/g,'');
+      if (/[A-Za-z]/.test(knownRemoved)) throw new Error('Unsupported function');
+
+      raw = raw.replace(/\^(-(?:\d+(?:\.\d+)?|pi|e))/g,'^($1)');
+      raw = raw.replace(/\^/g,'**');
+      const sin = angleMode === 'DEG' ? x => Math.sin(x * Math.PI / 180) : x => Math.sin(x);
+      const cos = angleMode === 'DEG' ? x => Math.cos(x * Math.PI / 180) : x => Math.cos(x);
+      const tan = angleMode === 'DEG' ? x => Math.tan(x * Math.PI / 180) : x => Math.tan(x);
+      const sqrt = x => Math.sqrt(x);
+      const log10 = x => Math.log10(x);
+      const ln = x => Math.log(x);
+      const pi = Math.PI;
+      const e = Math.E;
+      const fn = Function('sin','cos','tan','sqrt','log10','ln','pi','e', `"use strict"; return (${raw});`);
+      const result = fn(sin,cos,tan,sqrt,log10,ln,pi,e);
+      s.lastExpression = `${pretty(original)} =`;
+      s.expr = formatNumber(Number(result));
+      s.justEvaluated = true;
+      render();
+    } catch (err) {
+      s.lastExpression = pretty(original);
+      s.expr = 'Error';
+      s.justEvaluated = true;
+      render();
+    }
+  }
+
+  function action(name){
+    if (name === 'clear') return clear();
+    if (name === 'backspace') return backspace();
+    if (name === 'negate') return negate();
+    if (name === 'percent') return percent();
+    if (name === 'square') return square();
+    if (name === 'reciprocal') return reciprocal();
+    if (name === 'equals') return evaluate();
+    if (name === 'angle') {
+      angleMode = angleMode === 'DEG' ? 'RAD' : 'DEG';
+      return render();
+    }
+  }
+
+  function toggle(){
+    if (overlay.classList.contains('is-open')) {
+      close();
+    } else {
+      open();
+    }
+  }
+
+  openButton.addEventListener('click', toggle);
+  closeButton.addEventListener('click', close);
+  overlay.addEventListener('click', event => { if (event.target === overlay) close(); });
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => switchMode(tab.dataset.calcMode));
+    tab.addEventListener('keydown', event => {
+      if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+      event.preventDefault();
+      let nextIndex = index;
+      if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+      if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+      if (event.key === 'Home') nextIndex = 0;
+      if (event.key === 'End') nextIndex = tabs.length - 1;
+      switchMode(tabs[nextIndex].dataset.calcMode);
+      tabs[nextIndex].focus();
+    });
+  });
+  keysEl.addEventListener('click', event => {
+    const button = event.target.closest('.quick-calc-key');
+    if (!button) return;
+    if (button.dataset.action) action(button.dataset.action);
+    else if (button.dataset.value !== undefined) append(button.dataset.value);
+  });
+
+  window.addEventListener('keydown', event => {
+    if (!overlay.classList.contains('is-open')) return;
+    const key = event.key;
+
+    if (key === 'Escape') { event.preventDefault(); close(); return; }
+    if (key === 'Tab') {
+      const focusable = Array.from(panel.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+        .filter(element => element.getClientRects().length > 0);
+      if (!focusable.length) { event.preventDefault(); panel.focus(); return; }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === panel)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+      return;
+    }
+    if (key === 'Enter' || key === '=') { event.preventDefault(); evaluate(); return; }
+    if (key === 'Backspace') { event.preventDefault(); backspace(); return; }
+    if (/^[0-9]$/.test(key)) { event.preventDefault(); append(key); return; }
+    if (key === '.') { event.preventDefault(); append('.'); return; }
+    if (['+','-','*','/'].includes(key)) { event.preventDefault(); append(key); return; }
+    if (key === '%') { event.preventDefault(); percent(); return; }
+    if (activeMode === 'scientific' && ['(',')','^'].includes(key)) {
+      event.preventDefault(); append(key); return;
+    }
+  });
+
+  render();
+})();
+</script>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'lot894.reportLogo.v1';
+  const MAX_FILE_SIZE = 1.5 * 1024 * 1024;
+  const button = document.getElementById('reportSettingsButton');
+  const overlay = document.getElementById('reportSettingsOverlay');
+  const panel = document.getElementById('reportSettingsPanel');
+  const closeButton = document.getElementById('reportSettingsClose');
+  const fileInput = document.getElementById('reportLogoFile');
+  const resetButton = document.getElementById('reportLogoReset');
+  const defaultPreview = document.getElementById('reportLogoDefaultPreview');
+  const customPreview = document.getElementById('reportLogoCustomPreview');
+  const status = document.getElementById('reportLogoStatus');
+  if (!button || !overlay || !panel || !closeButton || !fileInput || !resetButton || !defaultPreview || !customPreview || !status) return;
+
+  const reportLogoSelector = '.lot894-report-logo, img[data-report-logo], img.report-logo';
+  const defaultSources = new WeakMap();
+  let currentLogo = null;
+  let lastFocused = null;
+
+  function setStatus(message, isError = false){
+    status.textContent = message || '';
+    status.classList.toggle('is-error', Boolean(isError));
+  }
+
+  function readStoredLogo(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed.dataUrl !== 'string' || !parsed.dataUrl.startsWith('data:image/')) return null;
+      return parsed;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function saveStoredLogo(record){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function clearStoredLogo(){
+    try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+  }
+
+  function applyToLogoElement(img, dataUrl){
+    if (!(img instanceof HTMLImageElement)) return;
+    if (!defaultSources.has(img)) defaultSources.set(img, img.getAttribute('src') || '');
+    if (dataUrl) img.src = dataUrl;
+    else img.src = defaultSources.get(img) || img.getAttribute('src') || '';
+  }
+
+  function applyReportLogo(dataUrl){
+    document.querySelectorAll(reportLogoSelector).forEach(img => applyToLogoElement(img, dataUrl));
+    document.documentElement.classList.toggle('custom-report-logo-active', Boolean(dataUrl));
+    window.dispatchEvent(new CustomEvent('lot894:report-logo-change', { detail:{ src:dataUrl || null } }));
+  }
+
+  function renderPreview(){
+    const hasCustom = Boolean(currentLogo?.dataUrl);
+    defaultPreview.hidden = hasCustom;
+    customPreview.hidden = !hasCustom;
+    if (hasCustom) {
+      customPreview.src = currentLogo.dataUrl;
+      customPreview.alt = currentLogo.name ? `Custom report logo: ${currentLogo.name}` : 'Custom report logo preview';
+      setStatus(currentLogo.name ? `Using ${currentLogo.name}` : 'Using your custom report logo');
+    } else {
+      customPreview.removeAttribute('src');
+      customPreview.alt = 'Custom report logo preview';
+      setStatus('Using the default LOT 894 report logo');
+    }
+  }
+
+  function open(){
+    const quickOverlay = document.getElementById('quickCalcOverlay');
+    if (quickOverlay?.classList.contains('is-open')) document.getElementById('quickCalcClose')?.click();
+    if (overlay.classList.contains('is-open')) return;
+    lastFocused = document.activeElement;
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden','false');
+    button.setAttribute('aria-expanded','true');
+    button.setAttribute('aria-label','Close report logo settings');
+    renderPreview();
+    window.setTimeout(() => panel.focus(), 0);
+  }
+
+  function close(){
+    if (!overlay.classList.contains('is-open')) return;
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden','true');
+    button.setAttribute('aria-expanded','false');
+    button.setAttribute('aria-label','Open report logo settings');
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  }
+
+  function toggle(){ overlay.classList.contains('is-open') ? close() : open(); }
+
+  button.addEventListener('click', toggle);
+  closeButton.addEventListener('click', close);
+  document.getElementById('quickCalculatorButton')?.addEventListener('click', () => {
+    if (overlay.classList.contains('is-open')) close();
+  });
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    if (!file) return;
+    const allowed = ['image/png','image/jpeg','image/webp'];
+    if (!allowed.includes(file.type)) {
+      setStatus('Please choose a PNG, JPG or WebP logo.', true);
+      fileInput.value = '';
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      setStatus('That logo is too large. Please use a file under 1.5 MB.', true);
+      fileInput.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = typeof reader.result === 'string' ? reader.result : '';
+      if (!dataUrl.startsWith('data:image/')) {
+        setStatus('Could not read that logo file.', true);
+        return;
+      }
+      currentLogo = { dataUrl, name:file.name, type:file.type, updatedAt:Date.now() };
+      const saved = saveStoredLogo(currentLogo);
+      applyReportLogo(dataUrl);
+      renderPreview();
+      if (!saved) setStatus('Logo applied for this page, but browser storage is unavailable.', true);
+      fileInput.value = '';
+    };
+    reader.onerror = () => setStatus('Could not read that logo file.', true);
+    reader.readAsDataURL(file);
+  });
+
+  resetButton.addEventListener('click', () => {
+    currentLogo = null;
+    clearStoredLogo();
+    applyReportLogo(null);
+    renderPreview();
+  });
+
+  window.addEventListener('keydown', event => {
+    if (!overlay.classList.contains('is-open')) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const focusable = Array.from(panel.querySelectorAll('button:not([disabled]), input:not([disabled]), label[for], [href], [tabindex]:not([tabindex="-1"])'))
+      .filter(element => element.getClientRects().length > 0);
+    if (!focusable.length) {
+      event.preventDefault();
+      panel.focus();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && (document.activeElement === first || document.activeElement === panel)) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  currentLogo = readStoredLogo();
+  applyReportLogo(currentLogo?.dataUrl || null);
+  renderPreview();
+
+  if ('MutationObserver' in window) {
+    const observer = new MutationObserver(records => {
+      if (!currentLogo?.dataUrl) return;
+      for (const record of records) {
+        for (const node of record.addedNodes) {
+          if (!(node instanceof Element)) continue;
+          if (node.matches?.(reportLogoSelector)) applyToLogoElement(node, currentLogo.dataUrl);
+          node.querySelectorAll?.(reportLogoSelector).forEach(img => applyToLogoElement(img, currentLogo.dataUrl));
+        }
+      }
+    });
+    observer.observe(document.body, { childList:true, subtree:true });
+  }
+})();
+</script>
+
+
+<script>
+(() => {
+  const header = document.querySelector('.site-header-global');
+  const spacer = document.querySelector('.site-header-spacer');
+  if (!header || !spacer) return;
+
+  const syncHeaderHeight = () => {
+    const height = Math.ceil(header.getBoundingClientRect().height);
+    document.documentElement.style.setProperty('--site-header-height', `${height}px`);
+  };
+
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight, { passive: true });
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(syncHeaderHeight).observe(header);
+  }
+
+  let lastY = Math.max(window.scrollY || 0, 0);
+  let downwardTravel = 0;
+  let ticking = false;
+  let touchY = null;
+
+  const showHeader = () => {
+    header.classList.remove('header-scroll-hidden');
+    header.classList.add('header-scroll-visible');
+    downwardTravel = 0;
+  };
+
+  const hideHeader = () => {
+    header.classList.remove('header-scroll-visible');
+    header.classList.add('header-scroll-hidden');
+  };
+
+  showHeader();
+
+  const reactToScroll = () => {
+    const y = Math.max(window.scrollY || 0, 0);
+    const delta = y - lastY;
+
+    if (y <= 3) {
+      showHeader();
+    } else if (delta < 0) {
+      // Any upward page movement reveals the header immediately.
+      showHeader();
+    } else if (delta > 0) {
+      downwardTravel += delta;
+      if (downwardTravel > 10) hideHeader();
+    }
+
+    lastY = y;
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(reactToScroll);
+    }
+  }, { passive: true });
+
+  // Desktop mouse / trackpad: reveal the instant an upward gesture begins.
+  window.addEventListener('wheel', (event) => {
+    if (event.deltaY < 0) showHeader();
+  }, { passive: true, capture: true });
+
+  // Touch devices: dragging the finger downward means the page is scrolling upward.
+  window.addEventListener('touchstart', (event) => {
+    touchY = event.touches[0]?.clientY ?? null;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (event) => {
+    const currentTouchY = event.touches[0]?.clientY;
+    if (touchY !== null && currentTouchY !== undefined) {
+      if (currentTouchY > touchY + 2) showHeader();
+      touchY = currentTouchY;
+    }
+  }, { passive: true });
+
+  // Keyboard users.
+  window.addEventListener('keydown', (event) => {
+    if (['ArrowUp', 'PageUp', 'Home'].includes(event.key)) showHeader();
+  });
+
+  header.addEventListener('focusin', showHeader);
+})();
+</script>
+<script src="/index-search-suggestions.js"></script>
+</body>
+</html>

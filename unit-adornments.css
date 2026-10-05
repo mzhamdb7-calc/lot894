@@ -1,0 +1,28 @@
+/* Shared unit treatment: values stay first; compact units stay consistently on the right. */
+.input-adorned,
+.input-adorned--prefix,
+.input-adorned--suffix {
+  grid-template-columns: minmax(0, 1fr) 58px !important;
+}
+
+.input-adorned > input {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.input-adorned > .adornment {
+  grid-column: 2;
+  grid-row: 1;
+  box-sizing: border-box !important;
+  width: 58px !important;
+  min-width: 58px !important;
+  padding: 0 8px !important;
+  background: #f4f7f6 !important;
+  color: #637780 !important;
+  font-size: .52rem !important;
+  font-weight: 760 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
